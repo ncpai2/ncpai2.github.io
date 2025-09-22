@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hệ Thống Phân Tích Baccarat Toàn Diện (AI Council)</title>
+    <title>Hệ Thống Phân Tích Baccarat Tổng Hợp</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -23,13 +23,11 @@
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
         }
         .btn:active:not(:disabled) { transform: translateY(1px); }
-         .btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-        .card-glow-p { box-shadow: 0 0 20px rgba(59, 130, 246, 0.5); }
-        .card-glow-b { box-shadow: 0 0 20px rgba(239, 68, 68, 0.5); }
-        .card-glow-wait { box-shadow: 0 0 20px rgba(156, 163, 175, 0.4); }
+        .btn:disabled { cursor: not-allowed; opacity: 0.6; }
+
+        .card-glow-p { box-shadow: 0 0 25px rgba(59, 130, 246, 0.6); }
+        .card-glow-b { box-shadow: 0 0 25px rgba(239, 68, 68, 0.6); }
+        .card-glow-certain { box-shadow: 0 0 30px rgba(250, 204, 21, 0.7); }
 
         .road-grid {
             display: grid;
@@ -42,65 +40,61 @@
             scrollbar-width: thin;
             scrollbar-color: #4b5563 #1f2937;
         }
-        .road-col {
-            display: grid;
-            grid-auto-rows: 24px;
-            gap: 2px;
-        }
+        .road-col { display: grid; grid-auto-rows: 24px; gap: 2px; }
         .road-item {
-            width: 24px;
-            height: 24px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 0.8rem;
-            color: white;
-            position: relative;
+            width: 24px; height: 24px; display: flex;
+            align-items: center; justify-content: center;
+            font-weight: bold; font-size: 0.8rem; color: white; position: relative;
         }
         .road-item-big { border-radius: 9999px; border: 2px solid; }
         .road-item-p { border-color: #3b82f6; color: #3b82f6; }
         .road-item-b { border-color: #ef4444; color: #ef4444; }
         .road-item-t { background-color: #10b981; border-radius: 9999px; }
-
-        /* Tie Slash */
-        .tie-slash {
-            position: absolute;
-            width: 100%;
-            height: 2px;
-            background-color: #10b981;
-            transform: rotate(-45deg);
-        }
-
-        /* Pair Dots */
-        .pair-dot {
-            position: absolute;
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-        }
+        .tie-slash { position: absolute; width: 100%; height: 2px; background-color: #10b981; transform: rotate(-45deg); }
+        .pair-dot { position: absolute; width: 6px; height: 6px; border-radius: 50%; }
         .pair-dot.p-pair { background-color: #3b82f6; top: 2px; right: 2px; }
         .pair-dot.b-pair { background-color: #ef4444; bottom: 2px; left: 2px; }
-
         .bead-plate-item-p { background-color: #3b82f6; border-radius: 9999px;}
         .bead-plate-item-b { background-color: #ef4444; border-radius: 9999px;}
         
-        /* Corrected Derived Road Styles */
-        .derived-item { width: 10px; height: 10px; }
-        .big-eye-boy-p { border: 2px solid #3b82f6; border-radius: 9999px; } /* Blue for Pattern */
-        .big-eye-boy-b { border: 2px solid #ef4444; border-radius: 9999px; } /* Red for Choppy */
-        .small-road-p { background-color: #3b82f6; border-radius: 9999px; } /* Blue for Pattern */
-        .small-road-b { background-color: #ef4444; } /* Red for Choppy */
-        .cockroach-pig-p { border: 1px solid #3b82f6; background: linear-gradient(to top right, transparent calc(50% - 0.5px), #3b82f6, transparent calc(50% + 0.5px)); } /* Blue for Pattern */
-        .cockroach-pig-b { border: 1px solid #ef4444; background: linear-gradient(to top right, transparent calc(50% - 0.5px), #ef4444, transparent calc(50% + 0.5px)); } /* Red for Choppy */
+        .derived-item { width: 10px; height: 10px; border-radius: 9999px; }
+        .big-eye-boy-p { border: 2px solid #ef4444; }
+        .big-eye-boy-b { border: 2px solid #3b82f6; }
+        .small-road-p { background-color: #ef4444; }
+        .small-road-b { background-color: #3b82f6; }
+        .cockroach-pig-p { border: 1px solid #ef4444; background: linear-gradient(to top right, transparent calc(50% - 0.5px), #ef4444, transparent calc(50% + 0.5px)); }
+        .cockroach-pig-b { border: 1px solid #3b82f6; background: linear-gradient(to top right, transparent calc(50% - 0.5px), #3b82f6, transparent calc(50% + 0.5px)); }
         
         .pair-checkbox:checked {
             background-color: currentColor;
             background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z'/%3e%3c/svg%3e");
         }
+        
+        /* Modal and Toast styles */
+        .modal-backdrop {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background-color: rgba(0,0,0,0.7); display: flex; align-items: center; justify-content: center;
+            z-index: 50; animation: fadeIn 0.3s ease;
+        }
+        .modal-content {
+            background-color: #1f2937; padding: 1.5rem; border-radius: 1rem;
+            width: 90%; max-width: 450px; animation: slideIn 0.3s ease-out;
+            border: 1px solid #374151;
+        }
+        .toast-notification {
+            position: fixed; top: 20px; right: 20px;
+            background-color: #1f2937; color: white; padding: 1rem 1.5rem; border-radius: 0.5rem;
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.3); z-index: 100; animation: slideDown 0.5s ease;
+            border-left: 4px solid;
+        }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideIn { from { opacity: 0; transform: translateY(-20px) scale(0.95); } to { opacity: 1; transform: translateY(0) scale(1); } }
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-100%); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
-<body class="p-4 md:p-8 bg-gray-900">
+<body class="p-4 md:p-8">
+
+<div id="modal-container"></div>
 <div id="toast-container"></div>
 
 <div class="max-w-screen-xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -109,27 +103,24 @@
     <div class="lg:col-span-2 space-y-6">
         <!-- Header -->
         <div class="bg-gray-800 p-6 rounded-2xl shadow-lg text-center">
-            <h1 class="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-red-400">Hệ Thống Phân Tích Baccarat (AI Council)</h1>
-            <p class="text-gray-400 mt-2">Sức mạnh của Hội Đồng 10 Chuyên Gia AI</p>
+            <h1 class="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-purple-400 to-red-400">Hệ Thống Phân Tích Baccarat Tổng Hợp</h1>
+            <p class="text-gray-400 mt-2">AI Synthesis Engine v1.0</p>
         </div>
         
         <!-- Controls -->
         <div class="bg-gray-800 p-6 rounded-2xl shadow-lg">
              <div class="flex justify-between items-center mb-4">
                  <h2 class="text-xl font-semibold text-blue-300">⚙️ Bảng Điều Khiển</h2>
-                 <button onclick="openSettingsModal()" class="text-gray-400 hover:text-white transition-colors"><i class="fas fa-cog fa-lg"></i></button>
+                 <div class="flex items-center gap-4">
+                    <button onclick="openSettingsModal()" class="text-gray-400 hover:text-white transition-colors"><i class="fas fa-key fa-lg"></i></button>
+                    <button onclick="openHelpModal()" class="text-gray-400 hover:text-white transition-colors"><i class="fas fa-question-circle fa-lg"></i></button>
+                </div>
              </div>
             
             <div class="grid grid-cols-3 gap-4 mb-4">
-                <button onclick="addResult('P')" class="btn bg-blue-600 hover:bg-blue-500 text-white font-bold py-6 rounded-lg text-2xl">
-                    <span>👤</span> CON
-                </button>
-                 <button onclick="addResult('T')" class="btn bg-green-600 hover:bg-green-500 text-white font-bold py-6 rounded-lg text-2xl">
-                    <span>🤝</span> HÒA
-                </button>
-                <button onclick="addResult('B')" class="btn bg-red-600 hover:bg-red-500 text-white font-bold py-6 rounded-lg text-2xl">
-                    <span>🏦</span> CÁI
-                </button>
+                <button id="btnP" onclick="addResult('P')" class="btn bg-blue-600 hover:bg-blue-500 text-white font-bold py-6 rounded-lg text-2xl"><span>👤</span> CON</button>
+                <button id="btnT" onclick="addResult('T')" class="btn bg-green-600 hover:bg-green-500 text-white font-bold py-6 rounded-lg text-2xl"><span>🤝</span> HÒA</button>
+                <button id="btnB" onclick="addResult('B')" class="btn bg-red-600 hover:bg-red-500 text-white font-bold py-6 rounded-lg text-2xl"><span>🏦</span> CÁI</button>
             </div>
 
             <div class="flex items-center justify-center gap-6 mb-4 text-white">
@@ -145,7 +136,7 @@
 
             <div class="flex gap-4">
                 <button onclick="undoLast()" class="btn flex-1 bg-gray-600 hover:bg-gray-500 text-white font-bold py-3 px-4 rounded-lg">↩️ Hoàn Tác</button>
-                <button onclick="clearHistory()" class="btn flex-1 bg-yellow-600 hover:bg-yellow-500 text-white font-bold py-3 px-4 rounded-lg">🗑️ Xóa Lịch Sử</button>
+                <button onclick="showCustomConfirm('Bạn có chắc muốn xóa lịch sử của PHIÊN NÀY không? Dữ liệu các phiên cũ vẫn được giữ lại.', clearCurrentSessionHistory)" class="btn flex-1 bg-yellow-600 hover:bg-yellow-500 text-white font-bold py-3 px-4 rounded-lg">🗑️ Xóa Phiên</button>
             </div>
         </div>
 
@@ -185,38 +176,50 @@
     <div class="space-y-6">
         <div id="analysis-card" class="bg-gray-800 p-6 rounded-2xl shadow-lg transition-shadow duration-500 sticky top-6">
             <h2 class="text-xl font-semibold mb-4 text-yellow-300 flex items-center gap-2">
-                <i class="fa-solid fa-brain"></i> Phán Quyết Hội Đồng AI
+                <i class="fa-solid fa-brain"></i> Phân Tích Tổng Hợp
             </h2>
-            <div id="analysisResult" class="space-y-4 min-h-[170px] flex flex-col justify-center">
+            <div id="analysisResult" class="space-y-4 min-h-[250px] flex flex-col justify-center">
                 <!-- AI content goes here -->
             </div>
         </div>
         
         <div class="bg-gray-800 p-6 rounded-2xl shadow-lg">
-            <h2 class="text-xl font-semibold mb-4 text-blue-300">📊 Thống Kê Đề Xuất (Phiên)</h2>
-            <div id="predictionStats" class="grid grid-cols-4 gap-2 text-center mb-4"></div>
-            <div id="predictionChart" class="w-full h-24 bg-gray-900 rounded-lg p-2 flex items-end gap-1 overflow-x-auto"></div>
+            <h2 class="text-xl font-semibold mb-4 text-cyan-300">🌐 Quản Lý Dữ Liệu Lịch Sử</h2>
+             <div class="flex flex-col sm:flex-row gap-4 mb-4">
+                 <select id="sessionSelector" class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 text-white focus:ring-2 focus:ring-blue-500 focus:outline-none"></select>
+                 <div class="grid grid-cols-3 gap-2">
+                     <button onclick="createNewSession()" class="btn w-full bg-green-600 hover:bg-green-500 text-white font-bold py-2 px-3 rounded-lg text-sm">➕ Mới</button>
+                     <button onclick="renameSession()" class="btn w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 px-3 rounded-lg text-sm">✏️ Sửa</button>
+                     <button onclick="deleteSelectedSession()" class="btn w-full bg-red-600 hover:bg-red-500 text-white font-bold py-2 px-3 rounded-lg text-sm">🗑️ Xóa</button>
+                 </div>
+             </div>
+             <div class="flex flex-col sm:flex-row gap-4">
+                 <button onclick="exportData()" class="btn w-full bg-sky-600 hover:bg-sky-500 text-white font-bold py-3 px-4 rounded-lg">📤 Xuất Toàn Bộ</button>
+                 <button onclick="document.getElementById('fileInput').click()" class="btn w-full bg-purple-600 hover:bg-purple-500 text-white font-bold py-3 px-4 rounded-lg">📥 Nhập Dữ Liệu</button>
+                 <input type="file" id="fileInput" class="hidden" accept=".json" onchange="importData(event)">
+             </div>
         </div>
+
     </div>
 </div>
 
-<!-- Settings Modal -->
-<div id="settingsModal" class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center p-4 z-50 hidden"></div>
 
 <script>
 // --- GLOBAL STATE & CONFIG ---
-let state = {
-    history: [],
-    apiKeys: Array(10).fill(''),
-    isAnalyzing: false,
-    lastPrediction: null,
-    predictions: [], 
-};
 const GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=';
 const MIN_HISTORY_FOR_ANALYSIS = 10;
+let state = {
+    currentSessionId: null,
+    sessions: {},
+    apiKey: '',
+    isAnalyzing: false,
+    lastPrediction: null,
+};
 
 // --- ROADMAP LOGIC ---
 class BaccaratRoadmapGenerator {
+    // This class remains unchanged from the previous version.
+    // It correctly generates all roadmaps needed for visual analysis.
     generateBigRoad(history) {
         const columns = []; if (history.length === 0) return columns;
         let currentCol = []; let lastWinner = null;
@@ -235,16 +238,16 @@ class BaccaratRoadmapGenerator {
     generateDerivedRoads(bigRoad, hypotheticalWinner = null) {
         let tempBigRoad = JSON.parse(JSON.stringify(bigRoad));
         if (hypotheticalWinner) {
-            const lastCol = tempBigRoad.length > 0 ? tempBigRoad[tempBigRoad.length - 1] : null;
+            const lastCol = tempBigRoad[tempBigRoad.length - 1];
             if (lastCol && lastCol[0].winner === hypotheticalWinner) { lastCol.push({ winner: hypotheticalWinner }); } 
             else { tempBigRoad.push([{ winner: hypotheticalWinner }]); }
         }
         const results = { bigEyeBoy: [], smallRoad: [], cockroachPig: [] };
         for (let i = 0; i < tempBigRoad.length; i++) {
             for (let j = 0; j < tempBigRoad[i].length; j++) {
-                if (i >= 1 && (j > 0 || (j === 0 && tempBigRoad[i-1].length > 1))) this.addDerivedResult(results.bigEyeBoy, tempBigRoad, i, j, 1);
-                if (i >= 2) this.addDerivedResult(results.smallRoad, tempBigRoad, i, j, 2);
-                if (i >= 3) this.addDerivedResult(results.cockroachPig, tempBigRoad, i, j, 3);
+                if ((i === 1 && j === 1) || i > 1) this.addDerivedResult(results.bigEyeBoy, tempBigRoad, i, j, 1);
+                if ((i === 2 && j === 1) || i > 2) this.addDerivedResult(results.smallRoad, tempBigRoad, i, j, 2);
+                if ((i === 3 && j === 1) || i > 3) this.addDerivedResult(results.cockroachPig, tempBigRoad, i, j, 3);
             }
         }
         return results;
@@ -252,44 +255,104 @@ class BaccaratRoadmapGenerator {
     addDerivedResult(road, bigRoad, i, j, offset) { const result = this.compare(bigRoad, i, j, offset); if (result) road.push(result); }
     compare(bigRoad, i, j, offset) {
         let isPattern;
-        const refColIndex = i - offset;
-        if (refColIndex < 0) return null;
-        
         if (j === 0) {
-            const prevCol = bigRoad[i - 1]; 
-            const refCol = bigRoad[refColIndex]; 
-            if (!prevCol || !refCol) return null;
+            const prevCol = bigRoad[i - 1]; const refCol = bigRoad[i - 1 - offset]; if (!prevCol || !refCol) return null;
             isPattern = prevCol.length === refCol.length;
         } else {
-            const refCol = bigRoad[refColIndex];
-            if (!refCol) return null;
-            const hasRefBeadAtDepth = !!refCol[j];
-            const hasRefBeadAtPrevDepth = !!refCol[j-1];
-
-            if(hasRefBeadAtDepth) {
-                isPattern = true;
-            } else {
-                isPattern = !hasRefBeadAtPrevDepth;
-            }
+            const refCol = bigRoad[i - offset]; if (!refCol) return null;
+            const hasBeadAtDepth = !!refCol[j]; const hasBeadAtPrevDepth = !!refCol[j - 1];
+            isPattern = hasBeadAtDepth === hasBeadAtPrevDepth;
         }
         return { winner: isPattern ? 'P' : 'B' };
     }
 }
 const roadmapGenerator = new BaccaratRoadmapGenerator();
 
+// --- STATISTICAL PATTERN MATCHER LOGIC ---
+class PatternMatcher {
+    // This class is adapted from the second system.
+    // It performs historical data matching.
+    constructor() {
+        this.MIN_PATTERN_LENGTH = 10;
+        this.MAX_PATTERN_LENGTH = 15;
+        this.MIN_CERTAIN_OCCURRENCES = 5;
+    }
+    findPatternOccurrences(pattern, allHistory) {
+        const occurrences = [];
+        const patternStr = pattern.join('');
+        for (const session of allHistory) {
+            const sessionHistory = (session.history || []).map(h => h.winner);
+            if (sessionHistory.length < pattern.length + 1) continue;
+            for (let i = 0; i <= sessionHistory.length - pattern.length - 1; i++) {
+                const segment = sessionHistory.slice(i, i + pattern.length);
+                if (segment.join('') === patternStr) {
+                     occurrences.push(sessionHistory[i + pattern.length]);
+                }
+            }
+        }
+        return occurrences;
+    }
+    getPrediction(currentHistory, allHistoricalSessions) {
+        const history = currentHistory.map(h => h.winner);
+        if (history.length < this.MIN_PATTERN_LENGTH) {
+            return { recommendation: "NOT_ENOUGH_DATA" };
+        }
+        for (let len = Math.min(this.MAX_PATTERN_LENGTH, history.length); len >= this.MIN_PATTERN_LENGTH; len--) {
+            const pattern = history.slice(-len);
+            const occurrences = this.findPatternOccurrences(pattern, allHistoricalSessions);
+            if (occurrences.length > 0) {
+                const votes = { P: 0, B: 0 };
+                occurrences.forEach(next => { if(votes[next] !== undefined) votes[next]++; });
+                
+                // Check for "Certain" prediction
+                if (occurrences.length >= this.MIN_CERTAIN_OCCURRENCES && new Set(occurrences).size === 1) {
+                    return {
+                        isCertain: true,
+                        prediction: occurrences[0],
+                        patternLength: len,
+                        occurrences: occurrences.length,
+                        reasoning: `Tìm thấy ${occurrences.length} lần xuất hiện CHÍNH XÁC của hình cầu này trong lịch sử. Tất cả đều cho kết quả tiếp theo là: ${occurrences[0]}.`
+                    };
+                }
+
+                // Standard prediction
+                if (votes.P + votes.B > 0) {
+                     const prediction = votes.P > votes.B ? 'P' : 'B';
+                     const confidence = (Math.max(votes.P, votes.B) / (votes.P + votes.B)) * 100;
+                     return {
+                         isCertain: false,
+                         prediction,
+                         confidence: confidence.toFixed(1),
+                         patternLength: len,
+                         occurrences: occurrences.length,
+                         votes,
+                         reasoning: `Tìm thấy ${occurrences.length} lần xuất hiện của hình cầu tương tự (${len} ván). Kết quả trong quá khứ: ${votes.P} lần Con, ${votes.B} lần Cái.`
+                     };
+                }
+            }
+        }
+        return { recommendation: "NO_PATTERN_FOUND" };
+    }
+}
+const patternMatcher = new PatternMatcher();
+
+
 // --- UI RENDERING ---
 function renderAllRoads() {
-    const bigRoad = roadmapGenerator.generateBigRoad(state.history);
-    renderBeadPlateUI(state.history);
+    if (!state.currentSessionId) return;
+    const history = state.sessions[state.currentSessionId]?.history || [];
+    const bigRoad = roadmapGenerator.generateBigRoad(history);
+    renderBeadPlateUI(history);
     renderBigRoadUI(bigRoad);
     const derivedRoads = roadmapGenerator.generateDerivedRoads(bigRoad);
     renderDerivedRoadUI('bigEyeBoyDisplay', derivedRoads.bigEyeBoy, 'big-eye-boy');
     renderDerivedRoadUI('smallRoadDisplay', derivedRoads.smallRoad, 'small-road');
     renderDerivedRoadUI('cockroachPigDisplay', derivedRoads.cockroachPig, 'cockroach-pig');
     updatePredictionProbes(bigRoad);
-    updateStatsUI(state.history);
+    updateStatsUI(history);
 }
-
+// Other rendering functions (renderBeadPlateUI, renderBigRoadUI, etc.) are identical
+// to the first system and are kept for visual display.
 function renderBeadPlateUI(data) {
     const container = document.getElementById('beadPlateDisplay'); container.innerHTML = '';
     const maxRows = 6; let currentCol = document.createElement('div'); currentCol.className = 'road-col';
@@ -303,7 +366,6 @@ function renderBeadPlateUI(data) {
     });
     if (currentCol.hasChildNodes()) container.appendChild(currentCol); container.scrollLeft = container.scrollWidth;
 }
-
 function renderBigRoadUI(columns) {
     const container = document.getElementById('bigRoadDisplay'); container.innerHTML = '';
     columns.forEach(colData => {
@@ -318,208 +380,146 @@ function renderBigRoadUI(columns) {
     });
     container.scrollLeft = container.scrollWidth;
 }
-
 function renderDerivedRoadUI(containerId, data, type) {
     const container = document.getElementById(containerId); container.innerHTML = ''; if (data.length === 0) return;
     const columns = roadmapGenerator.generateBigRoad(data);
     columns.forEach(colData => {
         const colDiv = document.createElement('div'); colDiv.className = 'road-col !grid-auto-rows-[10px]';
         colData.forEach(item => {
-            const itemDiv = document.createElement('div'); const color = item.winner.toLowerCase();
+            const itemDiv = document.createElement('div'); const color = item.winner === 'P' ? 'p' : 'b';
             itemDiv.className = `derived-item ${type}-${color}`; colDiv.appendChild(itemDiv);
         });
         container.appendChild(colDiv);
     });
     container.scrollLeft = container.scrollWidth;
 }
-
 function updatePredictionProbes(bigRoad) {
     const pAskContainer = document.getElementById('pAskDisplay'); const bAskContainer = document.getElementById('bAskDisplay');
     pAskContainer.innerHTML = ''; bAskContainer.innerHTML = '';
     const pProbeRoads = roadmapGenerator.generateDerivedRoads(bigRoad, 'P');
     const pBigEyeNext = pProbeRoads.bigEyeBoy.pop(); const pSmallNext = pProbeRoads.smallRoad.pop(); const pCockroachNext = pProbeRoads.cockroachPig.pop();
-    let pAskHTML = '<div class="road-col !grid-auto-rows-[10px] !gap-0.5">';
+    let pAskHTML = '<div class="road-col !grid-auto-rows-[10px]">';
     if (pBigEyeNext) pAskHTML += `<div class="derived-item big-eye-boy-${pBigEyeNext.winner.toLowerCase()}"></div>`;
     if (pSmallNext) pAskHTML += `<div class="derived-item small-road-${pSmallNext.winner.toLowerCase()}"></div>`;
     if (pCockroachNext) pAskHTML += `<div class="derived-item cockroach-pig-${pCockroachNext.winner.toLowerCase()}"></div>`;
     pAskContainer.innerHTML = pAskHTML + '</div>';
     const bProbeRoads = roadmapGenerator.generateDerivedRoads(bigRoad, 'B');
     const bBigEyeNext = bProbeRoads.bigEyeBoy.pop(); const bSmallNext = bProbeRoads.smallRoad.pop(); const bCockroachNext = bProbeRoads.cockroachPig.pop();
-    let bAskHTML = '<div class="road-col !grid-auto-rows-[10px] !gap-0.5">';
+    let bAskHTML = '<div class="road-col !grid-auto-rows-[10px]">';
     if (bBigEyeNext) bAskHTML += `<div class="derived-item big-eye-boy-${bBigEyeNext.winner.toLowerCase()}"></div>`;
     if (bSmallNext) bAskHTML += `<div class="derived-item small-road-${bSmallNext.winner.toLowerCase()}"></div>`;
     if (bCockroachNext) bAskHTML += `<div class="derived-item cockroach-pig-${bCockroachNext.winner.toLowerCase()}"></div>`;
     bAskContainer.innerHTML = bAskHTML + '</div>';
 }
-
 function updateStatsUI(history) {
     const stats = { P: 0, B: 0, T: 0, pPair: 0, bPair: 0 };
     history.forEach(h => { stats[h.winner] = (stats[h.winner] || 0) + 1; if(h.pPair) stats.pPair++; if(h.bPair) stats.bPair++; });
-    document.getElementById('statsContainer').innerHTML = `<div>C: ${stats.P}</div><div>B: ${stats.B}</div><div>H: ${stats.T}</div><div>CĐ: ${stats.pPair}</div><div>BĐ: ${stats.bPair}</div>`;
+    document.getElementById('statsContainer').innerHTML = `<div>C: ${stats.P}</div><div>B: ${stats.B}</div><div>T: ${stats.T}</div><div>CĐ: ${stats.pPair}</div><div>BĐ: ${stats.bPair}</div>`;
+}
+function updateAnalysisUI(content) {
+    const analysisResultDiv = document.getElementById('analysisResult');
+    const analysisCard = document.getElementById('analysis-card');
+    analysisCard.classList.remove('card-glow-p', 'card-glow-b', 'card-glow-certain');
+    analysisResultDiv.innerHTML = content;
 }
 
-function renderStatsAndChart() {
-    const statsContainer = document.getElementById('predictionStats');
-    const chartContainer = document.getElementById('predictionChart');
-    if (!statsContainer || !chartContainer) return;
-    const wins = state.predictions.filter(p => p.outcome === 'win').length;
-    const losses = state.predictions.length - wins;
-    const total = state.predictions.length;
-    const winRate = total > 0 ? ((wins / total) * 100).toFixed(1) : "0.0";
-    statsContainer.innerHTML = `
-        <div><p class="text-sm text-gray-400">Đúng</p><p class="text-2xl font-bold text-green-400">${wins}</p></div>
-        <div><p class="text-sm text-gray-400">Sai</p><p class="text-2xl font-bold text-red-400">${losses}</p></div>
-        <div><p class="text-sm text-gray-400">Tổng</p><p class="text-2xl font-bold">${total}</p></div>
-        <div><p class="text-sm text-gray-400">Tỷ Lệ</p><p class="text-2xl font-bold text-yellow-400">${winRate}%</p></div>`;
-    chartContainer.innerHTML = '';
-    state.predictions.slice(-50).forEach(p => {
-        const bar = document.createElement('div');
-        const isWin = p.outcome === 'win';
-        bar.className = `flex-shrink-0 w-2.5 rounded-sm transition-all duration-300 ${isWin ? 'h-full bg-green-500' : 'h-1/3 bg-red-500'}`;
-        bar.title = `Đề xuất: ${p.prediction}, Thực tế: ${p.actual} - ${isWin ? 'Đúng' : 'Sai'}`;
-        chartContainer.appendChild(bar);
-    });
-    chartContainer.scrollLeft = chartContainer.scrollWidth;
-}
 
 // --- CORE ACTIONS ---
 function addResult(winner) {
     if (state.isAnalyzing) return;
     const pPair = document.getElementById('playerPair').checked;
     const bPair = document.getElementById('bankerPair').checked;
-    
+
+    const session = state.sessions[state.currentSessionId];
     if (state.lastPrediction && winner !== 'T') {
+        if (!session.predictions) session.predictions = [];
         const outcome = state.lastPrediction.prediction === winner ? 'win' : 'loss';
-        state.predictions.push({ prediction: state.lastPrediction.prediction, actual: winner, outcome });
+        session.predictions.push({ ...state.lastPrediction, actual: winner, outcome });
     }
     
-    state.lastPrediction = null; 
-    state.history.push({ winner, pPair, bPair });
-    document.getElementById('totalGames').textContent = state.history.length;
+    state.lastPrediction = null;
+    session.history.push({ winner, pPair, bPair });
+    
+    document.getElementById('totalGames').textContent = session.history.length;
     document.getElementById('playerPair').checked = false;
     document.getElementById('bankerPair').checked = false;
+
     renderAllRoads();
-    renderStatsAndChart();
     saveState();
-    
-    triggerAIAnalysis();
+    triggerCombinedAnalysis();
 }
 
 function undoLast() {
     if (state.isAnalyzing) return;
-    if (state.lastPrediction) {
-        state.lastPrediction = null;
-    } else if (state.history.length > 0) {
-        state.history.pop();
-        if (state.predictions.length > 0 && state.predictions[state.predictions.length - 1].actual) {
-             state.predictions.pop();
-        }
+    const session = state.sessions[state.currentSessionId];
+    if (session.history.length === 0) return;
+
+    session.history.pop();
+    if(state.lastPrediction) {
+       // If we undo a hand that had a pending prediction, we just clear the prediction
+       state.lastPrediction = null;
+    } else if (session.predictions && session.predictions.length > 0) {
+        // If we undo a hand that ALREADY had a result, we pop the prediction record
+        session.predictions.pop();
     }
     
-    triggerAIAnalysis();
-    document.getElementById('totalGames').textContent = state.history.length;
+    document.getElementById('totalGames').textContent = session.history.length;
     renderAllRoads();
-    renderStatsAndChart();
     saveState();
+    triggerCombinedAnalysis(); // Re-analyze with the previous state
 }
 
-function clearHistory() {
-    if (confirm('Bạn có chắc muốn xóa toàn bộ lịch sử và thống kê không?')) {
-        state.history = []; 
-        state.predictions = []; 
-        state.lastPrediction = null;
-        document.getElementById('totalGames').textContent = 0;
-        renderAllRoads();
-        renderStatsAndChart();
-        initializeAppUI();
-        saveState();
-    }
+function clearCurrentSessionHistory() {
+    const session = state.sessions[state.currentSessionId];
+    session.history = [];
+    session.predictions = [];
+    state.lastPrediction = null;
+    document.getElementById('totalGames').textContent = 0;
+    renderAllRoads();
+    saveState();
+    updateAnalysisUI(`<p class="text-gray-400 text-center">Đã xóa lịch sử phiên. Sẵn sàng để bắt đầu lại.</p>`);
 }
 
-// --- AI & SETTINGS ---
-function openSettingsModal() {
-    const modal = document.getElementById('settingsModal'); 
-    modal.classList.remove('hidden');
-    let apiInputsHTML = '';
-    state.apiKeys.forEach((key, index) => {
-        apiInputsHTML += `<input type="password" id="modalApiKey${index+1}" class="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-2 text-white focus:ring-2 focus:ring-blue-500 focus:outline-none mt-2" value="${key}" placeholder="API Key ${index + 1}">`;
-    });
-    modal.innerHTML = `<div class="bg-gray-800 rounded-2xl shadow-2xl p-8 w-full max-w-md"> <div class="flex justify-between items-center mb-6"> <h2 class="text-2xl font-bold text-blue-300">Cài Đặt Hội Đồng AI</h2> <button onclick="closeSettingsModal()" class="text-gray-500 hover:text-white text-3xl">&times;</button> </div> <div> <label class="block text-sm font-medium text-gray-300 mb-2">10 Gemini API Keys</label> ${apiInputsHTML} <p class="text-xs text-gray-500 mt-2">API Keys được lưu trên trình duyệt. <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener noreferrer" class="text-blue-400 hover:underline">Lấy API Key</a>.</p> </div> <div class="mt-8 flex justify-end gap-4"> <button onclick="closeSettingsModal()" class="btn bg-gray-600 hover:bg-gray-500 text-white font-bold py-2 px-6 rounded-lg">Hủy</button> <button onclick="saveSettings()" class="btn bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 px-6 rounded-lg">Lưu</button> </div> </div>`;
-}
-function closeSettingsModal() { document.getElementById('settingsModal').classList.add('hidden'); }
-function saveSettings() {
-    state.apiKeys = Array.from({length: 10}, (_, i) => document.getElementById(`modalApiKey${i+1}`).value.trim());
-    saveState(); 
-    closeSettingsModal();
-    triggerAIAnalysis();
-}
-function saveState() { localStorage.setItem('baccaratAI_Council_state_v1', JSON.stringify(state)); }
-function loadState() {
-    const savedState = localStorage.getItem('baccaratAI_Council_state_v1');
-    if (savedState) { 
-        const loaded = JSON.parse(savedState);
-        loaded.apiKeys = (loaded.apiKeys || []).concat(Array(10).fill('')).slice(0, 10);
-        Object.assign(state, loaded); 
-    }
-}
 
-async function triggerAIAnalysis() {
+// --- AI ANALYSIS & PROMPT ENGINEERING ---
+async function triggerCombinedAnalysis() {
     if (state.isAnalyzing) return;
-    if (state.apiKeys.some(key => !key)) { 
-        updateAnalysisUI(`<div class="text-center"><p class="text-yellow-400 font-semibold">Vui lòng nhập đủ 10 API Key!</p><p class="text-gray-400 mt-2 text-sm">Click icon <i class="fas fa-cog"></i> để cài đặt.</p></div>`); 
-        return; 
+    const session = state.sessions[state.currentSessionId];
+    if (!state.apiKey) {
+        updateAnalysisUI(`<div class="text-center"><p class="text-yellow-400 font-semibold">Vui lòng nhập Gemini API Key!</p><p class="text-gray-400 mt-2 text-sm">Click icon <i class="fas fa-key"></i> để cài đặt.</p></div>`);
+        return;
     }
-    if (state.history.length < MIN_HISTORY_FOR_ANALYSIS) { 
-        updateAnalysisUI(`<p class="text-gray-400 text-center">Cần ít nhất ${MIN_HISTORY_FOR_ANALYSIS} ván để Hội đồng bắt đầu làm việc.</p>`); 
-        return; 
+    if (session.history.length < MIN_HISTORY_FOR_ANALYSIS) {
+        updateAnalysisUI(`<p class="text-gray-400 text-center">Cần ít nhất ${MIN_HISTORY_FOR_ANALYSIS} ván để bắt đầu phân tích...</p>`);
+        return;
     }
-    
+
     state.isAnalyzing = true;
-    updateAnalysisUI(`<div class="flex flex-col items-center justify-center h-full"><div class="w-8 h-8 border-4 border-t-blue-500 border-gray-600 rounded-full animate-spin"></div><p class="text-gray-400 mt-3 animate-pulse">Hội đồng AI đang họp...</p></div>`);
+    updateAnalysisUI(`<div class="flex flex-col items-center justify-center h-full"><div class="w-8 h-8 border-4 border-t-blue-500 border-gray-600 rounded-full animate-spin"></div><p class="text-gray-400 mt-3 animate-pulse">AI đang tổng hợp dữ liệu...</p></div>`);
     
     try {
-        const historySnippet = `[${state.history.map(h=>h.winner).slice(-50).join(', ')}]... (Tổng ${state.history.length} ván)`;
-        
-        const specialistPrompts = getSpecialistPrompts(historySnippet);
-        const specialistPromises = [
-            callGemini(specialistPrompts.ai1.system, specialistPrompts.ai1.user, state.apiKeys[0]),
-            callGemini(specialistPrompts.ai2.system, specialistPrompts.ai2.user, state.apiKeys[1]),
-            callGemini(specialistPrompts.ai3.system, specialistPrompts.ai3.user, state.apiKeys[2]),
-            callGemini(specialistPrompts.ai4.system, specialistPrompts.ai4.user, state.apiKeys[3]),
-        ];
-        const specialistResults = await Promise.all(specialistPromises);
-        const analyses1_4 = specialistResults.map(res => res.candidates[0].content.parts[0].text);
+        const prompt = createRichPrompt();
+        const response = await fetch(`${GEMINI_API_URL}${state.apiKey}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                contents: [{ parts: [{ text: prompt }] }],
+                systemInstruction: { parts: [{text: "You are an elite Baccarat analyst. You synthesize visual roadmap data and historical statistical data to make the best prediction. Your response MUST be a single JSON object containing: 'prediction' ('P' or 'B'), 'confidence' (a number 1-10), and 'reasoning' (a concise, expert analysis in Vietnamese, max 3 sentences)."}] }
+            })
+        });
 
-        const synthesizerPrompts = getSynthesizerPrompts(historySnippet, analyses1_4);
-        const synthesizerPromises = [
-            callGemini(synthesizerPrompts.ai5.system, synthesizerPrompts.ai5.user, state.apiKeys[4]),
-            callGemini(synthesizerPrompts.ai6.system, synthesizerPrompts.ai6.user, state.apiKeys[5]),
-        ];
-        const synthesizerResults = await Promise.all(synthesizerPromises);
-        const analyses5_6 = synthesizerResults.map(res => res.candidates[0].content.parts[0].text);
-
-        const contrarianPrompts = getContrarianPrompts(historySnippet, analyses5_6);
-        const contrarianPromises = [
-             callGemini(contrarianPrompts.ai7.system, contrarianPrompts.ai7.user, state.apiKeys[6]),
-             callGemini(contrarianPrompts.ai8.system, contrarianPrompts.ai8.user, state.apiKeys[7]),
-        ];
-        const contrarianResults = await Promise.all(contrarianPromises);
-        const analyses7_8 = contrarianResults.map(res => res.candidates[0].content.parts[0].text);
+        if (!response.ok) throw new Error(`API Error: ${response.status} ${response.statusText}`);
+        const result = await response.json();
+        const text = result.candidates?.[0]?.content?.parts?.[0]?.text;
+        if (!text) throw new Error("No content in API response.");
         
-        const viceChairPrompt = getViceChairPrompt(historySnippet, analyses5_6, analyses7_8);
-        const viceChairResult = await callGemini(viceChairPrompt.system, viceChairPrompt.user, state.apiKeys[8]);
-        const analysis9 = viceChairResult.candidates[0].content.parts[0].text;
+        const responseData = JSON.parse(text.replace(/```json|```/g, ''));
         
-        const chairmanPrompt = getChairmanPrompt(historySnippet, analysis9);
-        const chairmanResult = await callGemini(chairmanPrompt.system, chairmanPrompt.user, state.apiKeys[9]);
-        const finalDecision = JSON.parse(chairmanResult.candidates[0].content.parts[0].text);
+        // Combine AI result with statistical result for display
+        const statisticalAnalysis = patternMatcher.getPrediction(session.history, Object.values(state.sessions));
+        state.lastPrediction = { ...responseData, statisticalAnalysis }; // Store the full context
         
-        state.lastPrediction = {
-            prediction: finalDecision.prediction,
-            reasoning: finalDecision.reasoning
-        };
-        
-        updateAnalysisUI(renderSinglePrediction(state.lastPrediction));
+        updateAnalysisUI(renderCombinedPrediction(state.lastPrediction));
 
     } catch (error) {
         console.error("AI Analysis Error:", error);
@@ -527,104 +527,283 @@ async function triggerAIAnalysis() {
         state.lastPrediction = null;
     } finally {
         state.isAnalyzing = false;
+        const controlBtns = document.querySelectorAll('#btnP, #btnT, #btnB');
+        controlBtns.forEach(btn => btn.disabled = false);
         saveState();
     }
 }
 
-function getSpecialistPrompts(historySnippet) {
-    const baseSystem = `You are a Baccarat analyst. Predict the NEXT outcome (P or B). Return ONLY a single-line JSON object: {"prediction": "P" or "B", "reasoning": "Your brief reason in Vietnamese"}.`;
-    return {
-        ai1: { system: baseSystem, user: `History: ${historySnippet}\nFocus ONLY on long streaks (bệt) and 1-1 patterns.` },
-        ai2: { system: baseSystem, user: `History: ${historySnippet}\nFocus ONLY on short, repeating sequences (3-5 hands).` },
-        ai3: { system: baseSystem, user: `History: ${historySnippet}\nFocus ONLY on statistical imbalances.` },
-        ai4: { system: baseSystem, user: `History: ${historySnippet}\nFocus ONLY on when streaks are likely to break based on historical maximums.` }
+function createRichPrompt() {
+    const session = state.sessions[state.currentSessionId];
+    const history = session.history;
+    const historyString = history.map(h => h.winner).join(', ');
+    const bigRoad = roadmapGenerator.generateBigRoad(history);
+    const derivedRoads = roadmapGenerator.generateDerivedRoads(bigRoad);
+
+    const promptData = {
+        visual_analysis: {
+            history_sequence: historyString,
+            big_road: bigRoad.map(col => col.map(c => c.winner).join('')).join(' | '),
+            big_eye_boy: derivedRoads.bigEyeBoy.map(i => i.winner).join('').replace(/P/g, 'R').replace(/B/g, 'B'),
+            small_road: derivedRoads.smallRoad.map(i => i.winner).join('').replace(/P/g, 'R').replace(/B/g, 'B'),
+            cockroach_pig: derivedRoads.cockroachPig.map(i => i.winner).join('').replace(/P/g, 'R').replace(/B/g, 'B')
+        },
+        statistical_analysis: patternMatcher.getPrediction(history, Object.values(state.sessions))
     };
-}
-function getSynthesizerPrompts(historySnippet, specialistResults) {
-    const baseSystem = `You are a Baccarat analyst. Combine two analyses into a single, stronger prediction. Return ONLY a single-line JSON object: {"prediction": "P" or "B", "reasoning": "Your combined reason in Vietnamese"}.`;
-    return {
-        ai5: { system: baseSystem, user: `History: ${historySnippet}\nCombine:\n1. Streak: ${specialistResults[0]}\n2. Sequence: ${specialistResults[1]}` },
-        ai6: { system: baseSystem, user: `History: ${historySnippet}\nCombine:\n1. Statistical: ${specialistResults[2]}\n2. Streak Breaking: ${specialistResults[3]}` },
-    };
-}
-function getContrarianPrompts(historySnippet, synthesizerResults) {
-    const baseSystem = `You are a contrarian Baccarat analyst. Find weaknesses in an analysis. Return ONLY a single-line JSON object: {"prediction": "P" or "B", "reasoning": "Your brief reason for the opposite bet in Vietnamese"}.`;
-    return {
-        ai7: { system: baseSystem, user: `History: ${historySnippet}\nAnalysis: ${synthesizerResults[0]}\nFind a reason to bet AGAINST this.` },
-        ai8: { system: baseSystem, user: `History: ${historySnippet}\nAnalysis: ${synthesizerResults[1]}\nFind a reason to bet AGAINST this.` },
-    }
-}
-function getViceChairPrompt(historySnippet, synthesizerResults, contrarianResults) {
-    const system = `You are a Vice-Chair. Summarize arguments and counter-arguments into a final recommendation. Return a single JSON object.`;
-    const user = `History: ${historySnippet}\n- Argument A: ${synthesizerResults[0]}\n- Counter-Argument A: ${contrarianResults[0]}\n- Argument B: ${synthesizerResults[1]}\n- Counter-Argument B: ${contrarianResults[1]}\n\nSummarize and provide your final recommendation: {"prediction": "P" or "B", "reasoning": "Your summary and recommendation in Vietnamese"}.`;
-    return { system, user };
-}
-function getChairmanPrompt(historySnippet, viceChairResult) {
-    const system = `You are the Chairman. You make the final, decisive prediction. Return ONLY a single-line JSON object: {"prediction": "P" or "B", "reasoning": "Your final, decisive reason in Vietnamese"}.`;
-    const user = `History: ${historySnippet}\nYour Vice-Chair has summarized: ${viceChairResult}\nMake the FINAL prediction.`;
-    return { system, user };
-}
-async function callGemini(systemPrompt, userQuery, apiKey) {
-    const apiUrl = `${GEMINI_API_URL}${apiKey}`;
-    const payload = {
-        contents: [{ parts: [{ text: userQuery }] }],
-        systemInstruction: { parts: [{ text: systemPrompt }] },
-        generationConfig: { responseMimeType: "application/json", temperature: 0.4 },
-    };
-    const response = await fetch(apiUrl, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-    });
-    if (!response.ok) {
-        const error = await response.json();
-        throw new Error(`Lỗi API: ${error.error.message}`);
-    }
-    return response.json();
+
+    return JSON.stringify(promptData);
 }
 
-function renderSinglePrediction(data) {
-    const { prediction, reasoning } = data;
+function renderCombinedPrediction(data) {
+    const { prediction, confidence, reasoning, statisticalAnalysis } = data;
     const color = prediction === 'P' ? 'blue' : 'red';
     const glowClass = prediction === 'P' ? 'card-glow-p' : 'card-glow-b';
     const analysisCard = document.getElementById('analysis-card');
     analysisCard.classList.add(glowClass);
 
+    let statsHTML = '';
+    if (statisticalAnalysis.isCertain) {
+        statsHTML = `<div class="bg-yellow-800/30 p-3 rounded-lg border border-yellow-500">
+            <h4 class="font-semibold text-yellow-300 mb-1 text-sm">Phân Tích Lịch Sử (TAY CHẮC CHẮN)</h4>
+            <p class="text-gray-300 text-xs leading-relaxed">${statisticalAnalysis.reasoning}</p>
+        </div>`;
+        analysisCard.classList.remove('card-glow-p', 'card-glow-b');
+        analysisCard.classList.add('card-glow-certain');
+    } else if (statisticalAnalysis.prediction) {
+         statsHTML = `<div class="bg-gray-700/50 p-3 rounded-lg">
+            <h4 class="font-semibold text-gray-200 mb-1 text-sm">Phân Tích Lịch Sử (Thống kê)</h4>
+            <p class="text-gray-300 text-xs leading-relaxed">${statisticalAnalysis.reasoning}</p>
+        </div>`;
+    }
+
+    const confidenceMeter = `
+        <div class="w-full bg-gray-700 rounded-full h-2.5 mt-2">
+            <div class="bg-gradient-to-r from-${color}-500 to-${color}-400 h-2.5 rounded-full" style="width: ${confidence * 10}%"></div>
+        </div>
+    `;
+
     return `
-        <div class="bg-gray-700/50 p-4 rounded-lg mb-4">
-            <h4 class="font-semibold text-gray-200 mb-2">Lý Do Đề Xuất:</h4>
-            <p class="text-gray-300 text-sm leading-relaxed">${reasoning}</p>
-        </div>
         <div class="text-center bg-gray-900/70 py-4 rounded-lg border-2 border-${color}-500">
-            <p class="text-lg text-gray-400">Hội Đồng AI Đề xuất:</p>
-            <p class="text-4xl font-bold text-${color}-400 my-1">${prediction === 'P' ? 'CON' : 'CÁI'}</p>
-            <p class="text-xs text-yellow-400 mt-1 animate-pulse">Chờ kết quả ván tiếp theo...</p>
+            <p class="text-lg text-gray-400">AI Đề xuất:</p>
+            <p class="text-5xl font-bold text-${color}-400 my-1">${prediction === 'P' ? 'CON' : 'CÁI'}</p>
+            <p class="text-sm text-gray-300">Độ tin cậy: ${confidence}/10</p>
+            ${confidenceMeter}
         </div>
+
+        <div class="bg-gray-700/50 p-3 rounded-lg mt-3">
+             <h4 class="font-semibold text-gray-200 mb-1 text-sm">Lý Do của AI:</h4>
+             <p class="text-gray-300 text-xs leading-relaxed">${reasoning}</p>
+        </div>
+        
+        ${statsHTML}
+
+        <p class="text-xs text-yellow-400 text-center mt-3 animate-pulse">Chờ kết quả ván tiếp theo...</p>
     `;
 }
 
-function updateAnalysisUI(content) {
-    const analysisResultDiv = document.getElementById('analysisResult');
-    const analysisCard = document.getElementById('analysis-card');
-    analysisCard.classList.remove('card-glow-p', 'card-glow-b', 'card-glow-wait');
-    analysisResultDiv.innerHTML = content;
+
+// --- SESSION MANAGEMENT ---
+function getSessions() { try { return JSON.parse(localStorage.getItem('baccaratCombinedSessions_v1')) || {}; } catch (e) { return {}; }}
+function saveState() {
+    localStorage.setItem('baccaratCombinedSessions_v1', JSON.stringify(state.sessions));
+    localStorage.setItem('baccaratCombined_apiKey_v1', state.apiKey);
+    localStorage.setItem('baccaratCombined_lastSession_v1', state.currentSessionId);
 }
+function loadState() {
+    state.sessions = getSessions();
+    state.apiKey = localStorage.getItem('baccaratCombined_apiKey_v1') || '';
+    const lastSessionId = localStorage.getItem('baccaratCombined_lastSession_v1');
+    
+    if (Object.keys(state.sessions).length === 0) {
+        createNewSession();
+    } else {
+        const idToLoad = (lastSessionId && state.sessions[lastSessionId]) ? lastSessionId : Object.keys(state.sessions)[0];
+        loadSession(idToLoad);
+    }
+}
+function updateSessionSelector() {
+    const selector = document.getElementById('sessionSelector');
+    selector.innerHTML = '';
+    const sortedKeys = Object.keys(state.sessions).sort((a, b) => parseInt(b.split('-')[1]) - parseInt(a.split('-')[1]));
+    sortedKeys.forEach(sessionId => {
+        const option = document.createElement('option');
+        option.value = sessionId;
+        option.textContent = `${state.sessions[sessionId].name} (${state.sessions[sessionId].history.length} ván)`;
+        selector.appendChild(option);
+    });
+    selector.value = state.currentSessionId;
+    selector.onchange = () => loadSession(selector.value);
+}
+function createNewSession() {
+    const newId = `session-${Date.now()}`;
+    state.sessions[newId] = { name: `Phiên ${new Date().toLocaleString('vi-VN')}`, history: [], predictions: [] };
+    loadSession(newId);
+}
+function renameSession() {
+    if (!state.currentSessionId) return;
+    const currentName = state.sessions[state.currentSessionId].name;
+    showCustomPrompt("Nhập tên mới cho phiên:", currentName, (newName) => {
+        if (newName && newName.trim() !== "") {
+            state.sessions[state.currentSessionId].name = newName.trim();
+            saveState();
+            updateSessionSelector();
+        }
+    });
+}
+function deleteSelectedSession() {
+    if (!state.currentSessionId || Object.keys(state.sessions).length <= 1) {
+        showToast('Không thể xóa phiên cuối cùng.', 'warning');
+        return;
+    }
+    showCustomConfirm('Bạn có chắc muốn xóa phiên này? Dữ liệu của phiên sẽ mất vĩnh viễn.', () => {
+        delete state.sessions[state.currentSessionId];
+        const newCurrentId = Object.keys(state.sessions)[0];
+        loadSession(newCurrentId);
+        showToast('Đã xóa phiên thành công.', 'success');
+    });
+}
+function loadSession(sessionId) {
+    state.currentSessionId = sessionId;
+    state.lastPrediction = null;
+    updateSessionSelector();
+    const session = state.sessions[sessionId];
+    document.getElementById('totalGames').textContent = session.history.length;
+    renderAllRoads();
+    triggerCombinedAnalysis();
+    saveState();
+}
+function exportData() {
+    const dataStr = JSON.stringify(state.sessions, null, 2);
+    const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+    const exportFileDefaultName = 'baccarat_sessions.json';
+    const linkElement = document.createElement('a');
+    linkElement.setAttribute('href', dataUri);
+    linkElement.setAttribute('download', exportFileDefaultName);
+    linkElement.click();
+}
+function importData(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        try {
+            const importedSessions = JSON.parse(e.target.result);
+            if (typeof importedSessions !== 'object' || importedSessions === null) throw new Error("Invalid format");
+            showCustomConfirm('Dữ liệu hiện tại sẽ bị ghi đè. Bạn có chắc muốn tiếp tục?', () => {
+                state.sessions = importedSessions;
+                const firstSessionId = Object.keys(state.sessions)[0];
+                if(firstSessionId) {
+                    loadSession(firstSessionId);
+                } else {
+                    createNewSession();
+                }
+                saveState();
+                showToast('Nhập dữ liệu thành công!', 'success');
+            });
+        } catch (error) {
+            showToast('Lỗi: File dữ liệu không hợp lệ.', 'error');
+        } finally {
+            event.target.value = '';
+        }
+    };
+    reader.readAsText(file);
+}
+
+// --- SETTINGS & HELP MODALS ---
+function openSettingsModal() {
+    showModal(
+        'Cài Đặt API Key',
+        `<div>
+            <label for="apiKeyInput" class="block text-sm font-medium text-gray-300 mb-2">Gemini API Key</label>
+            <input type="password" id="apiKeyInput" class="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-2 text-white focus:ring-2 focus:ring-blue-500 focus:outline-none" value="${state.apiKey}">
+            <p class="text-xs text-gray-500 mt-2">API Key của bạn được lưu an toàn trên trình duyệt này. <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener noreferrer" class="text-blue-400 hover:underline">Lấy API Key tại đây</a>.</p>
+        </div>`,
+        `<button onclick="closeModal()" class="btn bg-gray-600 hover:bg-gray-500 text-white font-bold py-2 px-6 rounded-lg">Hủy</button>
+         <button onclick="saveSettings()" class="btn bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 px-6 rounded-lg">Lưu</button>`
+    );
+}
+
+function openHelpModal() {
+     showModal(
+        'Hướng Dẫn Sử Dụng',
+        `<div class="text-sm text-gray-300 space-y-3">
+            <p>Đây là hệ thống phân tích Baccarat tổng hợp, kết hợp 2 phương pháp:</p>
+            <ul class="list-disc list-inside space-y-2 pl-2">
+                <li><strong class="text-yellow-400">Phân Tích Lịch Sử:</strong> Hệ thống so sánh hình cầu hiện tại với TOÀN BỘ dữ liệu bạn đã nhập từ trước đến nay để tìm ra các quy luật thống kê.</li>
+                <li><strong class="text-cyan-400">Phân Tích AI:</strong> Trí tuệ nhân tạo Gemini sẽ "nhìn" vào các bảng cầu và kết quả thống kê để đưa ra nhận định của một chuyên gia, tìm ra các quy luật ẩn mà thống kê có thể bỏ lỡ.</li>
+            </ul>
+            <p><strong class="text-green-400">Cách hoạt động:</strong> Mỗi khi bạn nhập kết quả, hệ thống sẽ tự động chạy cả 2 bộ máy phân tích và tổng hợp chúng lại để đưa ra đề xuất cuối cùng.</p>
+            <p><strong class="text-red-400">Lưu ý:</strong> Công cụ chỉ mang tính chất tham khảo, dựa trên dữ liệu lịch sử và phân tích AI. Luôn tự đưa ra quyết định cuối cùng.</p>
+        </div>`,
+        `<button onclick="closeModal()" class="btn w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 px-6 rounded-lg">Đã hiểu</button>`
+     );
+}
+
+function saveSettings() {
+    state.apiKey = document.getElementById('apiKeyInput').value.trim();
+    saveState();
+    closeModal();
+    showToast('Đã lưu API Key!', 'success');
+    triggerCombinedAnalysis(); // Re-run analysis after saving key
+}
+
+// --- GENERIC UI COMPONENTS (MODAL, TOAST, PROMPT) ---
+function showModal(title, content, footer) {
+    const container = document.getElementById('modal-container');
+    container.innerHTML = `
+        <div id="generic-modal" class="modal-backdrop">
+            <div class="modal-content">
+                <div class="flex justify-between items-center mb-6">
+                     <h2 class="text-2xl font-bold text-blue-300">${title}</h2>
+                     <button onclick="closeModal()" class="text-gray-500 hover:text-white text-3xl">&times;</button>
+                </div>
+                ${content}
+                <div class="mt-8 flex justify-end gap-4">${footer}</div>
+            </div>
+        </div>
+    `;
+}
+function closeModal() { document.getElementById('modal-container').innerHTML = ''; }
+function showToast(message, type = 'info') {
+    const container = document.getElementById('toast-container');
+    const toast = document.createElement('div');
+    const colors = { success: 'border-green-500', info: 'border-blue-500', warning: 'border-yellow-500', error: 'border-red-500' };
+    toast.className = `toast-notification ${colors[type]}`;
+    toast.textContent = message;
+    container.appendChild(toast);
+    setTimeout(() => { toast.remove(); }, 3000);
+}
+function showCustomConfirm(message, onConfirm) {
+    showModal('Xác Nhận Hành Động', `<p class="text-lg text-gray-200">${message}</p>`,
+        `<button onclick="closeModal()" class="btn bg-gray-600 hover:bg-gray-500 px-6 py-2 rounded-lg">Hủy</button>
+         <button id="confirm-ok" class="btn bg-red-600 hover:bg-red-500 px-6 py-2 rounded-lg">Xác nhận</button>`);
+    document.getElementById('confirm-ok').onclick = () => { onConfirm(); closeModal(); };
+}
+function showCustomPrompt(message, defaultValue, onConfirm) {
+    showModal('Nhập Thông Tin',
+        `<p class="text-lg text-gray-200 mb-4">${message}</p>
+         <input type="text" id="prompt-input" value="${defaultValue}" class="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white focus:ring-2 focus:ring-blue-500 focus:outline-none">`,
+        `<button onclick="closeModal()" class="btn bg-gray-600 hover:bg-gray-500 px-6 py-2 rounded-lg">Hủy</button>
+         <button id="prompt-ok" class="btn bg-blue-600 hover:bg-blue-500 px-6 py-2 rounded-lg">Lưu</button>`);
+    const input = document.getElementById('prompt-input');
+    input.focus();
+    input.select();
+    document.getElementById('prompt-ok').onclick = () => { onConfirm(input.value); closeModal(); };
+    input.onkeydown = (e) => { if (e.key === 'Enter') document.getElementById('prompt-ok').click(); };
+}
+
 
 // --- INITIALIZATION ---
-function initializeAppUI() {
-    updateAnalysisUI(`<p class="text-gray-400 text-center">Nhập đủ 10 API Keys và có ít nhất ${MIN_HISTORY_FOR_ANALYSIS} ván cược để Hội đồng bắt đầu làm việc.</p>`);
-}
-
 function initializeApp() {
     loadState();
-    document.getElementById('totalGames').textContent = state.history.length;
+    updateSessionSelector();
+    const session = state.sessions[state.currentSessionId];
+    document.getElementById('totalGames').textContent = session.history.length;
     renderAllRoads();
-    renderStatsAndChart();
-    initializeAppUI();
+    triggerCombinedAnalysis();
 }
-document.addEventListener('DOMContentLoaded', initializeApp);
 
+document.addEventListener('DOMContentLoaded', initializeApp);
 </script>
 </body>
 </html>
-
