@@ -1916,340 +1916,471 @@ function initializeApp() {
 document.addEventListener('DOMContentLoaded', initializeApp)
 </script>
 <script>
-// =================== IFRAME COMMUNICATION FOR HT1 ===================
-(function() {
-    // Notify parent that system is ready
-    window.addEventListener('load', function() {
-        setTimeout(() => {
-            window.parent.postMessage({
-                source: 'ht1',
-                type: 'ready'
-            }, '*');
-        }, 1000);
-    });
+// ============================================
+// COMMUNICATION BRIDGE FOR HT1 AND HT2
+// ============================================
 
+// This script should be added to both ht1.html and ht2.html
+// It enables communication with the main system (VẠN SỰ NHƯ Ý)
+
+// Check if we're running in an iframe
+const isInIframe = window.self !== window.top;
+
+if (isInIframe) {
+    console.log("Hệ thống con đang chạy trong iframe, khởi động cầu giao tiếp...");
+    
+    // Store a reference to the parent window
+    const parentWindow = window.parent;
+    
     // Listen for messages from parent
     window.addEventListener('message', function(event) {
-        if (event.data.source === 'master') {
-            handleMasterCommand(event.data);
+        // Security check - accept messages only from our own domain
+        if (event.origin !== window.location.origin) return;
+        
+        const data = event.data;
+        console.log("Nhận lệnh từ hệ thống tổng:", data);
+        
+        // Handle different command types
+        switch (data.type) {
+            case 'GET_STATE':
+                sendStateToParent();
+                break;
+                
+            case 'GET_SESSIONS':
+                sendSessionsToParent();
+                break;
+                
+            case 'GET_CHOT_DATA':
+                sendChotDataToParent();
+                break;
+                
+            case 'GET_PREDICTION':
+                sendPredictionToParent();
+                break;
+                
+            case 'CREATE_SESSION':
+                createSessionFromParent(data.sessionId, data.sessionName);
+                break;
+                
+            case 'LOAD_SESSION':
+                loadSessionFromParent(data.sessionId);
+                break;
+                
+            case 'DELETE_SESSION':
+                deleteSessionFromParent(data.sessionId);
+                break;
+                
+            case 'ADD_RESULT':
+                addResultFromParent(data.result);
+                break;
+                
+            case 'UNDO_LAST':
+                undoLastFromParent();
+                break;
+                
+            case 'CLEAR_HISTORY':
+                clearHistoryFromParent();
+                break;
+                
+            case 'IMPORT_DATA':
+                importDataFromParent(data.data);
+                break;
+                
+            case 'EXPORT_DATA':
+                exportDataToParent();
+                break;
+                
+            case 'EXPORT_DATA_REQUEST':
+                // Prepare for export
+                console.log("Yêu cầu xuất dữ liệu nhận được");
+                break;
         }
     });
-
-    function handleMasterCommand(data) {
-        switch(data.command) {
-            case 'get_accuracy':
-                sendAccuracyUpdate();
-                break;
-                
-            case 'get_chot_history':
-                sendChotHistory();
-                break;
-                
-            case 'get_session_info':
-                sendSessionInfo();
-                break;
-                
-            case 'get_prediction':
-                sendPrediction();
-                break;
-                
-            case 'create_session':
-                createSession(data.data);
-                break;
-                
-            case 'rename_session':
-                renameSession(data.data);
-                break;
-                
-            case 'load_session':
-                loadSession(data.data);
-                break;
-                
-            case 'add_result':
-                addResult(data.data);
-                break;
-                
-            case 'undo_last':
-                undoLast();
-                break;
-                
-            case 'clear_history':
-                clearCurrentSessionHistory();
-                break;
-                
-            case 'import_data':
-                importSimulatedData(data.data);
-                break;
-                
-            case 'export_data':
-                exportSessionData();
-                break;
-                
-            case 'reset_system':
-                resetSystem();
-                break;
+    
+    // Function to send current state to parent
+    function sendStateToParent() {
+        // This assumes the main app's state is accessible via 'state' variable
+        if (typeof state !== 'undefined' && state.currentSessionId) {
+            const session = state.sessions[state.currentSessionId];
+            if (session) {
+                parentWindow.postMessage({
+                    type: 'STATE_UPDATE',
+                    data: {
+                        sessionId: state.currentSessionId,
+                        sessionName: session.name,
+                        history: session.history || [],
+                        totalGames: session.history ? session.history.length : 0
+                    }
+                }, window.location.origin);
+            }
+        } else {
+            // No session loaded
+            parentWindow.postMessage({
+                type: 'STATE_UPDATE',
+                data: {
+                    sessionId: null,
+                    sessionName: null,
+                    history: [],
+                    totalGames: 0
+                }
+            }, window.location.origin);
         }
     }
-
-    function sendAccuracyUpdate() {
-        const session = state.sessions[state.currentSessionId];
-        if (session && session.chotPredictions) {
-            const total = session.chotPredictions.length;
-            const correct = session.chotPredictions.filter(p => p.predicted === p.actual).length;
-            const accuracy = total > 0 ? (correct / total) * 100 : 0;
-            
-            window.parent.postMessage({
-                source: 'ht1',
-                type: 'accuracy_update',
-                accuracy: accuracy,
-                correct: correct,
-                total: total
-            }, '*');
-        }
-    }
-
-    function sendChotHistory() {
-        const session = state.sessions[state.currentSessionId];
-        if (session && session.chotPredictions) {
-            window.parent.postMessage({
-                source: 'ht1',
-                type: 'chot_history_update',
-                history: session.chotPredictions
-            }, '*');
-        }
-    }
-
-    function sendSessionInfo() {
-        const session = state.sessions[state.currentSessionId];
-        if (session) {
-            window.parent.postMessage({
-                source: 'ht1',
-                type: 'session_update',
-                session: {
-                    id: state.currentSessionId,
+    
+    // Function to send session list to parent
+    function sendSessionsToParent() {
+        if (typeof state !== 'undefined' && state.sessions) {
+            const sessions = [];
+            for (const sessionId in state.sessions) {
+                const session = state.sessions[sessionId];
+                sessions.push({
+                    id: sessionId,
                     name: session.name,
-                    history: session.history,
-                    current: true
-                }
-            }, '*');
+                    historyLength: session.history ? session.history.length : 0
+                });
+            }
+            
+            parentWindow.postMessage({
+                type: 'SESSION_LIST',
+                sessions: sessions
+            }, window.location.origin);
         }
     }
-
-    function sendPrediction() {
-        window.parent.postMessage({
-            source: 'ht1',
-            type: 'prediction_update',
-            prediction: state.currentChotPredictionForLog?.prediction
-        }, '*');
-    }
-
-    function createSession(sessionData) {
-        if (!sessionData || !sessionData.name) return;
-        
-        const newId = `session-${Date.now()}`;
-        state.currentSessionId = newId;
-        state.sessions[newId] = {
-            name: sessionData.name,
-            history: [],
-            predictions: [],
-            verdictPredictions: [],
-            chotPredictions: [],
-            lengthPerformance: {},
-            optimalLength: null,
-            chotLengthPerformance: CHOT_SOURCES.reduce((acc, key) => { acc[key] = {}; return acc; }, {}),
-            chotOptimalLengths: CHOT_SOURCES.reduce((acc, key) => { acc[key] = null; return acc; }, {}),
-        };
-        
-        saveSessions();
-        updateSessionSelector();
-        updateAllUI();
-        
-        sendSessionInfo();
-    }
-
-    function renameSession(sessionData) {
-        if (!sessionData || !sessionData.id || !sessionData.name) return;
-        
-        if (state.sessions[sessionData.id]) {
-            state.sessions[sessionData.id].name = sessionData.name;
-            if (state.currentSessionId === sessionData.id) {
-                saveSessions();
-                updateSessionSelector();
-                updateAllUI();
+    
+    // Function to send chot data to parent
+    function sendChotDataToParent() {
+        if (typeof state !== 'undefined' && state.currentSessionId) {
+            const session = state.sessions[state.currentSessionId];
+            if (session && session.chotPredictions) {
+                // Convert chot predictions to history format
+                const chotHistory = session.chotPredictions.map(p => ({
+                    prediction: p.predicted,
+                    actual: p.actual,
+                    correct: p.predicted === p.actual
+                }));
+                
+                // Calculate chot accuracy
+                const correctChot = chotHistory.filter(h => h.correct).length;
+                const chotAccuracy = chotHistory.length > 0 ? (correctChot / chotHistory.length) * 100 : 0;
+                
+                parentWindow.postMessage({
+                    type: 'CHOT_UPDATE',
+                    chotHistory: chotHistory,
+                    chotAccuracy: chotAccuracy
+                }, window.location.origin);
             }
         }
     }
-
-    function loadSession(sessionData) {
-        if (!sessionData || !sessionData.id) return;
-        
-        // Create session if doesn't exist
-        if (!state.sessions[sessionData.id]) {
-            state.sessions[sessionData.id] = {
-                name: sessionData.name || `Phiên ${sessionData.id}`,
-                history: sessionData.history || [],
-                predictions: [],
-                verdictPredictions: [],
-                chotPredictions: [],
-                lengthPerformance: {},
-                optimalLength: null,
-                chotLengthPerformance: CHOT_SOURCES.reduce((acc, key) => { acc[key] = {}; return acc; }, {}),
-                chotOptimalLengths: CHOT_SOURCES.reduce((acc, key) => { acc[key] = null; return acc; }, {}),
-            };
-        }
-        
-        // Load the session
-        state.currentSessionId = sessionData.id;
-        
-        // If there's history, simulate it
-        if (sessionData.history && sessionData.history.length > 0) {
-            // Clear existing data
-            state.sessions[sessionData.id].history = [];
-            state.sessions[sessionData.id].predictions = [];
-            state.sessions[sessionData.id].verdictPredictions = [];
-            state.sessions[sessionData.id].chotPredictions = [];
+    
+    // Function to send current prediction to parent
+    function sendPredictionToParent() {
+        if (typeof state !== 'undefined') {
+            let prediction = null;
             
-            // Simulate each result
-            sessionData.history.forEach((result, index) => {
-                // We need to simulate the analysis step by step
-                // For simplicity, we'll just add the results and let the system recalc
-                state.sessions[sessionData.id].history.push(result);
-                
-                // Update analysis after each result
-                if (index >= 9) { // Minimum history for analysis
-                    updateAnalysisUI();
-                    updateChotAnalysisUI();
+            // Try to get prediction from different sources in order of priority
+            if (state.currentChotPredictionForLog && state.currentChotPredictionForLog.prediction) {
+                prediction = state.currentChotPredictionForLog.prediction;
+            } else if (state.currentFinalPrediction && state.currentFinalPrediction.prediction) {
+                prediction = state.currentFinalPrediction.prediction;
+            } else if (state.originalSystemPrediction) {
+                prediction = state.originalSystemPrediction;
+            } else if (state.currentPrediction && state.currentPrediction.prediction) {
+                prediction = state.currentPrediction.prediction;
+            }
+            
+            parentWindow.postMessage({
+                type: 'PREDICTION_UPDATE',
+                prediction: prediction
+            }, window.location.origin);
+        }
+    }
+    
+    // Function to create session from parent command
+    function createSessionFromParent(sessionId, sessionName) {
+        if (typeof createNewSession !== 'undefined') {
+            // Temporarily override the session ID generation
+            const originalCreateNewSession = createNewSession;
+            
+            // Create a function that uses the provided sessionId
+            window.createNewSession = function() {
+                if (state) {
+                    state.currentSessionId = sessionId;
+                    state.sessions[sessionId] = {
+                        name: sessionName,
+                        history: [], 
+                        predictions: [], 
+                        verdictPredictions: [], 
+                        chotPredictions: [],
+                        lengthPerformance: {}, 
+                        optimalLength: null,
+                        chotLengthPerformance: {}, // This will be populated based on CHOT_SOURCES
+                        chotOptimalLengths: {} // This will be populated based on CHOT_SOURCES
+                    };
+                    
+                    // Initialize chot structures if CHOT_SOURCES exists
+                    if (typeof CHOT_SOURCES !== 'undefined') {
+                        state.sessions[sessionId].chotLengthPerformance = CHOT_SOURCES.reduce((acc, key) => { 
+                            acc[key] = {}; 
+                            return acc; 
+                        }, {});
+                        state.sessions[sessionId].chotOptimalLengths = CHOT_SOURCES.reduce((acc, key) => { 
+                            acc[key] = null; 
+                            return acc; 
+                        }, {});
+                    }
+                    
+                    saveSessions();
+                    updateSessionSelector();
+                    updateAllUI();
+                    
+                    // Send confirmation to parent
+                    parentWindow.postMessage({
+                        type: 'RESULT_ADDED',
+                        result: 'SESSION_CREATED'
+                    }, window.location.origin);
+                    
+                    // Restore original function
+                    window.createNewSession = originalCreateNewSession;
+                    
+                    // Send updated state
+                    sendStateToParent();
                 }
-            });
+            };
             
-            // Recalculate everything
-            updateAllUI();
+            // Execute the function
+            window.createNewSession();
         }
-        
-        saveSessions();
-        updateSessionSelector();
-        updateAllUI();
-        sendSessionInfo();
     }
-
-    function addResult(result) {
-        if (!state.currentSessionId) return;
-        
-        // Use existing addResult function
-        const session = state.sessions[state.currentSessionId];
-        if (!session) return;
-        
-        // Call the existing addResult function
-        const chotRec = state.currentChotPredictionForLog;
-        const tier1Prediction = state.originalSystemPrediction;
-        
-        if (state.currentPrediction) {
-            session.predictions.push({ 
-                predicted: state.currentPrediction.prediction, 
-                actual: result, 
-                confidence: state.currentPrediction.confidence 
-            });
+    
+    // Function to load session from parent command
+    function loadSessionFromParent(sessionId) {
+        if (typeof loadSession !== 'undefined' && typeof state !== 'undefined') {
+            if (state.sessions[sessionId]) {
+                loadSession(sessionId);
+                
+                // Send confirmation
+                parentWindow.postMessage({
+                    type: 'RESULT_ADDED',
+                    result: 'SESSION_LOADED'
+                }, window.location.origin);
+                
+                // Send updated state after a delay
+                setTimeout(sendStateToParent, 500);
+            } else {
+                // Session not found, send error
+                parentWindow.postMessage({
+                    type: 'ERROR',
+                    message: `Session ${sessionId} not found`
+                }, window.location.origin);
+            }
         }
-        
-        if (state.currentFinalPrediction) {
-            session.verdictPredictions.push({
-                verdict: state.currentFinalPrediction.verdict,
-                predicted: state.currentFinalPrediction.prediction,
-                actual: result
-            });
-        }
-        
-        if (chotRec && chotRec.prediction) {
-            session.chotPredictions.push({ 
-                predicted: chotRec.prediction, 
-                actual: result, 
-                source: 'CHOT_VOTE' 
-            });
-        }
-        
-        updateChotLengthPerformance(session, tier1Prediction, result);
-        session.history.push(result);
-        session.optimalLength = updateLengthPerformanceAndFindOptimal(
-            [...session.history].slice(0, -1), 
-            Object.values(state.sessions), 
-            result
-        );
-        
-        state.currentPrediction = null;
-        state.originalSystemPrediction = null;
-        state.currentFinalPrediction = null;
-        state.currentChotPredictionForLog = null;
-        
-        saveSessions();
-        updateAllUI();
-        
-        // Send updates
-        sendAccuracyUpdate();
-        sendChotHistory();
-        sendPrediction();
     }
-
-    function importSimulatedData(data) {
-        if (!data || !data.sessions) return;
-        
-        // Clear existing data
-        state.sessions = {};
-        state.currentSessionId = null;
-        
-        showLoadingModal('Đang nhập dữ liệu mô phỏng...');
-        
+    
+    // Function to delete session from parent command
+    function deleteSessionFromParent(sessionId) {
+        if (typeof state !== 'undefined' && state.sessions[sessionId]) {
+            delete state.sessions[sessionId];
+            
+            // If this was the current session, clear it
+            if (state.currentSessionId === sessionId) {
+                state.currentSessionId = null;
+            }
+            
+            saveSessions();
+            
+            // Send confirmation
+            parentWindow.postMessage({
+                type: 'RESULT_ADDED',
+                result: 'SESSION_DELETED'
+            }, window.location.origin);
+            
+            // Send updated state
+            sendStateToParent();
+            sendSessionsToParent();
+        }
+    }
+    
+    // Function to add result from parent command
+    function addResultFromParent(result) {
+        if (typeof addResult !== 'undefined' && result && (result === 'P' || result === 'B')) {
+            // Check if we have a session loaded
+            if (typeof state !== 'undefined' && state.currentSessionId) {
+                addResult(result);
+                
+                // Send confirmation
+                parentWindow.postMessage({
+                    type: 'RESULT_ADDED',
+                    result: result
+                }, window.location.origin);
+                
+                // Send updated data after a delay
+                setTimeout(() => {
+                    sendChotDataToParent();
+                    sendPredictionToParent();
+                }, 1000);
+            } else {
+                // No session loaded, send error
+                parentWindow.postMessage({
+                    type: 'ERROR',
+                    message: 'No session loaded to add result to'
+                }, window.location.origin);
+            }
+        }
+    }
+    
+    // Function to undo last from parent command
+    function undoLastFromParent() {
+        if (typeof undoLast !== 'undefined') {
+            undoLast();
+            
+            // Send confirmation
+            parentWindow.postMessage({
+                type: 'RESULT_ADDED',
+                result: 'UNDO_LAST'
+            }, window.location.origin);
+            
+            // Send updated data after a delay
+            setTimeout(() => {
+                sendChotDataToParent();
+                sendPredictionToParent();
+                sendStateToParent();
+            }, 1000);
+        }
+    }
+    
+    // Function to clear history from parent command
+    function clearHistoryFromParent() {
+        if (typeof clearCurrentSessionHistory !== 'undefined') {
+            clearCurrentSessionHistory();
+            
+            // Send confirmation
+            parentWindow.postMessage({
+                type: 'RESULT_ADDED',
+                result: 'CLEAR_HISTORY'
+            }, window.location.origin);
+            
+            // Send updated data after a delay
+            setTimeout(() => {
+                sendChotDataToParent();
+                sendPredictionToParent();
+                sendStateToParent();
+            }, 1000);
+        }
+    }
+    
+    // Function to import data from parent command
+    function importDataFromParent(importedData) {
+        if (typeof runSimulation !== 'undefined') {
+            // Run simulation with imported data
+            runSimulation(importedData);
+            
+            // Send confirmation
+            parentWindow.postMessage({
+                type: 'RESULT_ADDED',
+                result: 'DATA_IMPORTED'
+            }, window.location.origin);
+            
+            // Send updated data after a longer delay (simulation takes time)
+            setTimeout(() => {
+                sendStateToParent();
+                sendSessionsToParent();
+                sendChotDataToParent();
+                sendPredictionToParent();
+            }, 3000);
+        } else if (typeof importData !== 'undefined') {
+            // Fallback to regular import if runSimulation not available
+            // Note: This requires creating a custom event since importData expects a file input event
+            console.log("Using fallback import method");
+            
+            // We'll need to trigger the import flow differently
+            // For now, we'll send an error
+            parentWindow.postMessage({
+                type: 'ERROR',
+                message: 'Advanced import not supported in this system'
+            }, window.location.origin);
+        }
+    }
+    
+    // Function to export data to parent
+    function exportDataToParent() {
+        if (typeof exportData !== 'undefined') {
+            // Trigger export in the child system
+            // This will typically download a file, but we can't directly send it to parent
+            // For now, we'll send a message that export was triggered
+            parentWindow.postMessage({
+                type: 'RESULT_ADDED',
+                result: 'EXPORT_TRIGGERED'
+            }, window.location.origin);
+        }
+    }
+    
+    // Send initial state to parent when loaded
+    window.addEventListener('load', function() {
         setTimeout(() => {
-            try {
-                runSimulation(data.sessions);
-                hideLoadingModal();
-                
-                // Send updates
-                sendAccuracyUpdate();
-                sendChotHistory();
-                sendSessionInfo();
-                
-                window.parent.postMessage({
-                    source: 'ht1',
-                    type: 'import_complete'
-                }, '*');
-            } catch (error) {
-                hideLoadingModal();
-                console.error('Import simulation error:', error);
+            sendStateToParent();
+            sendSessionsToParent();
+            
+            // Notify parent that we're ready
+            parentWindow.postMessage({
+                type: 'SYSTEM_READY',
+                system: window.location.pathname.includes('ht1') ? 'HT1' : 'HT2'
+            }, window.location.origin);
+        }, 2000);
+    });
+    
+    // Override the original addResult function to notify parent
+    if (typeof addResult !== 'undefined') {
+        const originalAddResult = addResult;
+        window.addResult = function(result) {
+            originalAddResult(result);
+            
+            // Notify parent about the result
+            if (isInIframe) {
+                setTimeout(() => {
+                    sendChotDataToParent();
+                    sendPredictionToParent();
+                }, 500);
             }
-        }, 100);
+        };
     }
+    
+    // Override other functions to notify parent of changes
+    if (typeof createNewSession !== 'undefined') {
+        const originalCreateNewSession = createNewSession;
+        window.createNewSession = function() {
+            originalCreateNewSession();
+            
+            if (isInIframe) {
+                setTimeout(() => {
+                    sendStateToParent();
+                    sendSessionsToParent();
+                }, 500);
+            }
+        };
+    }
+    
+    if (typeof loadSession !== 'undefined') {
+        const originalLoadSession = loadSession;
+        window.loadSession = function(sessionId) {
+            originalLoadSession(sessionId);
+            
+            if (isInIframe) {
+                setTimeout(() => {
+                    sendStateToParent();
+                    sendChotDataToParent();
+                    sendPredictionToParent();
+                }, 500);
+            }
+        };
+    }
+    
+    console.log("Cầu giao tiếp đã được khởi động thành công!");
+}
 
-    function exportSessionData() {
-        const sessionsToExport = {};
-        for (const sessionId in state.sessions) {
-            sessionsToExport[sessionId] = {
-                name: state.sessions[sessionId].name,
-                history: state.sessions[sessionId].history
-            };
-        }
-        
-        window.parent.postMessage({
-            source: 'ht1',
-            type: 'export_data',
-            sessions: sessionsToExport
-        }, '*');
-    }
-
-    function resetSystem() {
-        state.sessions = {};
-        state.currentSessionId = null;
-        state.currentPrediction = null;
-        state.originalSystemPrediction = null;
-        state.currentFinalPrediction = null;
-        state.currentChotPredictionForLog = null;
-        
-        localStorage.removeItem('baccaratPatternSessions_v11_sim');
-        localStorage.removeItem('lastActiveSession_v11_sim');
-        
-        createNewSession();
-        updateAllUI();
-    }
-})();
+// If not in iframe, log a message
+if (!isInIframe) {
+    console.log("Hệ thống con đang chạy độc lập, cầu giao tiếp không được kích hoạt");
+}
 </script>
 </body>
 </html>
