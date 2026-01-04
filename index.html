@@ -1,0 +1,1004 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VẠN SỰ NHƯ Ý - Hệ Thống Tổng Hợp</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #111827;
+            color: #F9FAFB;
+        }
+        .btn {
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .btn:active {
+            transform: translateY(1px);
+        }
+        .card-glow-total { box-shadow: 0 0 25px rgba(168, 85, 247, 0.7); }
+        .modal-backdrop {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background-color: rgba(0,0,0,0.7);
+            display: flex; align-items: center; justify-content: center;
+            z-index: 50; animation: fadeIn 0.3s ease;
+        }
+        .modal-content {
+            background-color: #1f2937;
+            padding: 1.5rem; border-radius: 1rem;
+            width: 90%; max-width: 500px;
+            animation: slideIn 0.3s ease-out;
+            border: 1px solid #374151;
+        }
+        .toast-notification {
+            position: fixed; top: 20px; right: 20px;
+            background-color: #1f2937; color: white;
+            padding: 1rem 1.5rem; border-radius: 0.5rem;
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.3);
+            z-index: 100; animation: slideDown 0.5s ease;
+            border-left: 4px solid;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-20px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-100%); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeOut {
+            from { opacity: 1; transform: translateY(0); }
+            to { opacity: 0; transform: translateY(-20px); }
+        }
+        .system-frame {
+            border: 2px solid #374151;
+            border-radius: 0.75rem;
+            background: #1f2937;
+            transition: all 0.3s ease;
+        }
+        .system-frame.active {
+            border-color: #8b5cf6;
+            box-shadow: 0 0 15px rgba(139, 92, 246, 0.5);
+        }
+        .history-chart {
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            gap: 1px;
+            height: 40px;
+            padding: 5px 0;
+            overflow: hidden;
+        }
+        .history-bar {
+            flex-shrink: 0;
+            width: 3px;
+            border-radius: 1px;
+        }
+        .history-bar-correct {
+            background-color: #3b82f6;
+            height: 100%;
+        }
+        .history-bar-incorrect {
+            background-color: #ef4444;
+            height: 40%;
+        }
+        .accuracy-badge {
+            padding: 0.25rem 0.5rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        .accuracy-high { background-color: #10b981; color: white; }
+        .accuracy-medium { background-color: #f59e0b; color: white; }
+        .accuracy-low { background-color: #ef4444; color: white; }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+    <div id="modal-container"></div>
+    <div id="toast-container"></div>
+
+    <div class="max-w-7xl mx-auto">
+        <!-- Header -->
+        <div class="bg-gradient-to-r from-purple-900 via-violet-900 to-purple-900 p-8 rounded-2xl shadow-2xl text-center mb-8">
+            <h1 class="text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 via-pink-400 to-purple-400 mb-3">
+                VẠN SỰ NHƯ Ý
+            </h1>
+            <p class="text-gray-300 text-lg">Hệ Thống Tổng Hợp Phân Tích Cầu Cao Cấp</p>
+            <div class="flex flex-wrap justify-center gap-4 mt-4">
+                <span class="px-3 py-1 bg-blue-600 rounded-full text-sm font-semibold">HT1: Pattern Matching</span>
+                <span class="px-3 py-1 bg-green-600 rounded-full text-sm font-semibold">HT2: Fixed & Optimized</span>
+                <span class="px-3 py-1 bg-purple-600 rounded-full text-sm font-semibold">Tổng Hợp Thông Minh</span>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Left Column: Control Panel -->
+            <div class="lg:col-span-1 space-y-6">
+                <!-- System Control -->
+                <div class="bg-gray-800 p-6 rounded-2xl shadow-lg">
+                    <h2 class="text-xl font-semibold mb-4 text-blue-300">⚙️ Điều Khiển Hệ Thống</h2>
+                    <div class="space-y-4">
+                        <div class="grid grid-cols-2 gap-4">
+                            <button onclick="showAllFrames()" class="btn bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 rounded-lg">👁️ Hiển Thị Tất Cả</button>
+                            <button onclick="hideAllFrames()" class="btn bg-gray-600 hover:bg-gray-500 text-white font-bold py-3 rounded-lg">👻 Ẩn Tất Cả</button>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <button onclick="syncAllSystems()" class="btn bg-green-600 hover:bg-green-500 text-white font-bold py-3 rounded-lg">🔄 Đồng Bộ Hóa</button>
+                            <button onclick="resetAllSystems()" class="btn bg-red-600 hover:bg-red-500 text-white font-bold py-3 rounded-lg">🔄 Reset Tất Cả</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Session Management -->
+                <div class="bg-gray-800 p-6 rounded-2xl shadow-lg">
+                    <h2 class="text-xl font-semibold mb-4 text-blue-300">📁 Quản Lý Phiên Chung</h2>
+                    
+                    <div class="mb-4">
+                        <select id="masterSessionSelector" class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 text-white focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                            <option value="">Chọn phiên để đồng bộ...</option>
+                        </select>
+                    </div>
+                    
+                    <div class="grid grid-cols-2 gap-4">
+                        <button onclick="createNewSessionAll()" class="btn bg-green-600 hover:bg-green-500 text-white font-bold py-3 rounded-lg">➕ Tạo Mới</button>
+                        <button onclick="renameMasterSession()" class="btn bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 rounded-lg">✏️ Đổi Tên</button>
+                        <button onclick="exportMasterData()" class="btn bg-sky-600 hover:bg-sky-500 text-white font-bold py-3 rounded-lg col-span-2">📤 Xuất Tổng Thể</button>
+                        <button onclick="document.getElementById('masterFileInput').click()" class="btn bg-purple-600 hover:bg-purple-500 text-white font-bold py-3 rounded-lg col-span-2">📥 Nhập Dữ Liệu</button>
+                        <input type="file" id="masterFileInput" class="hidden" accept=".json" onchange="importMasterData(event)">
+                    </div>
+                </div>
+
+                <!-- Input Section -->
+                <div class="bg-gray-800 p-6 rounded-2xl shadow-lg">
+                    <h2 class="text-xl font-semibold mb-4 text-blue-300">🎲 Nhập Kết Quả Ván Hiện Tại</h2>
+                    <p class="text-gray-400 text-sm mb-4">Kết quả sẽ được đồng bộ đến tất cả hệ thống</p>
+                    <div class="grid grid-cols-2 gap-4 mb-4">
+                        <button onclick="addResultToAll('P')" class="btn bg-blue-600 hover:bg-blue-500 text-white font-bold py-6 rounded-lg text-2xl">
+                            <span>👤</span> PLAYER
+                        </button>
+                        <button onclick="addResultToAll('B')" class="btn bg-red-600 hover:bg-red-500 text-white font-bold py-6 rounded-lg text-2xl">
+                            <span>🏦</span> BANKER
+                        </button>
+                    </div>
+                    <div class="flex gap-4">
+                        <button onclick="undoLastAll()" class="btn flex-1 bg-gray-600 hover:bg-gray-500 text-white font-bold py-3 rounded-lg">↩️ Hoàn Tác</button>
+                        <button onclick="clearHistoryAll()" class="btn flex-1 bg-yellow-600 hover:bg-yellow-500 text-white font-bold py-3 rounded-lg">🗑️ Xóa Lịch Sử</button>
+                    </div>
+                </div>
+
+                <!-- Current Session Stats -->
+                <div class="bg-gray-800 p-6 rounded-2xl shadow-lg">
+                    <h2 class="text-xl font-semibold mb-4 text-green-300">📊 Thống Kê Phiên Hiện Tại</h2>
+                    <div class="space-y-4">
+                        <div class="flex justify-between items-center bg-gray-700 p-4 rounded-lg">
+                            <span class="font-medium text-gray-300">Tổng số ván</span>
+                            <span id="totalGamesMaster" class="text-2xl font-bold text-white">0</span>
+                        </div>
+                        <div class="flex justify-between items-center bg-gray-700 p-4 rounded-lg">
+                            <span class="font-medium text-gray-300">Phiên đang chọn</span>
+                            <span id="currentSessionName" class="text-lg font-semibold text-cyan-400">Chưa chọn</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Middle Column: Systems Display -->
+            <div class="lg:col-span-2 space-y-6">
+                <!-- HT1 Frame -->
+                <div class="system-frame" id="ht1-frame">
+                    <div class="flex justify-between items-center bg-gray-900 p-4 rounded-t-lg">
+                        <h2 class="text-xl font-semibold text-blue-300">🔷 HT1 - Pattern Matching System</h2>
+                        <div class="flex items-center gap-2">
+                            <span class="text-sm text-gray-400">Độ chính xác Chốt:</span>
+                            <span id="ht1-accuracy" class="accuracy-badge accuracy-low">0.0%</span>
+                            <button onclick="toggleFrame('ht1')" class="text-gray-400 hover:text-white">
+                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                    <path id="ht1-toggle-icon" fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div id="ht1-content" class="h-[600px]">
+                        <iframe src="ht1.html" id="ht1-iframe" class="w-full h-full rounded-b-lg" frameborder="0"></iframe>
+                    </div>
+                </div>
+
+                <!-- HT2 Frame -->
+                <div class="system-frame" id="ht2-frame">
+                    <div class="flex justify-between items-center bg-gray-900 p-4 rounded-t-lg">
+                        <h2 class="text-xl font-semibold text-green-300">🔶 HT2 - Fixed & Optimized System</h2>
+                        <div class="flex items-center gap-2">
+                            <span class="text-sm text-gray-400">Độ chính xác Chốt:</span>
+                            <span id="ht2-accuracy" class="accuracy-badge accuracy-low">0.0%</span>
+                            <button onclick="toggleFrame('ht2')" class="text-gray-400 hover:text-white">
+                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                    <path id="ht2-toggle-icon" fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div id="ht2-content" class="h-[600px]">
+                        <iframe src="ht2.html" id="ht2-iframe" class="w-full h-full rounded-b-lg" frameborder="0"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Final Decision Panel -->
+        <div class="mt-8">
+            <div class="bg-gradient-to-r from-purple-900 to-pink-900 p-6 rounded-2xl shadow-lg card-glow-total">
+                <h2 class="text-2xl font-semibold mb-6 text-center text-yellow-300">🏆 PHÁN QUYẾT TỔNG HỢP - VẠN SỰ NHƯ Ý</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                    <!-- System Accuracies -->
+                    <div class="bg-gray-900 bg-opacity-50 p-4 rounded-xl">
+                        <h3 class="text-lg font-semibold mb-3 text-center text-blue-300">Độ Chính Xác Hệ Thống</h3>
+                        <div class="space-y-3">
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-300">HT1 Pattern Matching:</span>
+                                <span id="accuracy-ht1-display" class="font-bold">0.0%</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-300">HT2 Fixed & Optimized:</span>
+                                <span id="accuracy-ht2-display" class="font-bold">0.0%</span>
+                            </div>
+                            <div class="flex justify-between items-center border-t border-gray-700 pt-3">
+                                <span class="text-lg font-semibold text-yellow-300">Hệ thống ưu tiên:</span>
+                                <span id="priority-system" class="text-lg font-bold text-green-400">Đang tính...</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Final Decision -->
+                    <div class="bg-gray-900 bg-opacity-50 p-4 rounded-xl md:col-span-2">
+                        <h3 class="text-lg font-semibold mb-3 text-center text-green-300">QUYẾT ĐỊNH CUỐI CÙNG</h3>
+                        <div class="text-center">
+                            <div id="finalDecisionContainer" class="py-6 rounded-lg border-2 border-purple-500 mb-4">
+                                <p class="text-sm text-gray-400 mb-2">Đề xuất từ hệ thống tổng hợp:</p>
+                                <p id="finalDecisionText" class="text-3xl md:text-4xl font-extrabold text-gray-300">ĐANG TÍNH TOÁN...</p>
+                                <div id="decisionReason" class="mt-4 text-sm text-gray-400 px-4">
+                                    Hệ thống đang phân tích dữ liệu từ các hệ thống con...
+                                </div>
+                            </div>
+                            <div class="flex justify-center gap-4">
+                                <button onclick="forcePlayerDecision()" class="btn bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 px-6 rounded-lg text-lg">
+                                    👤 CHỐT PLAYER
+                                </button>
+                                <button onclick="forceBankerDecision()" class="btn bg-red-600 hover:bg-red-500 text-white font-bold py-3 px-6 rounded-lg text-lg">
+                                    🏦 CHỐT BANKER
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Combined Charts -->
+                <div class="bg-gray-900 bg-opacity-50 p-4 rounded-xl">
+                    <h3 class="text-lg font-semibold mb-3 text-center text-cyan-300">BIỂU ĐỒ KẾT HỢP</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <h4 class="font-medium text-gray-300 mb-2">HT1 - Lịch sử Chốt (50 ván gần nhất)</h4>
+                            <div id="ht1-combined-chart" class="history-chart bg-gray-800 rounded p-2">
+                                <p class="text-gray-600 text-sm text-center w-full">Đang tải dữ liệu HT1...</p>
+                            </div>
+                        </div>
+                        <div>
+                            <h4 class="font-medium text-gray-300 mb-2">HT2 - Lịch sử Chốt (50 ván gần nhất)</h4>
+                            <div id="ht2-combined-chart" class="history-chart bg-gray-800 rounded p-2">
+                                <p class="text-gray-600 text-sm text-center w-full">Đang tải dữ liệu HT2...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- System Status -->
+                <div class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="text-center p-3 bg-gray-800 rounded-lg">
+                        <div class="text-sm text-gray-400">Trạng thái HT1</div>
+                        <div id="ht1-status" class="text-green-400 font-semibold">🟢 Đang hoạt động</div>
+                    </div>
+                    <div class="text-center p-3 bg-gray-800 rounded-lg">
+                        <div class="text-sm text-gray-400">Trạng thái HT2</div>
+                        <div id="ht2-status" class="text-green-400 font-semibold">🟢 Đang hoạt động</div>
+                    </div>
+                    <div class="text-center p-3 bg-gray-800 rounded-lg">
+                        <div class="text-sm text-gray-400">Đồng bộ</div>
+                        <div id="sync-status" class="text-yellow-400 font-semibold">Đang đồng bộ...</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="mt-8 text-center text-gray-500 text-sm">
+            <p>Hệ thống "VẠN SỰ NHƯ Ý" - Tổng hợp từ HT1 & HT2 | Phiên bản 1.0</p>
+            <p class="mt-2">Lưu ý: Các hệ thống chạy độc lập nhưng đồng bộ về dữ liệu và phiên làm việc</p>
+        </div>
+    </div>
+
+    <script>
+        // =================== GLOBAL STATE ===================
+        const masterState = {
+            currentSessionId: null,
+            currentSessionName: 'Chưa chọn',
+            sessions: {},
+            ht1Accuracy: 0,
+            ht2Accuracy: 0,
+            ht1ChotHistory: [],
+            ht2ChotHistory: [],
+            lastDecision: null,
+            systemsReady: {
+                ht1: false,
+                ht2: false
+            }
+        };
+
+        // =================== IFRAME COMMUNICATION ===================
+        function sendToIframe(iframeId, command, data = null) {
+            const iframe = document.getElementById(iframeId);
+            if (iframe && iframe.contentWindow) {
+                iframe.contentWindow.postMessage({
+                    command: command,
+                    data: data,
+                    source: 'master'
+                }, '*');
+                return true;
+            }
+            return false;
+        }
+
+        function broadcastToAll(command, data = null) {
+            sendToIframe('ht1-iframe', command, data);
+            sendToIframe('ht2-iframe', command, data);
+        }
+
+        // =================== MESSAGE LISTENER ===================
+        window.addEventListener('message', function(event) {
+            // Only accept messages from our iframes
+            if (event.data.source === 'ht1' || event.data.source === 'ht2') {
+                handleSystemMessage(event.data);
+            }
+        });
+
+        function handleSystemMessage(data) {
+            const system = data.source;
+            
+            switch(data.type) {
+                case 'ready':
+                    masterState.systemsReady[system] = true;
+                    updateSystemStatus();
+                    if (allSystemsReady()) {
+                        initializeSystems();
+                    }
+                    break;
+                    
+                case 'accuracy_update':
+                    updateSystemAccuracy(system, data.accuracy);
+                    break;
+                    
+                case 'chot_history_update':
+                    updateChotHistory(system, data.history);
+                    break;
+                    
+                case 'session_update':
+                    updateSessionInfo(system, data.session);
+                    break;
+                    
+                case 'prediction_update':
+                    // Store prediction for final decision
+                    if (data.prediction) {
+                        masterState[`${system}Prediction`] = data.prediction;
+                        calculateFinalDecision();
+                    }
+                    break;
+            }
+        }
+
+        // =================== SYSTEM CONTROL ===================
+        function toggleFrame(system) {
+            const content = document.getElementById(`${system}-content`);
+            const icon = document.getElementById(`${system}-toggle-icon`);
+            const frame = document.getElementById(`${system}-frame`);
+            
+            if (content.style.display === 'none' || content.style.display === '') {
+                content.style.display = 'block';
+                icon.setAttribute('d', 'M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z');
+                frame.classList.remove('active');
+            } else {
+                content.style.display = 'none';
+                icon.setAttribute('d', 'M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z');
+                frame.classList.add('active');
+            }
+        }
+
+        function showAllFrames() {
+            ['ht1', 'ht2'].forEach(system => {
+                const content = document.getElementById(`${system}-content`);
+                const icon = document.getElementById(`${system}-toggle-icon`);
+                const frame = document.getElementById(`${system}-frame`);
+                
+                content.style.display = 'block';
+                icon.setAttribute('d', 'M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z');
+                frame.classList.remove('active');
+            });
+        }
+
+        function hideAllFrames() {
+            ['ht1', 'ht2'].forEach(system => {
+                const content = document.getElementById(`${system}-content`);
+                const icon = document.getElementById(`${system}-toggle-icon`);
+                const frame = document.getElementById(`${system}-frame`);
+                
+                content.style.display = 'none';
+                icon.setAttribute('d', 'M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z');
+                frame.classList.add('active');
+            });
+        }
+
+        function allSystemsReady() {
+            return masterState.systemsReady.ht1 && masterState.systemsReady.ht2;
+        }
+
+        function updateSystemStatus() {
+            document.getElementById('ht1-status').textContent = 
+                masterState.systemsReady.ht1 ? '🟢 Đang hoạt động' : '🟡 Đang khởi động';
+            document.getElementById('ht2-status').textContent = 
+                masterState.systemsReady.ht2 ? '🟢 Đang hoạt động' : '🟡 Đang khởi động';
+            
+            if (allSystemsReady()) {
+                document.getElementById('sync-status').textContent = '🟢 Đã đồng bộ';
+                document.getElementById('sync-status').className = 'text-green-400 font-semibold';
+            }
+        }
+
+        // =================== SESSION MANAGEMENT ===================
+        function initializeSystems() {
+            // Load existing sessions from localStorage
+            loadMasterSessions();
+            
+            // Request initial data from systems
+            setTimeout(() => {
+                broadcastToAll('get_accuracy');
+                broadcastToAll('get_session_info');
+                broadcastToAll('get_chot_history');
+            }, 1000);
+        }
+
+        function loadMasterSessions() {
+            try {
+                const saved = localStorage.getItem('vanSuNhuY_sessions');
+                if (saved) {
+                    masterState.sessions = JSON.parse(saved);
+                    updateMasterSessionSelector();
+                }
+            } catch (e) {
+                console.error('Error loading master sessions:', e);
+            }
+        }
+
+        function saveMasterSessions() {
+            localStorage.setItem('vanSuNhuY_sessions', JSON.stringify(masterState.sessions));
+        }
+
+        function updateMasterSessionSelector() {
+            const selector = document.getElementById('masterSessionSelector');
+            selector.innerHTML = '<option value="">Chọn phiên để đồng bộ...</option>';
+            
+            Object.keys(masterState.sessions).forEach(sessionId => {
+                const option = document.createElement('option');
+                option.value = sessionId;
+                option.textContent = masterState.sessions[sessionId].name;
+                selector.appendChild(option);
+            });
+        }
+
+        function createNewSessionAll() {
+            const sessionName = prompt('Nhập tên phiên mới:', `Phiên ${new Date().toLocaleString('vi-VN')}`);
+            if (sessionName) {
+                const sessionId = `session-${Date.now()}`;
+                
+                masterState.sessions[sessionId] = {
+                    id: sessionId,
+                    name: sessionName,
+                    created: new Date().toISOString(),
+                    history: []
+                };
+                
+                masterState.currentSessionId = sessionId;
+                masterState.currentSessionName = sessionName;
+                
+                saveMasterSessions();
+                updateMasterSessionSelector();
+                updateCurrentSessionInfo();
+                
+                // Send to all systems
+                broadcastToAll('create_session', {
+                    name: sessionName,
+                    id: sessionId
+                });
+                
+                showToast(`Đã tạo phiên mới: ${sessionName}`, 'success');
+            }
+        }
+
+        function renameMasterSession() {
+            if (!masterState.currentSessionId) {
+                showToast('Vui lòng chọn phiên trước!', 'warning');
+                return;
+            }
+            
+            const newName = prompt('Nhập tên mới cho phiên:', masterState.currentSessionName);
+            if (newName) {
+                masterState.sessions[masterState.currentSessionId].name = newName;
+                masterState.currentSessionName = newName;
+                
+                saveMasterSessions();
+                updateMasterSessionSelector();
+                updateCurrentSessionInfo();
+                
+                // Send to all systems
+                broadcastToAll('rename_session', {
+                    id: masterState.currentSessionId,
+                    name: newName
+                });
+                
+                showToast(`Đã đổi tên phiên thành: ${newName}`, 'success');
+            }
+        }
+
+        function updateCurrentSessionInfo() {
+            document.getElementById('currentSessionName').textContent = masterState.currentSessionName;
+            
+            const session = masterState.sessions[masterState.currentSessionId];
+            if (session && session.history) {
+                document.getElementById('totalGamesMaster').textContent = session.history.length;
+            }
+        }
+
+        // =================== DATA IMPORT/EXPORT ===================
+        function importMasterData(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    
+                    if (data.type === 'vanSuNhuY_export') {
+                        // Import master data
+                        if (data.sessions) {
+                            masterState.sessions = data.sessions;
+                            saveMasterSessions();
+                            updateMasterSessionSelector();
+                        }
+                        
+                        // Send import command to all systems
+                        broadcastToAll('import_data', {
+                            sessions: data.system_sessions?.ht1 || [],
+                            simulate: true
+                        });
+                        
+                        // We need to send to both systems separately
+                        setTimeout(() => {
+                            sendToIframe('ht1-iframe', 'import_data', {
+                                sessions: data.system_sessions?.ht1 || [],
+                                simulate: true
+                            });
+                            
+                            sendToIframe('ht2-iframe', 'import_data', {
+                                sessions: data.system_sessions?.ht2 || [],
+                                simulate: true
+                            });
+                        }, 100);
+                        
+                        showToast('Đã nhập dữ liệu thành công!', 'success');
+                    } else {
+                        // Legacy import - just send to all systems
+                        broadcastToAll('import_data', {
+                            sessions: data,
+                            simulate: true
+                        });
+                        showToast('Đã gửi dữ liệu đến tất cả hệ thống', 'info');
+                    }
+                } catch (error) {
+                    showToast('Lỗi khi đọc file dữ liệu', 'error');
+                    console.error('Import error:', error);
+                }
+                event.target.value = '';
+            };
+            reader.readAsText(file);
+        }
+
+        function exportMasterData() {
+            // Collect data from all systems
+            const exportData = {
+                type: 'vanSuNhuY_export',
+                timestamp: new Date().toISOString(),
+                sessions: masterState.sessions,
+                system_sessions: {
+                    ht1: [],
+                    ht2: []
+                }
+            };
+            
+            // Request session data from systems
+            broadcastToAll('export_data');
+            
+            // We'll send the data anyway, systems will respond via postMessage
+            setTimeout(() => {
+                const dataStr = JSON.stringify(exportData, null, 2);
+                const dataBlob = new Blob([dataStr], {type: 'application/json'});
+                const url = URL.createObjectURL(dataBlob);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = `VanSuNhuY_Export_${new Date().toISOString().slice(0,10)}.json`;
+                link.click();
+                URL.revokeObjectURL(url);
+                
+                showToast('Đã xuất dữ liệu tổng hợp', 'success');
+            }, 1000);
+        }
+
+        // =================== INPUT HANDLING ===================
+        function addResultToAll(result) {
+            if (!masterState.currentSessionId) {
+                showToast('Vui lòng chọn hoặc tạo phiên trước!', 'warning');
+                return;
+            }
+            
+            // Update master history
+            const session = masterState.sessions[masterState.currentSessionId];
+            if (!session.history) session.history = [];
+            session.history.push(result);
+            
+            saveMasterSessions();
+            updateCurrentSessionInfo();
+            
+            // Send to all systems
+            broadcastToAll('add_result', result);
+            
+            // Request updated data
+            setTimeout(() => {
+                broadcastToAll('get_accuracy');
+                broadcastToAll('get_chot_history');
+                broadcastToAll('get_prediction');
+            }, 500);
+            
+            showToast(`Đã thêm kết quả: ${result === 'P' ? 'PLAYER' : 'BANKER'}`, 'success');
+        }
+
+        function undoLastAll() {
+            if (!masterState.currentSessionId) {
+                showToast('Không có phiên nào đang hoạt động!', 'warning');
+                return;
+            }
+            
+            const session = masterState.sessions[masterState.currentSessionId];
+            if (session.history.length === 0) {
+                showToast('Không có kết quả để hoàn tác!', 'warning');
+                return;
+            }
+            
+            session.history.pop();
+            saveMasterSessions();
+            updateCurrentSessionInfo();
+            
+            // Send to all systems
+            broadcastToAll('undo_last');
+            
+            // Request updated data
+            setTimeout(() => {
+                broadcastToAll('get_accuracy');
+                broadcastToAll('get_chot_history');
+            }, 500);
+            
+            showToast('Đã hoàn tác kết quả cuối cùng', 'info');
+        }
+
+        function clearHistoryAll() {
+            if (!masterState.currentSessionId) {
+                showToast('Không có phiên nào đang hoạt động!', 'warning');
+                return;
+            }
+            
+            if (confirm('Bạn có chắc muốn xóa toàn bộ lịch sử của phiên này?')) {
+                masterState.sessions[masterState.currentSessionId].history = [];
+                saveMasterSessions();
+                updateCurrentSessionInfo();
+                
+                // Send to all systems
+                broadcastToAll('clear_history');
+                
+                showToast('Đã xóa toàn bộ lịch sử', 'info');
+            }
+        }
+
+        function syncAllSystems() {
+            if (!masterState.currentSessionId) {
+                showToast('Vui lòng chọn phiên trước khi đồng bộ!', 'warning');
+                return;
+            }
+            
+            const session = masterState.sessions[masterState.currentSessionId];
+            
+            // Send session data to all systems
+            broadcastToAll('load_session', {
+                id: masterState.currentSessionId,
+                name: session.name,
+                history: session.history
+            });
+            
+            document.getElementById('sync-status').textContent = '🔄 Đang đồng bộ...';
+            document.getElementById('sync-status').className = 'text-yellow-400 font-semibold';
+            
+            setTimeout(() => {
+                document.getElementById('sync-status').textContent = '🟢 Đã đồng bộ';
+                document.getElementById('sync-status').className = 'text-green-400 font-semibold';
+                showToast('Đã đồng bộ tất cả hệ thống', 'success');
+                
+                // Request updated data
+                broadcastToAll('get_accuracy');
+                broadcastToAll('get_chot_history');
+                broadcastToAll('get_prediction');
+            }, 1000);
+        }
+
+        function resetAllSystems() {
+            if (confirm('Bạn có chắc muốn reset tất cả hệ thống về trạng thái ban đầu?')) {
+                // Clear master state
+                masterState.sessions = {};
+                masterState.currentSessionId = null;
+                masterState.currentSessionName = 'Chưa chọn';
+                masterState.ht1Accuracy = 0;
+                masterState.ht2Accuracy = 0;
+                
+                localStorage.removeItem('vanSuNhuY_sessions');
+                updateMasterSessionSelector();
+                updateCurrentSessionInfo();
+                
+                // Send reset command to all systems
+                broadcastToAll('reset_system');
+                
+                showToast('Đã reset tất cả hệ thống', 'info');
+            }
+        }
+
+        // =================== ACCURACY & DECISION CALCULATION ===================
+        function updateSystemAccuracy(system, accuracy) {
+            masterState[`${system}Accuracy`] = accuracy;
+            
+            // Update display
+            const element = document.getElementById(`${system}-accuracy`);
+            const display = document.getElementById(`accuracy-${system}-display`);
+            
+            element.textContent = `${accuracy.toFixed(1)}%`;
+            display.textContent = `${accuracy.toFixed(1)}%`;
+            
+            // Update badge color
+            element.className = 'accuracy-badge ';
+            if (accuracy >= 70) {
+                element.className += 'accuracy-high';
+            } else if (accuracy >= 50) {
+                element.className += 'accuracy-medium';
+            } else {
+                element.className += 'accuracy-low';
+            }
+            
+            calculateFinalDecision();
+        }
+
+        function updateChotHistory(system, history) {
+            masterState[`${system}ChotHistory`] = history;
+            renderCombinedChart(system);
+        }
+
+        function updateSessionInfo(system, sessionInfo) {
+            // Update master state with session info from system
+            if (sessionInfo && sessionInfo.id) {
+                if (!masterState.sessions[sessionInfo.id]) {
+                    masterState.sessions[sessionInfo.id] = {
+                        id: sessionInfo.id,
+                        name: sessionInfo.name || `Phiên ${sessionInfo.id}`,
+                        history: sessionInfo.history || [],
+                        systemData: {
+                            ...(masterState.sessions[sessionInfo.id]?.systemData || {}),
+                            [system]: sessionInfo
+                        }
+                    };
+                }
+                
+                if (sessionInfo.current) {
+                    masterState.currentSessionId = sessionInfo.id;
+                    masterState.currentSessionName = sessionInfo.name;
+                    updateCurrentSessionInfo();
+                    updateMasterSessionSelector();
+                }
+                
+                saveMasterSessions();
+            }
+        }
+
+        function calculateFinalDecision() {
+            const ht1Acc = masterState.ht1Accuracy;
+            const ht2Acc = masterState.ht2Accuracy;
+            
+            let decision = null;
+            let reason = '';
+            let prioritySystem = '';
+            
+            // Priority 1: Systems with accuracy >= 70%
+            const highAccuracySystems = [];
+            if (ht1Acc >= 70) highAccuracySystems.push({name: 'HT1', acc: ht1Acc});
+            if (ht2Acc >= 70) highAccuracySystems.push({name: 'HT2', acc: ht2Acc});
+            
+            if (highAccuracySystems.length === 1) {
+                // Only one system with high accuracy
+                prioritySystem = highAccuracySystems[0].name;
+                decision = masterState[`${prioritySystem.toLowerCase()}Prediction`];
+                reason = `Ưu tiên ${prioritySystem} (độ chính xác Chốt: ${highAccuracySystems[0].acc.toFixed(1)}% ≥ 70%)`;
+            } 
+            else if (highAccuracySystems.length > 1) {
+                // Multiple systems with high accuracy - choose the highest
+                highAccuracySystems.sort((a, b) => b.acc - a.acc);
+                prioritySystem = highAccuracySystems[0].name;
+                decision = masterState[`${prioritySystem.toLowerCase()}Prediction`];
+                reason = `${prioritySystem} có độ chính xác cao nhất (${highAccuracySystems[0].acc.toFixed(1)}%) trong các hệ thống ≥ 70%`;
+            }
+            else {
+                // No system with high accuracy, use majority vote
+                prioritySystem = 'ĐA SỐ';
+                const predictions = [];
+                if (masterState.ht1prediction) predictions.push(masterState.ht1prediction);
+                if (masterState.ht2prediction) predictions.push(masterState.ht2prediction);
+                
+                if (predictions.length > 0) {
+                    const pCount = predictions.filter(p => p === 'P').length;
+                    const bCount = predictions.filter(p => p === 'B').length;
+                    
+                    if (pCount > bCount) {
+                        decision = 'P';
+                        reason = `Đa số hệ thống đề xuất PLAYER (HT1: ${ht1Acc.toFixed(1)}%, HT2: ${ht2Acc.toFixed(1)}%)`;
+                    } else if (bCount > pCount) {
+                        decision = 'B';
+                        reason = `Đa số hệ thống đề xuất BANKER (HT1: ${ht1Acc.toFixed(1)}%, HT2: ${ht2Acc.toFixed(1)}%)`;
+                    } else {
+                        decision = null;
+                        reason = `Các hệ thống phân vân (HT1: ${ht1Acc.toFixed(1)}%, HT2: ${ht2Acc.toFixed(1)}%)`;
+                    }
+                }
+            }
+            
+            updateFinalDecisionDisplay(decision, reason, prioritySystem);
+        }
+
+        function updateFinalDecisionDisplay(decision, reason, prioritySystem) {
+            const container = document.getElementById('finalDecisionContainer');
+            const text = document.getElementById('finalDecisionText');
+            const reasonEl = document.getElementById('decisionReason');
+            const priorityEl = document.getElementById('priority-system');
+            
+            priorityEl.textContent = prioritySystem || 'Đang tính...';
+            
+            if (decision === 'P') {
+                text.textContent = '👤 CHỐT PLAYER';
+                text.className = 'text-3xl md:text-4xl font-extrabold text-blue-400';
+                container.className = 'py-6 rounded-lg border-2 border-blue-500 mb-4';
+            } else if (decision === 'B') {
+                text.textContent = '🏦 CHỐT BANKER';
+                text.className = 'text-3xl md:text-4xl font-extrabold text-red-400';
+                container.className = 'py-6 rounded-lg border-2 border-red-500 mb-4';
+            } else {
+                text.textContent = '⏳ CHỜ TÍN HIỆU';
+                text.className = 'text-3xl md:text-4xl font-extrabold text-gray-300';
+                container.className = 'py-6 rounded-lg border-2 border-purple-500 mb-4';
+            }
+            
+            reasonEl.textContent = reason;
+            masterState.lastDecision = decision;
+        }
+
+        function forcePlayerDecision() {
+            updateFinalDecisionDisplay('P', 'Quyết định thủ công: CHỐT PLAYER', 'THỦ CÔNG');
+            showToast('Đã chốt PLAYER (thủ công)', 'info');
+        }
+
+        function forceBankerDecision() {
+            updateFinalDecisionDisplay('B', 'Quyết định thủ công: CHỐT BANKER', 'THỦ CÔNG');
+            showToast('Đã chốt BANKER (thủ công)', 'info');
+        }
+
+        // =================== CHART RENDERING ===================
+        function renderCombinedChart(system) {
+            const history = masterState[`${system}ChotHistory`];
+            const chartEl = document.getElementById(`${system}-combined-chart`);
+            
+            if (!history || history.length === 0) {
+                chartEl.innerHTML = `<p class="text-gray-600 text-sm text-center w-full">Chưa có dữ liệu ${system}...</p>`;
+                return;
+            }
+            
+            // Take last 50 results
+            const recentHistory = history.slice(-50);
+            let chartHTML = '';
+            
+            recentHistory.forEach(prediction => {
+                if (prediction && prediction.predicted !== undefined && prediction.actual !== undefined) {
+                    const isCorrect = prediction.predicted === prediction.actual;
+                    const barClass = isCorrect ? 'history-bar-correct' : 'history-bar-incorrect';
+                    const title = `Đề xuất: ${prediction.predicted}, Thực tế: ${prediction.actual}`;
+                    chartHTML += `<div class="history-bar ${barClass}" title="${title}"></div>`;
+                }
+            });
+            
+            chartEl.innerHTML = chartHTML;
+        }
+
+        // =================== UI UTILITIES ===================
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toast-container');
+            const colors = {
+                success: 'border-green-500',
+                info: 'border-blue-500',
+                warning: 'border-yellow-500',
+                error: 'border-red-500'
+            };
+            
+            const toast = document.createElement('div');
+            toast.className = `toast-notification ${colors[type]}`;
+            toast.textContent = message;
+            container.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.style.animation = 'fadeOut 0.5s ease';
+                setTimeout(() => toast.remove(), 500);
+            }, 3000);
+        }
+
+        // =================== INITIALIZATION ===================
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize UI
+            updateCurrentSessionInfo();
+            updateSystemStatus();
+            
+            // Set up periodic updates
+            setInterval(() => {
+                if (allSystemsReady()) {
+                    broadcastToAll('get_accuracy');
+                    broadcastToAll('get_chot_history');
+                }
+            }, 5000);
+            
+            // Set up session selector change handler
+            document.getElementById('masterSessionSelector').addEventListener('change', function(e) {
+                if (e.target.value) {
+                    const sessionId = e.target.value;
+                    const session = masterState.sessions[sessionId];
+                    
+                    if (session) {
+                        masterState.currentSessionId = sessionId;
+                        masterState.currentSessionName = session.name;
+                        updateCurrentSessionInfo();
+                        
+                        // Send to all systems
+                        syncAllSystems();
+                    }
+                }
+            });
+            
+            showToast('Hệ thống VẠN SỰ NHƯ Ý đã sẵn sàng!', 'success');
+        });
+    </script>
+</body>
+</html>
