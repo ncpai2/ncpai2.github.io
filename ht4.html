@@ -1860,7 +1860,7 @@ document.addEventListener('DOMContentLoaded', initializeApp)
 
 </script>
     <script>
-        // =================== IFRAME COMMUNICATION FOR HT4 ===================
+    // =================== IFRAME COMMUNICATION FOR HT4 ===================
 (function() {
     // Notify parent that system is ready
     window.addEventListener('load', function() {
@@ -1869,7 +1869,7 @@ document.addEventListener('DOMContentLoaded', initializeApp)
                 source: 'ht4',
                 type: 'ready'
             }, '*');
-        }, 1000);
+        }, 2000);
     });
 
     // Listen for messages from parent
@@ -1880,6 +1880,8 @@ document.addEventListener('DOMContentLoaded', initializeApp)
     });
 
     function handleMasterCommand(data) {
+        console.log("HT4 received command:", data.command, data.data);
+        
         switch(data.command) {
             case 'get_accuracy':
                 sendAccuracyUpdate();
@@ -1949,6 +1951,15 @@ document.addEventListener('DOMContentLoaded', initializeApp)
                 correct: correct,
                 total: total
             }, '*');
+        } else {
+            // No chot predictions yet
+            window.parent.postMessage({
+                source: 'ht4',
+                type: 'accuracy_update',
+                accuracy: 0,
+                correct: 0,
+                total: 0
+            }, '*');
         }
     }
 
@@ -1959,6 +1970,12 @@ document.addEventListener('DOMContentLoaded', initializeApp)
                 source: 'ht4',
                 type: 'chot_history_update',
                 history: session.chotPredictions
+            }, '*');
+        } else {
+            window.parent.postMessage({
+                source: 'ht4',
+                type: 'chot_history_update',
+                history: []
             }, '*');
         }
     }
@@ -1976,6 +1993,12 @@ document.addEventListener('DOMContentLoaded', initializeApp)
                     current: true
                 }
             }, '*');
+        } else {
+            window.parent.postMessage({
+                source: 'ht4',
+                type: 'session_update',
+                session: null
+            }, '*');
         }
     }
 
@@ -1983,14 +2006,14 @@ document.addEventListener('DOMContentLoaded', initializeApp)
         window.parent.postMessage({
             source: 'ht4',
             type: 'prediction_update',
-            prediction: state.currentChotPredictionForLog?.prediction
+            prediction: state.currentChotPredictionForLog || state.currentFinalPrediction?.prediction || state.originalSystemPrediction
         }, '*');
     }
 
     function createSession(sessionData) {
         if (!sessionData || !sessionData.name) return;
         
-        const newId = `session-${Date.now()}`;
+        const newId = sessionData.id || `session-${Date.now()}`;
         state.currentSessionId = newId;
         state.sessions[newId] = {
             name: sessionData.name,
@@ -2073,7 +2096,7 @@ document.addEventListener('DOMContentLoaded', initializeApp)
     function addResult(result) {
         if (!state.currentSessionId) return;
         
-        // Use existing addResult function logic
+        // Use existing handleAddResultClick function logic
         const session = state.sessions[state.currentSessionId];
         if (!session) return;
         
@@ -2096,20 +2119,14 @@ document.addEventListener('DOMContentLoaded', initializeApp)
             });
         }
         
-        if (chotRec && chotRec.prediction) {
+        if (chotRec) {
             session.chotPredictions.push({ 
-                predicted: chotRec.prediction, 
-                actual: result, 
-                source: 'CHOT_VOTE' 
+                predicted: chotRec, 
+                actual: result
             });
         }
         
         session.history.push(result);
-        session.optimalLength = updateLengthPerformanceAndFindOptimal(
-            [...session.history].slice(0, -1), 
-            Object.values(state.sessions), 
-            result
-        );
         
         state.currentPrediction = null;
         state.originalSystemPrediction = null;
