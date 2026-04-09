@@ -1,9 +1,11 @@
+```html
 <!DOCTYPE html>
 <html lang="vi" data-theme="cyberblue">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>VẠN SỰ NHƯ Ý - AI Cockpit (Hybrid Markov)</title>
+    <!-- Tailwind CSS Config for Themes -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -75,6 +77,7 @@
         .btn-press { transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1); }
         .btn-press:active { transform: scale(0.95); }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes fadeOut { from { opacity: 1; } to { opacity: 0; } }
         
         /* Custom Scrollbar */
         .custom-scrollbar::-webkit-scrollbar { height: 6px; width: 6px; }
@@ -104,6 +107,7 @@
 <body class="relative">
     <div id="toast-container"></div>
 
+    <!-- HEADER GỌN GÀNG -->
     <header class="bg-th-panel border-b border-th-border sticky top-0 z-40 shadow-md transition-colors duration-500">
         <div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
             <div class="flex items-center gap-3">
@@ -121,6 +125,7 @@
                     <div class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
                     <span id="sync-status-header" class="text-xs font-bold text-th-text">Đồng bộ</span>
                 </div>
+                <!-- Nút Mở Modal Settings -->
                 <button onclick="toggleSettingsModal(true)" class="p-2 bg-th-bg hover:bg-th-border rounded-full transition-colors border border-th-border shadow-[0_0_10px_var(--th-glow)] text-th-text hover:text-white">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
                 </button>
@@ -128,10 +133,13 @@
         </div>
     </header>
 
+    <!-- KHU VỰC NỘI DUNG CHÍNH -->
     <main class="max-w-7xl mx-auto mt-6 px-4 grid grid-cols-1 lg:grid-cols-12 gap-6">
         
+        <!-- TRUNG TÂM QUYẾT ĐỊNH (COCKPIT) - Chiếm 5 cột trên LG -->
         <div class="lg:col-span-5 flex flex-col gap-6">
             
+            <!-- PANEL LỆNH CHỐT KHỔNG LỒ -->
             <div class="bg-th-bg rounded-2xl shadow-[0_0_30px_var(--th-glow)] border border-th-highlight/30 overflow-hidden flex flex-col transition-all duration-500">
                 <div class="bg-th-panel p-3 border-b border-th-border flex justify-between items-center">
                     <span class="text-xs font-black tracking-widest text-th-text uppercase">Dual AI Quyết Định</span>
@@ -144,6 +152,7 @@
                     </div>
                 </div>
 
+                <!-- Nút Mở Rộng Xem Phân Tích Logic -->
                 <div class="bg-th-panel border-t border-th-border">
                     <button onclick="toggleSection('logic-analysis-content', 'icon-logic')" class="w-full py-3 px-4 flex justify-between items-center hover:bg-th-border transition-colors">
                         <span class="text-sm font-bold text-th-text flex items-center gap-2">
@@ -158,6 +167,7 @@
                             <div class="text-gray-500 text-center italic text-sm">Chưa có dữ liệu xử lý AI Kép...</div>
                         </div>
 
+                        <!-- Bảng Đa Chiều N-Gram thu nhỏ -->
                         <div class="mt-4 border-t border-th-border pt-4">
                             <div class="flex justify-between items-center mb-2">
                                 <span class="text-xs font-bold text-th-highlight uppercase">Trường Hợp N-Gram Khớp</span>
@@ -187,6 +197,7 @@
                 </div>
             </div>
 
+            <!-- THỐNG KÊ RÚT GỌN BÊN DƯỚI COCKPIT -->
             <div class="grid grid-cols-2 gap-4">
                 <div class="bg-th-panel rounded-xl p-4 border border-th-border shadow-md">
                     <div class="text-[10px] text-th-text font-bold uppercase mb-1">Win Rate Hybrid AI</div>
@@ -204,6 +215,7 @@
                 </div>
             </div>
             
+            <!-- BIỂU ĐỒ LỊCH SỬ CHỐT (MINI) -->
             <div class="bg-th-panel p-4 rounded-xl border border-th-border shadow-md">
                 <div class="text-xs font-bold text-th-text uppercase mb-2 flex justify-between">
                     <span>Lịch Sử Chốt AI</span>
@@ -215,8 +227,10 @@
             </div>
         </div>
 
+        <!-- KHU VỰC TABS (IFRAMES) & BIỂU ĐỒ TỔNG HỢP - Chiếm 7 cột trên LG -->
         <div class="lg:col-span-7 flex flex-col gap-6">
             
+            <!-- HỆ THỐNG TABS IFRAME -->
             <div class="bg-th-panel rounded-2xl shadow-xl border border-th-border overflow-hidden flex flex-col transition-colors duration-500">
                 <div class="flex overflow-x-auto custom-scrollbar border-b border-th-border bg-th-bg">
                     <button id="tab-btn-ht1" onclick="switchTab('ht1')" class="flex-1 py-3 px-4 font-bold text-sm whitespace-nowrap bg-blue-600 text-white transition-colors border-r border-th-border">🔷 HT1 (Lõi Data)</button>
@@ -226,24 +240,28 @@
                 </div>
                 
                 <div class="relative bg-th-bg">
+                    <!-- HT1 -->
                     <div id="ht1-wrapper" class="iframe-container block">
                         <div class="absolute top-2 right-2 bg-black/60 px-2 py-1 rounded text-[10px] font-bold z-10 flex gap-2 backdrop-blur-sm border border-gray-700">
                             <span class="text-gray-300">Độ chính xác:</span><span id="ht1-accuracy" class="text-white">0%</span>
                         </div>
                         <iframe src="ht1.html" id="ht1-iframe"></iframe>
                     </div>
+                    <!-- HT2 -->
                     <div id="ht2-wrapper" class="iframe-container hidden">
                         <div class="absolute top-2 right-2 bg-black/60 px-2 py-1 rounded text-[10px] font-bold z-10 flex gap-2 backdrop-blur-sm border border-gray-700">
                             <span class="text-gray-300">Độ chính xác:</span><span id="ht2-accuracy" class="text-white">0%</span>
                         </div>
                         <iframe src="ht2.html" id="ht2-iframe"></iframe>
                     </div>
+                    <!-- HT3 -->
                     <div id="ht3-wrapper" class="iframe-container hidden">
                         <div class="absolute top-2 right-2 bg-black/60 px-2 py-1 rounded text-[10px] font-bold z-10 flex gap-2 backdrop-blur-sm border border-gray-700">
                             <span class="text-gray-300">Độ chính xác:</span><span id="ht3-accuracy" class="text-white">0%</span>
                         </div>
                         <iframe src="ht3.html" id="ht3-iframe"></iframe>
                     </div>
+                    <!-- HT4 -->
                     <div id="ht4-wrapper" class="iframe-container hidden">
                         <div class="absolute top-2 right-2 bg-black/60 px-2 py-1 rounded text-[10px] font-bold z-10 flex gap-2 backdrop-blur-sm border border-gray-700">
                             <span class="text-gray-300">Độ chính xác:</span><span id="ht4-accuracy" class="text-white">0%</span>
@@ -253,6 +271,7 @@
                 </div>
             </div>
 
+            <!-- KHU VỰC BIỂU ĐỒ HIỆU SUẤT GỘP -->
             <div class="bg-th-panel rounded-2xl shadow-xl border border-th-border overflow-hidden transition-colors duration-500">
                 <div class="p-4 border-b border-th-border flex justify-between items-center flex-wrap gap-2">
                     <h3 class="text-sm font-bold text-th-text uppercase">Biểu Đồ Hiệu Suất</h3>
@@ -270,6 +289,7 @@
                             <canvas id="gameAccuracyChart"></canvas>
                         </div>
                     </div>
+                    <!-- Stats phụ dưới biểu đồ -->
                     <div class="mt-3 flex justify-between text-[10px] text-gray-500 font-mono bg-th-panel p-2 rounded border border-th-border">
                         <span id="current-system-label">HT1</span>
                         <span id="game-stats-summary">Tổng: 0 | T/B: 0/0</span>
@@ -281,24 +301,29 @@
         </div>
     </main>
 
+    <!-- THANH NHẬP LIỆU CỐ ĐỊNH (STICKY FOOTER) -->
     <div class="fixed bottom-0 left-0 right-0 bg-th-panel/95 backdrop-blur-md border-t border-th-border p-3 z-50 shadow-[0_-10px_25px_rgba(0,0,0,0.5)] transition-colors duration-500">
         <div class="max-w-4xl mx-auto flex gap-3 items-stretch">
             
+            <!-- Nút Hoàn Tác -->
             <button onclick="undoLastAll()" class="btn-press bg-th-border hover:bg-th-bg text-white rounded-xl px-4 flex flex-col justify-center items-center shadow border border-th-border w-16 flex-shrink-0" title="Hoàn tác ván trước">
                 <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6"></path></svg>
                 <span class="text-[9px] font-bold uppercase">Back</span>
             </button>
 
+            <!-- Nút PLAYER -->
             <button onclick="addResultToAll('P')" class="btn-press flex-1 bg-gradient-to-b from-blue-500 to-blue-700 text-white rounded-xl shadow-[0_0_15px_rgba(37,99,235,0.4)] border border-blue-400 flex flex-col justify-center items-center py-2 h-16">
                 <span class="text-2xl font-black drop-shadow-md leading-none mb-1">P</span>
                 <span class="text-[10px] font-bold uppercase opacity-80">Player</span>
             </button>
 
+            <!-- Nút BANKER -->
             <button onclick="addResultToAll('B')" class="btn-press flex-1 bg-gradient-to-b from-red-500 to-red-700 text-white rounded-xl shadow-[0_0_15px_rgba(239,68,68,0.4)] border border-red-400 flex flex-col justify-center items-center py-2 h-16">
                 <span class="text-2xl font-black drop-shadow-md leading-none mb-1">B</span>
                 <span class="text-[10px] font-bold uppercase opacity-80">Banker</span>
             </button>
 
+            <!-- Mini Indicator (Báo lệnh AI) -->
             <div class="bg-th-bg rounded-xl border border-th-border w-20 flex-shrink-0 flex flex-col justify-center items-center relative overflow-hidden shadow-inner">
                 <div class="absolute top-0 w-full text-center bg-th-panel/80 text-[8px] font-bold text-th-text uppercase py-0.5 border-b border-th-border">Lệnh AI</div>
                 <div id="footer-chot-indicator" class="mt-3 text-xl font-black text-gray-500 transition-colors duration-300">-</div>
@@ -307,6 +332,9 @@
     </div>
 
 
+    <!-- ================= MODALS & OFFCANVAS ================= -->
+
+    <!-- MODAL SETTINGS -->
     <div id="settings-modal" class="fixed inset-0 bg-black/80 z-[100] hidden flex items-center justify-center backdrop-blur-sm transition-opacity">
         <div class="bg-th-bg border border-th-border rounded-2xl w-11/12 max-w-2xl shadow-2xl flex flex-col max-h-[90vh] overflow-hidden transform transition-all duration-300 scale-95" id="settings-modal-content">
             
@@ -321,6 +349,7 @@
             </div>
 
             <div class="p-5 overflow-y-auto custom-scrollbar space-y-6">
+                <!-- Theme Switcher -->
                 <div>
                     <h3 class="text-sm font-bold text-th-text uppercase tracking-wide mb-3 flex items-center gap-2">
                         🎨 Giao Diện (Theme)
@@ -341,6 +370,7 @@
                     </div>
                 </div>
 
+                <!-- Session Management -->
                 <div>
                     <h3 class="text-sm font-bold text-blue-400 uppercase tracking-wide mb-3">📁 Quản Lý Phiên (Session)</h3>
                     <div class="bg-th-panel p-3 rounded-xl border border-th-border space-y-3">
@@ -361,6 +391,7 @@
                     </div>
                 </div>
 
+                <!-- AI Config -->
                 <div>
                     <div class="flex justify-between items-center mb-3">
                         <h3 class="text-sm font-bold text-yellow-400 uppercase tracking-wide">🧠 Cấu Hình Mẫu AI (N-Gram)</h3>
@@ -385,6 +416,7 @@
                     </div>
                 </div>
 
+                <!-- System Controls -->
                 <div>
                     <h3 class="text-sm font-bold text-red-400 uppercase tracking-wide mb-3">⚠️ Tác Vụ Cấp Cao</h3>
                     <div class="grid grid-cols-2 gap-3">
@@ -397,6 +429,7 @@
         </div>
     </div>
 
+    <!-- Pattern DB Modal -->
     <div id="pattern-db-modal" class="fixed inset-0 bg-black/90 z-[200] hidden flex items-center justify-center backdrop-blur-md">
         <div class="bg-th-bg border border-th-highlight/50 rounded-2xl w-11/12 max-w-4xl p-5 shadow-[0_0_40px_var(--th-glow)] flex flex-col max-h-[90vh]">
             <div class="flex justify-between items-center mb-4 flex-shrink-0 border-b border-th-border pb-3">
@@ -413,16 +446,23 @@
         </div>
     </div>
 
+    <!-- ================= HỆ THỐNG JAVASCRIPT ================= -->
     <script>
         /* ==================== 0. UI CONTROL SCRIPTS ==================== */
         function changeTheme(themeName) {
             document.documentElement.setAttribute('data-theme', themeName);
             localStorage.setItem('vanSuNhuY_theme', themeName);
+            
             document.querySelectorAll('.theme-btn').forEach(btn => {
-                btn.style.borderColor = 'transparent'; btn.style.boxShadow = 'none';
+                btn.style.borderColor = 'transparent';
+                btn.style.boxShadow = 'none';
             });
+            
             const activeBtn = document.querySelector(`.theme-btn[data-theme-target="${themeName}"]`);
-            if (activeBtn) { activeBtn.style.borderColor = 'var(--th-highlight)'; activeBtn.style.boxShadow = '0 0 10px var(--th-glow)'; }
+            if (activeBtn) {
+                activeBtn.style.borderColor = 'var(--th-highlight)';
+                activeBtn.style.boxShadow = '0 0 10px var(--th-glow)';
+            }
         }
 
         document.addEventListener('DOMContentLoaded', () => {
@@ -434,9 +474,17 @@
             const modal = document.getElementById('settings-modal');
             const content = document.getElementById('settings-modal-content');
             if (show) {
-                modal.classList.remove('hidden'); setTimeout(() => { modal.classList.add('opacity-100'); content.classList.remove('scale-95'); content.classList.add('scale-100'); }, 10);
+                modal.classList.remove('hidden');
+                setTimeout(() => {
+                    modal.classList.add('opacity-100');
+                    content.classList.remove('scale-95');
+                    content.classList.add('scale-100');
+                }, 10);
             } else {
-                modal.classList.remove('opacity-100'); content.classList.remove('scale-100'); content.classList.add('scale-95'); setTimeout(() => modal.classList.add('hidden'), 300);
+                modal.classList.remove('opacity-100');
+                content.classList.remove('scale-100');
+                content.classList.add('scale-95');
+                setTimeout(() => modal.classList.add('hidden'), 300);
             }
         }
 
@@ -454,13 +502,23 @@
         function toggleSection(contentId, iconId) {
             const content = document.getElementById(contentId);
             const icon = document.getElementById(iconId);
-            if (content.classList.contains('collapsed')) { content.classList.remove('collapsed'); icon.classList.remove('rotate-180'); } 
-            else { content.classList.add('collapsed'); icon.classList.add('rotate-180'); }
+            if (content.classList.contains('collapsed')) {
+                content.classList.remove('collapsed');
+                icon.classList.remove('rotate-180');
+            } else {
+                content.classList.add('collapsed');
+                icon.classList.add('rotate-180');
+            }
         }
 
         function safeStorageSet(key, dataObj) {
-            try { localStorage.setItem(key, JSON.stringify(dataObj)); } 
-            catch (e) { if (e.name === 'QuotaExceededError' || e.code === 22) showToast('Bộ nhớ trình duyệt đã đầy!', 'error'); }
+            try {
+                localStorage.setItem(key, JSON.stringify(dataObj));
+            } catch (e) {
+                if (e.name === 'QuotaExceededError' || e.code === 22) {
+                    showToast('Bộ nhớ trình duyệt đã đầy!', 'error');
+                }
+            }
         }
 
         /* ==================== 1. LỚP AI 2: CHUỖI MARKOV (META-LEARNING) ==================== */
@@ -469,11 +527,9 @@
                 this.maxOrder = maxOrder;
             }
             
-            // Phân tích biểu đồ Đúng/Sai (D/S) để dự đoán D hoặc S
             predict(intervalHistoryArray) {
                 if (!intervalHistoryArray || intervalHistoryArray.length < 2) return null;
                 
-                // Chuyển mảng lịch sử thành chuỗi D/S
                 const dsSeq = intervalHistoryArray.map(item => {
                     const isCorrect = item.correct || item.isCorrect || item.predicted === item.actual;
                     return isCorrect ? 'D' : 'S';
@@ -481,7 +537,6 @@
 
                 let matrix = {};
                 
-                // Dựng ma trận Markov từ phiên hiện tại
                 for (let i = 0; i < dsSeq.length - 1; i++) {
                     for (let order = 1; order <= this.maxOrder; order++) {
                         if (i >= order - 1) {
@@ -497,13 +552,11 @@
                     }
                 }
 
-                // Dự đoán ván tiếp theo (ưu tiên bậc cao nhất)
                 for (let order = this.maxOrder; order >= 1; order--) {
                     if (dsSeq.length >= order) {
                         let currentState = dsSeq.slice(-order).join('');
                         let stats = matrix[currentState];
                         
-                        // Yêu cầu tối thiểu 2 lần xuất hiện mẫu này trong quá khứ để tin cậy
                         if (stats && stats.total >= 2) {
                             let probD = (stats.D / stats.total) * 100;
                             let probS = (stats.S / stats.total) * 100;
@@ -511,7 +564,7 @@
                             
                             if (confidence >= 60) {
                                 return {
-                                    target: probD > probS ? 'D' : 'S', // D: Dự đoán N-Gram sẽ đúng, S: N-Gram sẽ sai
+                                    target: probD > probS ? 'D' : 'S',
                                     confidence: confidence,
                                     orderFound: order,
                                     totalMatches: stats.total
@@ -637,37 +690,61 @@
             document.getElementById('db-pattern-display-count').textContent = lines.length;
         }
 
-        function openPatternDBModal() { document.getElementById('pattern-db-textarea').value = currentRawSamples; document.getElementById('pattern-db-modal').classList.remove('hidden'); }
-        function closePatternDBModal() { document.getElementById('pattern-db-modal').classList.add('hidden'); }
+        function openPatternDBModal() {
+            document.getElementById('pattern-db-textarea').value = currentRawSamples;
+            document.getElementById('pattern-db-modal').classList.remove('hidden');
+        }
+
+        function closePatternDBModal() {
+            document.getElementById('pattern-db-modal').classList.add('hidden');
+        }
 
         async function savePatternDB() {
             const newSamples = document.getElementById('pattern-db-textarea').value.trim();
-            if(!newSamples) { showToast('Trống', 'error'); return; }
+            if(!newSamples) {
+                showToast('Trống', 'error');
+                return;
+            }
             currentRawSamples = newSamples;
-            try { localStorage.setItem('vanSuNhuY_customPatterns', currentRawSamples); } catch(e){}
-            closePatternDBModal(); showToast('Đang học mẫu...', 'info');
+            try {
+                localStorage.setItem('vanSuNhuY_customPatterns', currentRawSamples);
+            } catch(e) {}
+            
+            closePatternDBModal();
+            showToast('Đang học mẫu...', 'info');
             await initializeOriginalPatternDB();
-            showToast('Đã lưu kho AI!', 'success'); calculateFinalDecision();
+            showToast('Đã lưu kho AI!', 'success');
+            calculateFinalDecision();
         }
 
         function resetPatternDBToDefault() {
-            if(confirm("Khôi phục 102 mẫu gốc?")) { currentRawSamples = defaultRawSamples; document.getElementById('pattern-db-textarea').value = currentRawSamples; }
+            if(confirm("Khôi phục 102 mẫu gốc?")) {
+                currentRawSamples = defaultRawSamples;
+                document.getElementById('pattern-db-textarea').value = currentRawSamples;
+            }
         }
 
         async function buildPatternDatabaseAsync(samples) {
-            const db = {}; const ngramSizes = Array.from({length: 18}, (_, i) => i + 3); const chunkSize = 50; 
+            const db = {};
+            const ngramSizes = Array.from({length: 18}, (_, i) => i + 3);
+            const chunkSize = 50; 
+            
             for (let idx = 0; idx < samples.length; idx += chunkSize) {
                 const chunk = samples.slice(idx, idx + chunkSize);
                 for (const line of chunk) {
                     const binaryLine = line.replace(/D/g, '1').replace(/S/g, '0');
                     for (const size of ngramSizes) {
                         for (let i = 0; i <= binaryLine.length - size - 1; i++) {
-                            const seqBin = binaryLine.substring(i, i + size); const nextBit = binaryLine[i + size];
+                            const seqBin = binaryLine.substring(i, i + size);
+                            const nextBit = binaryLine[i + size];
                             const seqDS = seqBin.replace(/1/g, 'D').replace(/0/g, 'S');
+                            
                             const key = `${size}|${seqDS}`;
                             if (!db[key]) db[key] = { seq: seqDS, length: size, total: 0, nextD: 0, nextS: 0 };
                             db[key].total++;
-                            if (nextBit === '1') db[key].nextD++; else db[key].nextS++;
+                            
+                            if (nextBit === '1') db[key].nextD++;
+                            else db[key].nextS++;
                         }
                     }
                 }
@@ -679,19 +756,29 @@
         async function initializeOriginalPatternDB() {
             const sampleStrings = currentRawSamples.split('\n').map(line => line.replace(/^\d+\.\s*/, '').trim().toUpperCase().replace(/[^DS]/g, '')).filter(s => s.length > 0);
             patternDatabase = await buildPatternDatabaseAsync(sampleStrings);
-            masterState.totalLearnedPatterns = 0; masterState.lastLearnedGameCount = 0;
-            updatePatternCountUI(); updateLearnedCountDisplay();
+            masterState.totalLearnedPatterns = 0;
+            masterState.lastLearnedGameCount = 0;
+            updatePatternCountUI();
+            updateLearnedCountDisplay();
         }
 
         function findAllMatches(inputSeq, minOccur, minConf) {
-            let matches = []; const maxSearchLen = Math.min(inputSeq.length, 20);
+            let matches = [];
+            const maxSearchLen = Math.min(inputSeq.length, 20);
+            
             for (let size = 3; size <= maxSearchLen; size++) {
-                const subSeq = inputSeq.slice(-size); const key = `${size}|${subSeq}`; const rule = patternDatabase[key];
+                const subSeq = inputSeq.slice(-size);
+                const key = `${size}|${subSeq}`;
+                const rule = patternDatabase[key];
+                
                 if (rule && rule.total >= minOccur) {
-                    const pD = (rule.nextD / rule.total) * 100; const pS = (rule.nextS / rule.total) * 100;
+                    const pD = (rule.nextD / rule.total) * 100;
+                    const pS = (rule.nextS / rule.total) * 100;
                     const confidence = Math.max(pD, pS);
+                    
                     if (confidence >= minConf) {
-                        const target = pD > pS ? 'D' : 'S'; const score = (confidence * 1000) + (Math.log10(rule.total||1) * 100);
+                        const target = pD > pS ? 'D' : 'S';
+                        const score = (confidence * 1000) + (Math.log10(rule.total||1) * 100);
                         matches.push({ target, confidence, total: rule.total, seq: subSeq, size, score, pD, pS });
                     }
                 }
@@ -699,62 +786,109 @@
             return matches;
         }
 
+        function findBestMatch(inputSeq, minOccur, minConf) {
+            const matches = findAllMatches(inputSeq, minOccur, minConf);
+            if (matches.length === 0) return null;
+            return matches.reduce((prev, current) => (prev.score > current.score) ? prev : current);
+        }
+
         /* ==================== 3. GLOBAL STATE ==================== */
         let patternConfig = { minOccurrences: 10, minConfidence: 100 };
         const masterState = {
-            currentSessionId: null, currentSessionName: 'Chưa chọn', sessions: {},
+            currentSessionId: null,
+            currentSessionName: 'Chưa chọn',
+            sessions: {},
             systemsReady: { ht1: false, ht2: false, ht3: false, ht4: false },
             systemDetails: { ht1: {}, ht2: {}, ht3: {}, ht4: {} },
-            finalDecisionHistory: [], pendingResultToEvaluate: null, currentMatches: [],
-            lastLearnedGameCount: 0, totalLearnedPatterns: 0, lastDecision: null, lastDecisionReason: ''
+            finalDecisionHistory: [],
+            pendingResultToEvaluate: null,
+            currentMatches: [],
+            lastLearnedGameCount: 0,
+            totalLearnedPatterns: 0,
+            lastDecision: null,
+            lastDecisionReason: ''
         };
-        let gameAccuracyChart = null; let currentChartSystem = 'ht1';
-        let markovModel = new MarkovBaccarat(6); // Khởi tạo Markov với bậc theo dõi 6 ván gần nhất
+        let gameAccuracyChart = null;
+        let currentChartSystem = 'ht1';
+        let markovModel = new MarkovBaccarat(6); // Khởi tạo Markov với bậc 6
 
         function learnFromNewData(intervalHistory) {
             if (!intervalHistory || intervalHistory.length === 0) return;
-            if (intervalHistory.length < masterState.lastLearnedGameCount) initializeOriginalPatternDB();
-            if (intervalHistory.length < 4) { masterState.lastLearnedGameCount = intervalHistory.length; return; }
+            
+            if (intervalHistory.length < masterState.lastLearnedGameCount) {
+                initializeOriginalPatternDB();
+            }
+            
+            if (intervalHistory.length < 4) {
+                masterState.lastLearnedGameCount = intervalHistory.length;
+                return;
+            }
+            
             let learnedSomething = false;
             for (let i = Math.max(4, masterState.lastLearnedGameCount + 1); i <= intervalHistory.length; i++) {
                 const currentSubHistory = intervalHistory.slice(0, i);
                 let dsSequence = currentSubHistory.map(item => (item.correct||item.isCorrect||item.predicted===item.actual) ? "D" : "S").join('');
-                const newBit = dsSequence.slice(-1); const contextSeq = dsSequence.slice(0, -1);
+                
+                const newBit = dsSequence.slice(-1);
+                const contextSeq = dsSequence.slice(0, -1);
                 const ngramSizes = [3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]; 
+                
                 for (const size of ngramSizes) {
                     if (contextSeq.length >= size) {
-                        const pattern = contextSeq.slice(-size); const key = `${size}|${pattern}`;
-                        if (!patternDatabase[key]) { patternDatabase[key] = { seq: pattern, length: size, total: 0, nextD: 0, nextS: 0 }; masterState.totalLearnedPatterns++; }
+                        const pattern = contextSeq.slice(-size);
+                        const key = `${size}|${pattern}`;
+                        
+                        if (!patternDatabase[key]) {
+                            patternDatabase[key] = { seq: pattern, length: size, total: 0, nextD: 0, nextS: 0 };
+                            masterState.totalLearnedPatterns++;
+                        }
+                        
                         patternDatabase[key].total++;
-                        if (newBit === 'D') patternDatabase[key].nextD++; else patternDatabase[key].nextS++;
+                        if (newBit === 'D') patternDatabase[key].nextD++;
+                        else patternDatabase[key].nextS++;
+                        
                         learnedSomething = true;
                     }
                 }
             }
+            
             masterState.lastLearnedGameCount = intervalHistory.length;
             if (learnedSomething) updateLearnedCountDisplay();
         }
 
         function updateLearnedCountDisplay() {
             const displayEl = document.getElementById('learned-count-display');
-            if (displayEl) displayEl.textContent = `(+${masterState.totalLearnedPatterns} Học)`;
+            if (displayEl) {
+                displayEl.textContent = `(+${masterState.totalLearnedPatterns} Học)`;
+            }
         }
 
         /* ==================== 4. CORE LOGIC (HYBRID DECISION) ==================== */
         function calculateFinalDecision() {
             const ht1Details = masterState.systemDetails.ht1;
+            
             if (!ht1Details || !ht1Details.intervalHistory || ht1Details.intervalHistory.length === 0) {
-                updateFinalDecisionDisplay(null, "Chờ nhập ván đầu tiên...", "CHỜ HT1"); masterState.currentMatches = []; renderMatchesAnalysis(); return;
+                updateFinalDecisionDisplay(null, "Chờ nhập ván đầu tiên...", "CHỜ HT1");
+                masterState.currentMatches = [];
+                renderMatchesAnalysis();
+                return;
             }
             
             const currentRange = ht1Details.range || '';
             if (!currentRange.includes('90') && !currentRange.includes('100')) {
-                updateFinalDecisionDisplay(null, `HT1 Range chưa đạt 90-100% (${currentRange}). Hệ thống Hybrid tạm ngưng.`, "TÍN HIỆU YẾU"); masterState.currentMatches = []; renderMatchesAnalysis(); return;
+                updateFinalDecisionDisplay(null, `HT1 Range chưa đạt 90-100% (${currentRange}). Hệ thống Hybrid tạm ngưng.`, "TÍN HIỆU YẾU");
+                masterState.currentMatches = [];
+                renderMatchesAnalysis();
+                return;
             }
             
             let dsSequence = ht1Details.intervalHistory.map(item => (item.correct||item.isCorrect||item.predicted===item.actual) ? "D" : "S").join('');
+            
             if (dsSequence.length < 3) {
-                updateFinalDecisionDisplay(null, `Cần tối thiểu 3 ván để N-Gram & Markov hoạt động. Đang có: ${dsSequence.length}`, "TÍCH LUỸ DỮ LIỆU"); masterState.currentMatches = []; renderMatchesAnalysis(); return;
+                updateFinalDecisionDisplay(null, `Cần tối thiểu 3 ván để N-Gram & Markov hoạt động. Đang có: ${dsSequence.length}`, "TÍCH LUỸ DỮ LIỆU");
+                masterState.currentMatches = [];
+                renderMatchesAnalysis();
+                return;
             }
 
             // --- LỚP 1: Chạy N-Gram ---
@@ -769,13 +903,18 @@
             const markovMatch = markovModel.predict(ht1Details.intervalHistory);
 
             const ht1VerdictRaw = ht1Details.verdict ? ht1Details.verdict.toUpperCase().trim() : '';
-            let baseSignal = null; let expectedHT1 = 'D'; 
+            let baseSignal = null;
+            let expectedHT1 = 'D'; 
 
-            if (ht1VerdictRaw.includes('P')) baseSignal = 'P'; else if (ht1VerdictRaw.includes('B')) baseSignal = 'B';
+            if (ht1VerdictRaw.includes('P')) baseSignal = 'P';
+            else if (ht1VerdictRaw.includes('B')) baseSignal = 'B';
+            
             if (ht1VerdictRaw.includes('NGƯỢC')) expectedHT1 = 'S'; 
 
             if (!baseSignal) {
-                updateFinalDecisionDisplay(null, `Đợi lệnh từ 🧠 Phán Quyết của HT1 để phân tích.`, "CHỜ PHÁN QUYẾT"); renderMatchesAnalysis(); return;
+                updateFinalDecisionDisplay(null, `Đợi lệnh từ 🧠 Phán Quyết của HT1 để phân tích.`, "CHỜ PHÁN QUYẾT");
+                renderMatchesAnalysis();
+                return;
             }
 
             // --- TRỌNG TÀI TỔNG HỢP (META-LEARNING LOGIC) ---
@@ -784,9 +923,7 @@
             let prioritySystem = '';
 
             if (bestNgram && markovMatch) {
-                // Nếu cả 2 AI đều có tín hiệu
                 if (bestNgram.target === markovMatch.target) {
-                    // ĐỒNG THUẬN KÉP
                     finalDecision = (bestNgram.target === expectedHT1) ? baseSignal : ((baseSignal === 'P') ? 'B' : 'P');
                     reasonHtml = `
                         <div class="text-left text-sm text-gray-300">
@@ -799,12 +936,11 @@
                     `;
                     prioritySystem = 'ĐỒNG THUẬN KÉP (HIGH CONFIDENCE)';
                 } else {
-                    // XUNG ĐỘT -> MARKOV ĐƯỢC ƯU TIÊN (Vì Markov phản ánh phong độ hiện tại)
                     finalDecision = (markovMatch.target === expectedHT1) ? baseSignal : ((baseSignal === 'P') ? 'B' : 'P');
                     reasonHtml = `
                         <div class="text-left text-sm text-gray-300">
                             <span class="text-yellow-500 font-bold uppercase block mb-1">⚡ Xung đột: Markov Override N-Gram</span>
-                            • <strong class="text-gray-500">N-Gram:</strong> Báo <strong class="text-gray-500">${bestNgram.target}</strong> (Mẫu ${bestNgram.size} bit - Đã bị bỏ qua vì có rủi ro thay đổi cầu).<br>
+                            • <strong class="text-gray-500">N-Gram:</strong> Báo <strong class="text-gray-500">${bestNgram.target}</strong> (Mẫu ${bestNgram.size} bit - Đã bị bỏ qua vì rủi ro thay đổi cầu).<br>
                             • <strong class="text-th-highlight">Markov:</strong> Phát hiện chuỗi phong độ bậc <strong class="text-yellow-400">${markovMatch.orderFound}</strong>. Ép lệnh về <strong class="text-white">${markovMatch.target}</strong>.<br>
                             ➜ Hành động AI: Tuân theo Markov, <strong class="text-white">${markovMatch.target === expectedHT1 ? 'ĐÁNH THEO HT1' : 'BẺ NGƯỢC HT1'}</strong>.
                         </div>
@@ -813,7 +949,6 @@
                 }
             } 
             else if (bestNgram && !markovMatch) {
-                // Chỉ N-Gram có tín hiệu (Markov chưa đủ dữ liệu hoặc không rõ ràng)
                 finalDecision = (bestNgram.target === expectedHT1) ? baseSignal : ((baseSignal === 'P') ? 'B' : 'P');
                 reasonHtml = `
                     <div class="text-left text-sm text-gray-300">
@@ -826,7 +961,6 @@
                 prioritySystem = `N-GRAM ${bestNgram.size} BIT`;
             }
             else if (!bestNgram && markovMatch) {
-                // Chỉ Markov có tín hiệu (N-Gram đứt cầu do không có mẫu tĩnh phù hợp)
                 finalDecision = (markovMatch.target === expectedHT1) ? baseSignal : ((baseSignal === 'P') ? 'B' : 'P');
                 reasonHtml = `
                     <div class="text-left text-sm text-gray-300">
@@ -839,7 +973,6 @@
                 prioritySystem = `MARKOV BẬC ${markovMatch.orderFound} (BACK-OFF)`;
             }
             else {
-                // Cả 2 đều không có tín hiệu an toàn
                 updateFinalDecisionDisplay(null, "Không có tín hiệu an toàn từ cả N-Gram và Markov. Đứng ngoài quan sát.", "BỎ QUA LỆNH");
                 renderMatchesAnalysis();
                 return;
@@ -859,20 +992,34 @@
             const sPercEl = document.getElementById('analysis-s-perc');
             
             if (matches.length === 0) {
-                totalEl.textContent='0'; dCountEl.textContent='0'; dPercEl.textContent='0%'; sCountEl.textContent='0'; sPercEl.textContent='0%';
-                tbody.innerHTML = '<tr><td colspan="4" class="p-2 text-center text-gray-600">Trống</td></tr>'; return;
+                totalEl.textContent='0';
+                dCountEl.textContent='0';
+                dPercEl.textContent='0%';
+                sCountEl.textContent='0';
+                sPercEl.textContent='0%';
+                tbody.innerHTML = '<tr><td colspan="4" class="p-2 text-center text-gray-600">Trống</td></tr>';
+                return;
             }
+            
             const sortMode = document.getElementById('matchesSortMode').value;
             matches.sort((a, b) => {
                 if (sortMode === 'score_desc') return b.score - a.score;
                 if (sortMode === 'size_asc') return a.size - b.size;
                 if (sortMode === 'size_desc') return b.size - a.size;
                 if (sortMode === 'conf_desc') return b.confidence - a.confidence;
-                if (sortMode === 'conf_asc') return a.confidence - b.confidence; return 0;
+                if (sortMode === 'conf_asc') return a.confidence - b.confidence;
+                return 0;
             });
-            const total = matches.length; const countD = matches.filter(m => m.target === 'D').length; const countS = matches.filter(m => m.target === 'S').length;
-            totalEl.textContent = total; dCountEl.textContent = countD; dPercEl.textContent = ((countD/total)*100).toFixed(0)+'%';
-            sCountEl.textContent = countS; sPercEl.textContent = ((countS/total)*100).toFixed(0)+'%';
+            
+            const total = matches.length;
+            const countD = matches.filter(m => m.target === 'D').length;
+            const countS = matches.filter(m => m.target === 'S').length;
+            
+            totalEl.textContent = total;
+            dCountEl.textContent = countD;
+            dPercEl.textContent = ((countD/total)*100).toFixed(0)+'%';
+            sCountEl.textContent = countS;
+            sPercEl.textContent = ((countS/total)*100).toFixed(0)+'%';
 
             let html = '';
             matches.forEach((m, idx) => {
@@ -897,122 +1044,245 @@
             priorityEl.textContent = prioritySystem || 'CHỜ XỬ LÝ';
             
             if (decision === 'P') {
-                text.innerHTML = 'ĐÁNH PLAYER'; text.className = 'text-5xl md:text-6xl font-black text-blue-400 drop-shadow-[0_0_15px_rgba(59,130,246,0.8)]';
+                text.innerHTML = 'ĐÁNH PLAYER';
+                text.className = 'text-5xl md:text-6xl font-black text-blue-400 drop-shadow-[0_0_15px_rgba(59,130,246,0.8)]';
                 container.parentElement.parentElement.className = "bg-gradient-to-b from-blue-900/50 to-th-panel rounded-2xl shadow-[0_0_30px_rgba(59,130,246,0.2)] border border-blue-500/50 overflow-hidden flex flex-col transition-all duration-300";
-                miniFooter.innerHTML = 'PLAYER'; miniFooter.className = "mt-1 font-black text-blue-400 drop-shadow";
+                miniFooter.innerHTML = 'PLAYER';
+                miniFooter.className = "mt-1 font-black text-blue-400 drop-shadow";
             } else if (decision === 'B') {
-                text.innerHTML = 'ĐÁNH BANKER'; text.className = 'text-5xl md:text-6xl font-black text-red-400 drop-shadow-[0_0_15px_rgba(239,68,68,0.8)]';
+                text.innerHTML = 'ĐÁNH BANKER';
+                text.className = 'text-5xl md:text-6xl font-black text-red-400 drop-shadow-[0_0_15px_rgba(239,68,68,0.8)]';
                 container.parentElement.parentElement.className = "bg-gradient-to-b from-red-900/50 to-th-panel rounded-2xl shadow-[0_0_30px_rgba(239,68,68,0.2)] border border-red-500/50 overflow-hidden flex flex-col transition-all duration-300";
-                miniFooter.innerHTML = 'BANKER'; miniFooter.className = "mt-1 font-black text-red-400 drop-shadow";
+                miniFooter.innerHTML = 'BANKER';
+                miniFooter.className = "mt-1 font-black text-red-400 drop-shadow";
             } else {
-                text.innerHTML = 'CHỜ TÍN HIỆU'; text.className = 'text-4xl md:text-5xl font-black text-gray-600';
+                text.innerHTML = 'CHỜ TÍN HIỆU';
+                text.className = 'text-4xl md:text-5xl font-black text-gray-600';
                 container.parentElement.parentElement.className = "bg-th-bg rounded-2xl shadow-[0_0_30px_var(--th-glow)] border border-th-highlight/30 overflow-hidden flex flex-col transition-all duration-300";
-                miniFooter.innerHTML = '...'; miniFooter.className = "mt-1 font-black text-gray-600";
+                miniFooter.innerHTML = '...';
+                miniFooter.className = "mt-1 font-black text-gray-600";
             }
             
-            reasonEl.innerHTML = decision === null ? `<div class="text-gray-500 italic text-sm text-center">${reasonHtml}</div>` : reasonHtml;
-            masterState.lastDecision = decision; masterState.lastDecisionReason = reasonHtml.replace(/<[^>]*>?/gm, ' '); 
+            if (decision === null) {
+                reasonEl.innerHTML = `<div class="text-gray-500 italic text-sm text-center">${reasonHtml}</div>`;
+            } else {
+                reasonEl.innerHTML = reasonHtml;
+            }
+            
+            masterState.lastDecision = decision;
+            masterState.lastDecisionReason = reasonHtml.replace(/<[^>]*>?/gm, ' '); 
         }
 
         /* ==================== 5. SYNC & HISTORY ==================== */
         function syncFinalDecisionHistoryFromHT1(intervalHistory) {
             if (!intervalHistory || intervalHistory.length < 4) return;
-            let newHistory = []; let dsSequence = "";
+            
+            let newHistory = [];
+            let dsSequence = "";
+            
             for (let i = 0; i < intervalHistory.length; i++) {
-                const item = intervalHistory[i]; const isCorrect = item.correct || item.isCorrect || item.predicted === item.actual;
+                const item = intervalHistory[i];
+                const isCorrect = item.correct || item.isCorrect || item.predicted === item.actual;
                 const currentBit = isCorrect ? "D" : "S";
+                
                 if (i >= 3) {
                     const bestMatch = findBestMatch(dsSequence, patternConfig.minOccurrences, patternConfig.minConfidence);
                     if (bestMatch && item.predicted && item.actual) {
-                        const ht1Verdict = item.predicted.toUpperCase().trim(); let baseSignal = null;
-                        if (ht1Verdict.includes('P')) baseSignal = 'P'; else if (ht1Verdict.includes('B')) baseSignal = 'B';
+                        const ht1Verdict = item.predicted.toUpperCase().trim();
+                        let baseSignal = null;
+                        
+                        if (ht1Verdict.includes('P')) baseSignal = 'P';
+                        else if (ht1Verdict.includes('B')) baseSignal = 'B';
+                        
                         if (baseSignal) {
                             let finalDecision = (bestMatch.target === 'D') ? baseSignal : ((baseSignal === 'P') ? 'B' : 'P');
-                            newHistory.push({ gameNumber: i + 1, decision: finalDecision, actual: item.actual, correct: finalDecision === item.actual, reason: `Auto: ${bestMatch.size} Bit`, timestamp: Date.now() });
+                            newHistory.push({
+                                gameNumber: i + 1,
+                                decision: finalDecision,
+                                actual: item.actual,
+                                correct: finalDecision === item.actual,
+                                reason: `Auto: ${bestMatch.size} Bit`,
+                                timestamp: Date.now()
+                            });
                         }
                     }
                 }
                 dsSequence += currentBit; 
             }
-            if (newHistory.length > 0) { masterState.finalDecisionHistory = newHistory; updateFinalDecisionStats(); saveFinalDecisionHistory(); }
+            
+            if (newHistory.length > 0) {
+                masterState.finalDecisionHistory = newHistory;
+                updateFinalDecisionStats();
+                saveFinalDecisionHistory();
+            }
         }
 
         function addFinalDecisionToHistory(actualResult) {
             if (!masterState.lastDecision) return; 
-            masterState.finalDecisionHistory.push({ gameNumber: masterState.finalDecisionHistory.length + 1, decision: masterState.lastDecision, actual: actualResult, correct: masterState.lastDecision === actualResult, reason: masterState.lastDecisionReason || '', timestamp: Date.now() });
-            updateFinalDecisionStats(); saveFinalDecisionHistory();
+            
+            masterState.finalDecisionHistory.push({
+                gameNumber: masterState.finalDecisionHistory.length + 1,
+                decision: masterState.lastDecision,
+                actual: actualResult,
+                correct: masterState.lastDecision === actualResult,
+                reason: masterState.lastDecisionReason || '',
+                timestamp: Date.now()
+            });
+            
+            updateFinalDecisionStats();
+            saveFinalDecisionHistory();
         }
 
         function updateFinalDecisionStats() {
-            const history = masterState.finalDecisionHistory; const totalGames = history.length; const correctGames = history.filter(item => item.correct).length;
+            const history = masterState.finalDecisionHistory;
+            const totalGames = history.length;
+            const correctGames = history.filter(item => item.correct).length;
             const accuracyRate = totalGames > 0 ? ((correctGames / totalGames) * 100).toFixed(1) : 0;
-            document.getElementById('final-total-games').textContent = totalGames; document.getElementById('final-correct-games').textContent = correctGames; document.getElementById('final-accuracy-rate').textContent = `${accuracyRate}%`;
             
-            // Mini Chart Update
+            document.getElementById('final-total-games').textContent = totalGames;
+            document.getElementById('final-correct-games').textContent = correctGames;
+            document.getElementById('final-accuracy-rate').textContent = `${accuracyRate}%`;
+            
             const chartEl = document.getElementById('final-decision-chart');
-            if (!history || history.length === 0) { chartEl.innerHTML = '<p class="text-gray-600 text-[10px] text-center w-full mt-2">Trống</p>'; }
-            else {
+            if (!history || history.length === 0) {
+                chartEl.innerHTML = '<p class="text-gray-600 text-[10px] text-center w-full mt-2">Trống</p>';
+            } else {
                 let chartHTML = '<div class="flex items-end justify-start h-full gap-0.5 min-w-max px-1">'; 
                 history.forEach((item) => {
                     const barClass = item.correct ? 'h-full bg-blue-500' : 'h-1/2 bg-red-500';
                     chartHTML += `<div class="w-1.5 flex items-end"><div class="w-full rounded-[1px] ${barClass}"></div></div>`;
                 });
-                chartHTML += '</div>'; chartEl.innerHTML = chartHTML; chartEl.scrollLeft = chartEl.scrollWidth; 
+                chartHTML += '</div>';
+                chartEl.innerHTML = chartHTML;
+                chartEl.scrollLeft = chartEl.scrollWidth; 
             }
         }
-        function saveFinalDecisionHistory() { safeStorageSet('vanSuNhuY_finalDecisionHistory_v5', masterState.finalDecisionHistory); }
-        function loadFinalDecisionHistory() { try { const saved = localStorage.getItem('vanSuNhuY_finalDecisionHistory_v5'); if(saved) { masterState.finalDecisionHistory = JSON.parse(saved); updateFinalDecisionStats(); } } catch(e){} }
+
+        function saveFinalDecisionHistory() {
+            safeStorageSet('vanSuNhuY_finalDecisionHistory_v5', masterState.finalDecisionHistory);
+        }
+
+        function loadFinalDecisionHistory() {
+            try {
+                const saved = localStorage.getItem('vanSuNhuY_finalDecisionHistory_v5');
+                if(saved) {
+                    masterState.finalDecisionHistory = JSON.parse(saved);
+                    updateFinalDecisionStats();
+                }
+            } catch(e) {}
+        }
 
         /* ==================== 6. INPUT CONTROLS ==================== */
         function addResultToAll(result) {
-            if (!masterState.currentSessionId) { showToast('Vào Cài Đặt tạo phiên trước!', 'warning'); toggleSettingsModal(true); return; }
+            if (!masterState.currentSessionId) {
+                showToast('Vào Cài Đặt tạo phiên trước!', 'warning');
+                toggleSettingsModal(true);
+                return;
+            }
             const session = masterState.sessions[masterState.currentSessionId];
-            if (!session.history) session.history = []; session.history.push(result);
-            saveMasterSessions(); updateCurrentSessionInfo();
+            if (!session.history) session.history = [];
+            session.history.push(result);
+            
+            saveMasterSessions();
+            updateCurrentSessionInfo();
             masterState.pendingResultToEvaluate = result; 
             broadcastToAll('add_result', result);
-            setTimeout(() => { broadcastToAll('get_accuracy'); broadcastToAll('get_chot_history'); broadcastToAll('get_system_details'); }, 150);
+            
+            setTimeout(() => {
+                broadcastToAll('get_accuracy');
+                broadcastToAll('get_chot_history');
+                broadcastToAll('get_system_details');
+            }, 150);
         }
 
         function undoLastAll() {
             if (!masterState.currentSessionId) return;
             const session = masterState.sessions[masterState.currentSessionId];
             if (session.history.length === 0) return;
-            session.history.pop(); saveMasterSessions(); updateCurrentSessionInfo(); broadcastToAll('undo_last');
-            if (masterState.finalDecisionHistory.length > 0) { masterState.finalDecisionHistory.pop(); updateFinalDecisionStats(); saveFinalDecisionHistory(); }
+            
+            session.history.pop();
+            saveMasterSessions();
+            updateCurrentSessionInfo();
+            broadcastToAll('undo_last');
+            
+            if (masterState.finalDecisionHistory.length > 0) {
+                masterState.finalDecisionHistory.pop();
+                updateFinalDecisionStats();
+                saveFinalDecisionHistory();
+            }
+            
             masterState.pendingResultToEvaluate = null; 
-            setTimeout(() => { broadcastToAll('get_accuracy'); broadcastToAll('get_chot_history'); broadcastToAll('get_system_details'); }, 150);
+            setTimeout(() => {
+                broadcastToAll('get_accuracy');
+                broadcastToAll('get_chot_history');
+                broadcastToAll('get_system_details');
+            }, 150);
         }
 
         function clearHistoryAll() {
             if (!masterState.currentSessionId) return;
             if (confirm('Xóa sạch lịch sử hiện tại?')) {
-                masterState.sessions[masterState.currentSessionId].history = []; saveMasterSessions(); updateCurrentSessionInfo(); broadcastToAll('clear_history');
-                masterState.finalDecisionHistory = []; masterState.pendingResultToEvaluate = null; initializeOriginalPatternDB();
-                updateFinalDecisionStats(); saveFinalDecisionHistory(); calculateFinalDecision(); showToast('Đã xoá lịch sử', 'info');
+                masterState.sessions[masterState.currentSessionId].history = [];
+                saveMasterSessions();
+                updateCurrentSessionInfo();
+                broadcastToAll('clear_history');
+                
+                masterState.finalDecisionHistory = [];
+                masterState.pendingResultToEvaluate = null;
+                initializeOriginalPatternDB();
+                
+                updateFinalDecisionStats();
+                saveFinalDecisionHistory();
+                calculateFinalDecision();
+                showToast('Đã xoá lịch sử', 'info');
             }
         }
 
         /* ==================== 7. IFRAME & SYSTEM COMMUNICATION ==================== */
         function sendToIframe(iframeId, command, data = null) {
             const iframe = document.getElementById(iframeId);
-            if (iframe && iframe.contentWindow) { iframe.contentWindow.postMessage({ command: command, data: data, source: 'master' }, '*'); return true; } return false;
+            if (iframe && iframe.contentWindow) {
+                iframe.contentWindow.postMessage({ command: command, data: data, source: 'master' }, '*');
+                return true;
+            }
+            return false;
         }
-        function broadcastToAll(command, data = null) { ['ht1', 'ht2', 'ht3', 'ht4'].forEach(sys => sendToIframe(`${sys}-iframe`, command, data)); }
+
+        function broadcastToAll(command, data = null) {
+            ['ht1', 'ht2', 'ht3', 'ht4'].forEach(sys => sendToIframe(`${sys}-iframe`, command, data));
+        }
         
         window.addEventListener('message', function(event) {
             if (['ht1', 'ht2', 'ht3', 'ht4'].includes(event.data.source)) {
-                const system = event.data.source; const data = event.data;
+                const system = event.data.source;
+                const data = event.data;
+                
                 switch(data.type) {
-                    case 'ready': masterState.systemsReady[system] = true; checkAllSystemsReady(); break;
-                    case 'accuracy_update': document.getElementById(`${system}-accuracy`).textContent = `${data.accuracy.toFixed(1)}%`; break;
-                    case 'chot_history_update': masterState[`${system}ChotHistory`] = data.history; if(currentChartSystem===system || currentChartSystem==='all') showGameChart(currentChartSystem==='all'?'all':system); break;
+                    case 'ready':
+                        masterState.systemsReady[system] = true;
+                        checkAllSystemsReady();
+                        break;
+                    case 'accuracy_update':
+                        document.getElementById(`${system}-accuracy`).textContent = `${data.accuracy.toFixed(1)}%`;
+                        break;
+                    case 'chot_history_update':
+                        masterState[`${system}ChotHistory`] = data.history;
+                        if(currentChartSystem === system || currentChartSystem === 'all') {
+                            showGameChart(currentChartSystem === 'all' ? 'all' : system);
+                        }
+                        break;
                     case 'system_details_update': 
                         masterState.systemDetails[system] = data.details;
                         if (system === 'ht1') {
                             learnFromNewData(data.details.intervalHistory); 
-                            if (masterState.pendingResultToEvaluate !== null) { addFinalDecisionToHistory(masterState.pendingResultToEvaluate); masterState.pendingResultToEvaluate = null; } 
-                            else if (masterState.finalDecisionHistory.length === 0 && data.details.intervalHistory && data.details.intervalHistory.length >= 4) { syncFinalDecisionHistoryFromHT1(data.details.intervalHistory); }
+                            
+                            if (masterState.pendingResultToEvaluate !== null) {
+                                addFinalDecisionToHistory(masterState.pendingResultToEvaluate);
+                                masterState.pendingResultToEvaluate = null;
+                            } else if (masterState.finalDecisionHistory.length === 0 && data.details.intervalHistory && data.details.intervalHistory.length >= 4) {
+                                syncFinalDecisionHistoryFromHT1(data.details.intervalHistory);
+                            }
+                            
                             calculateFinalDecision();       
                         }
                         break;
@@ -1024,99 +1294,282 @@
             if(masterState.systemsReady.ht1 && masterState.systemsReady.ht2 && masterState.systemsReady.ht3 && masterState.systemsReady.ht4) {
                 document.getElementById('sync-status-header').textContent = 'Live';
                 document.getElementById('sync-status-header').previousElementSibling.classList.replace('bg-green-500', 'bg-blue-500');
-                broadcastToAll('get_accuracy'); broadcastToAll('get_chot_history'); broadcastToAll('get_system_details');
+                broadcastToAll('get_accuracy');
+                broadcastToAll('get_chot_history');
+                broadcastToAll('get_system_details');
             }
         }
 
         /* ==================== 8. SESSION MANAGEMENT ==================== */
-        function loadMasterSessions() { try { const saved = localStorage.getItem('vanSuNhuY_sessions_v2'); if (saved) { masterState.sessions = JSON.parse(saved); updateMasterSessionSelector(); } } catch (e) {} }
-        function saveMasterSessions() { safeStorageSet('vanSuNhuY_sessions_v2', masterState.sessions); }
-        function updateMasterSessionSelector() {
-            const selector = document.getElementById('masterSessionSelector'); selector.innerHTML = '<option value="">Chọn phiên...</option>';
-            Object.keys(masterState.sessions).forEach(id => { const opt = document.createElement('option'); opt.value = id; opt.textContent = masterState.sessions[id].name; selector.appendChild(opt); });
+        function loadMasterSessions() {
+            try {
+                const saved = localStorage.getItem('vanSuNhuY_sessions_v2');
+                if (saved) {
+                    masterState.sessions = JSON.parse(saved);
+                    updateMasterSessionSelector();
+                }
+            } catch (e) {}
         }
+
+        function saveMasterSessions() {
+            safeStorageSet('vanSuNhuY_sessions_v2', masterState.sessions);
+        }
+
+        function updateMasterSessionSelector() {
+            const selector = document.getElementById('masterSessionSelector');
+            selector.innerHTML = '<option value="">Chọn phiên...</option>';
+            
+            Object.keys(masterState.sessions).forEach(id => {
+                const opt = document.createElement('option');
+                opt.value = id;
+                opt.textContent = masterState.sessions[id].name;
+                selector.appendChild(opt);
+            });
+        }
+
         function createNewSessionAll() {
             const sessionName = prompt('Tên phiên:', `Phiên ${new Date().toLocaleTimeString()}`);
             if (sessionName) {
-                const id = `session-${Date.now()}`; masterState.sessions[id] = { id: id, name: sessionName, created: new Date().toISOString(), history: [] };
-                masterState.currentSessionId = id; masterState.currentSessionName = sessionName;
-                saveMasterSessions(); updateMasterSessionSelector(); updateCurrentSessionInfo(); broadcastToAll('create_session', { name: sessionName, id: id }); initializeOriginalPatternDB(); showToast('Đã tạo phiên', 'success');
+                const id = `session-${Date.now()}`;
+                masterState.sessions[id] = { id: id, name: sessionName, created: new Date().toISOString(), history: [] };
+                masterState.currentSessionId = id;
+                masterState.currentSessionName = sessionName;
+                
+                saveMasterSessions();
+                updateMasterSessionSelector();
+                updateCurrentSessionInfo();
+                broadcastToAll('create_session', { name: sessionName, id: id });
+                initializeOriginalPatternDB();
+                
+                showToast('Đã tạo phiên', 'success');
             }
         }
+
         function renameMasterSession() {
-            if (!masterState.currentSessionId) return; const newName = prompt('Nhập tên mới:', masterState.currentSessionName);
-            if (newName) { masterState.sessions[masterState.currentSessionId].name = newName; masterState.currentSessionName = newName; saveMasterSessions(); updateMasterSessionSelector(); updateCurrentSessionInfo(); broadcastToAll('rename_session', { id: masterState.currentSessionId, name: newName }); }
+            if (!masterState.currentSessionId) return;
+            const newName = prompt('Nhập tên mới:', masterState.currentSessionName);
+            
+            if (newName) {
+                masterState.sessions[masterState.currentSessionId].name = newName;
+                masterState.currentSessionName = newName;
+                saveMasterSessions();
+                updateMasterSessionSelector();
+                updateCurrentSessionInfo();
+                broadcastToAll('rename_session', { id: masterState.currentSessionId, name: newName });
+            }
         }
+
         function updateCurrentSessionInfo() {
             document.getElementById('currentSessionName').textContent = masterState.currentSessionName;
             const session = masterState.sessions[masterState.currentSessionId];
-            if (session) document.getElementById('totalGamesMaster').textContent = session.history ? session.history.length : 0;
+            if (session) {
+                document.getElementById('totalGamesMaster').textContent = session.history ? session.history.length : 0;
+            }
         }
+
         function syncAllSystems() {
-            if (!masterState.currentSessionId) return; const session = masterState.sessions[masterState.currentSessionId];
-            initializeOriginalPatternDB(); masterState.pendingResultToEvaluate = null; masterState.finalDecisionHistory = []; 
+            if (!masterState.currentSessionId) return;
+            const session = masterState.sessions[masterState.currentSessionId];
+            
+            initializeOriginalPatternDB();
+            masterState.pendingResultToEvaluate = null;
+            masterState.finalDecisionHistory = []; 
+            
             broadcastToAll('load_session', { id: masterState.currentSessionId, name: session.name, history: [...session.history] });
-            setTimeout(() => { broadcastToAll('get_accuracy'); broadcastToAll('get_chot_history'); broadcastToAll('get_system_details'); }, 150);
+            setTimeout(() => {
+                broadcastToAll('get_accuracy');
+                broadcastToAll('get_chot_history');
+                broadcastToAll('get_system_details');
+            }, 150);
         }
+
         function resetAllSystems() {
             if (confirm('Xoá toàn bộ?')) {
-                masterState.sessions = {}; masterState.currentSessionId = null; masterState.currentSessionName = 'Chưa chọn'; masterState.finalDecisionHistory = []; masterState.pendingResultToEvaluate = null; initializeOriginalPatternDB();
-                localStorage.removeItem('vanSuNhuY_sessions_v2'); localStorage.removeItem('vanSuNhuY_finalDecisionHistory_v5');
-                updateMasterSessionSelector(); updateCurrentSessionInfo(); updateFinalDecisionStats(); broadcastToAll('reset_system'); renderEmptyChart(); calculateFinalDecision();
+                masterState.sessions = {};
+                masterState.currentSessionId = null;
+                masterState.currentSessionName = 'Chưa chọn';
+                masterState.finalDecisionHistory = [];
+                masterState.pendingResultToEvaluate = null;
+                
+                initializeOriginalPatternDB();
+                
+                localStorage.removeItem('vanSuNhuY_sessions_v2');
+                localStorage.removeItem('vanSuNhuY_finalDecisionHistory_v5');
+                
+                updateMasterSessionSelector();
+                updateCurrentSessionInfo();
+                updateFinalDecisionStats();
+                broadcastToAll('reset_system');
+                renderEmptyChart();
+                calculateFinalDecision();
             }
         }
 
         /* ==================== 9. CHARTS & EXPORT ==================== */
         function showGameChart(system) {
             currentChartSystem = system;
-            document.querySelectorAll('.system-chart-btn').forEach(btn => { btn.classList.remove('bg-blue-600', 'text-white', 'text-blue-400', 'text-th-highlight'); btn.classList.add('bg-th-bg', 'text-th-text'); });
+            
+            document.querySelectorAll('.system-chart-btn').forEach(btn => {
+                btn.classList.remove('bg-blue-600', 'text-white', 'text-blue-400', 'text-th-highlight');
+                btn.classList.add('bg-th-bg', 'text-th-text');
+            });
+            
             const activeBtn = document.querySelector(`[data-system="${system}"]`);
-            if(activeBtn) { activeBtn.classList.remove('bg-th-bg', 'text-th-text'); activeBtn.classList.add('bg-blue-600', 'text-white'); }
+            if(activeBtn) {
+                activeBtn.classList.remove('bg-th-bg', 'text-th-text');
+                activeBtn.classList.add('bg-blue-600', 'text-white');
+            }
             
             document.getElementById('current-system-label').textContent = system.toUpperCase();
+            
             const history = masterState[`${system}ChotHistory`];
-            if (!history || history.length === 0) { renderEmptyChart(); return; }
+            if (!history || history.length === 0) {
+                renderEmptyChart();
+                return;
+            }
             
             const ctx = document.getElementById('gameAccuracyChart').getContext('2d');
-            const labels = []; const correctData = []; const incorrectData = []; let c=0;
+            const labels = [];
+            const correctData = [];
+            const incorrectData = [];
+            let c = 0;
+            
             history.forEach((pred, idx) => {
                 labels.push(`V${idx+1}`);
-                if (pred && pred.predicted && pred.actual) { const isCorrect = pred.predicted === pred.actual; correctData.push(isCorrect ? 1 : 0); incorrectData.push(isCorrect ? 0 : 1); if(isCorrect)c++; }
+                if (pred && pred.predicted && pred.actual) {
+                    const isCorrect = pred.predicted === pred.actual;
+                    correctData.push(isCorrect ? 1 : 0);
+                    incorrectData.push(isCorrect ? 0 : 1);
+                    if(isCorrect) c++;
+                }
             });
+            
             document.getElementById('chart-area-container').style.minWidth = Math.max(labels.length * 20, 100) + 'px';
+            
             if (gameAccuracyChart) gameAccuracyChart.destroy();
-            gameAccuracyChart = new Chart(ctx, { type: 'bar', data: { labels: labels, datasets: [ { label: 'Đúng', data: correctData, backgroundColor: '#22c55e' }, { label: 'Sai', data: incorrectData, backgroundColor: '#ef4444' } ] }, options: { responsive: true, maintainAspectRatio: false, scales: { x: { stacked: true, display:false }, y: { stacked: true, max: 1, display:false } }, plugins: { legend: { display: false } } } });
-            document.getElementById('game-stats-summary').textContent = `Tổng: ${history.length} | T/B: ${c}/${history.length-c}`; document.getElementById('game-accuracy-summary').textContent = `WinRate: ${((c/history.length)*100).toFixed(1)}%`;
+            
+            gameAccuracyChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        { label: 'Đúng', data: correctData, backgroundColor: '#22c55e' },
+                        { label: 'Sai', data: incorrectData, backgroundColor: '#ef4444' }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: { stacked: true, display: false },
+                        y: { stacked: true, max: 1, display: false }
+                    },
+                    plugins: { legend: { display: false } }
+                }
+            });
+            
+            document.getElementById('game-stats-summary').textContent = `Tổng: ${history.length} | T/B: ${c}/${history.length-c}`;
+            document.getElementById('game-accuracy-summary').textContent = `WinRate: ${((c/history.length)*100).toFixed(1)}%`;
         }
 
         function showAllGameCharts() { 
             currentChartSystem = 'all';
-            document.querySelectorAll('.system-chart-btn').forEach(btn => { btn.classList.remove('bg-blue-600', 'text-white', 'text-blue-400', 'text-th-highlight', 'bg-th-highlight'); btn.classList.add('bg-th-bg', 'text-th-text'); });
+            
+            document.querySelectorAll('.system-chart-btn').forEach(btn => {
+                btn.classList.remove('bg-blue-600', 'text-white', 'text-blue-400', 'text-th-highlight', 'bg-th-highlight');
+                btn.classList.add('bg-th-bg', 'text-th-text');
+            });
+            
             const activeBtn = document.querySelector('[data-system="all"]');
-            if(activeBtn) { activeBtn.classList.remove('bg-th-bg', 'text-th-text'); activeBtn.classList.add('bg-th-highlight', 'text-black'); }
+            if(activeBtn) {
+                activeBtn.classList.remove('bg-th-bg', 'text-th-text');
+                activeBtn.classList.add('bg-th-highlight', 'text-black');
+            }
+            
             document.getElementById('current-system-label').textContent = 'ALL';
             
             let allHistories = [];
-            ['ht1', 'ht2', 'ht3', 'ht4'].forEach(sys => { const hist = masterState[`${sys}ChotHistory`]; if (hist) allHistories.push(...hist.map(p => ({...p, system: sys}))); });
-            if (allHistories.length === 0) { renderEmptyChart(); return; }
-            allHistories.sort((a, b) => (a.gameNumber || 0) - (b.gameNumber || 0));
-            const ctx = document.getElementById('gameAccuracyChart').getContext('2d');
-            const labels = []; const cData = []; const iData = [];
-            let currentVán = 0; let cCorrect = 0; let cTotal = 0;
-            allHistories.forEach(pred => {
-                if(pred.gameNumber !== currentVán) { if(currentVán !== 0) { labels.push(`V${currentVán}`); cData.push(cCorrect); iData.push(cTotal-cCorrect); } currentVán = pred.gameNumber || 0; cCorrect = 0; cTotal = 0; }
-                cTotal++; if(pred.predicted === pred.actual) cCorrect++;
+            ['ht1', 'ht2', 'ht3', 'ht4'].forEach(sys => {
+                const hist = masterState[`${sys}ChotHistory`];
+                if (hist) allHistories.push(...hist.map(p => ({...p, system: sys})));
             });
-            if(currentVán !== 0) { labels.push(`V${currentVán}`); cData.push(cCorrect); iData.push(cTotal-cCorrect); }
+            
+            if (allHistories.length === 0) {
+                renderEmptyChart();
+                return;
+            }
+            
+            allHistories.sort((a, b) => (a.gameNumber || 0) - (b.gameNumber || 0));
+            
+            const ctx = document.getElementById('gameAccuracyChart').getContext('2d');
+            const labels = [];
+            const cData = [];
+            const iData = [];
+            let currentVán = 0;
+            let cCorrect = 0;
+            let cTotal = 0;
+            
+            allHistories.forEach(pred => {
+                if(pred.gameNumber !== currentVán) {
+                    if(currentVán !== 0) {
+                        labels.push(`V${currentVán}`);
+                        cData.push(cCorrect);
+                        iData.push(cTotal-cCorrect);
+                    }
+                    currentVán = pred.gameNumber || 0;
+                    cCorrect = 0;
+                    cTotal = 0;
+                }
+                cTotal++;
+                if(pred.predicted === pred.actual) cCorrect++;
+            });
+            
+            if(currentVán !== 0) {
+                labels.push(`V${currentVán}`);
+                cData.push(cCorrect);
+                iData.push(cTotal-cCorrect);
+            }
+            
             document.getElementById('chart-area-container').style.minWidth = Math.max(labels.length * 30, 100) + 'px';
+            
             if (gameAccuracyChart) gameAccuracyChart.destroy();
-            gameAccuracyChart = new Chart(ctx, { type: 'bar', data: { labels: labels, datasets: [ { label: 'Tổng Lệnh Đúng', data: cData, backgroundColor: '#22c55e' }, { label: 'Tổng Lệnh Sai', data: iData, backgroundColor: '#ef4444' } ] }, options: { responsive: true, maintainAspectRatio: false, scales: { x: { stacked: true, display:false }, y: { stacked: true, grid:{color:'var(--th-border)'} } }, plugins: { legend: { display: false } } } });
-            let ttC=0, ttT=0; cData.forEach(c => ttC+=c); iData.forEach(i => ttT+=i); ttT+=ttC;
-            document.getElementById('game-stats-summary').textContent = `Tổng: ${ttT} | T/B: ${ttC}/${ttT-ttC}`; document.getElementById('game-accuracy-summary').textContent = `WinRate: ${(ttT>0?ttC/ttT*100:0).toFixed(1)}%`;
+            
+            gameAccuracyChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        { label: 'Tổng Lệnh Đúng', data: cData, backgroundColor: '#22c55e' },
+                        { label: 'Tổng Lệnh Sai', data: iData, backgroundColor: '#ef4444' }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: { stacked: true, display: false },
+                        y: { stacked: true, grid: { color: 'var(--th-border)' } }
+                    },
+                    plugins: { legend: { display: false } }
+                }
+            });
+            
+            let ttC = 0, ttT = 0;
+            cData.forEach(c => ttC += c);
+            iData.forEach(i => ttT += i);
+            ttT += ttC;
+            
+            document.getElementById('game-stats-summary').textContent = `Tổng: ${ttT} | T/B: ${ttC}/${ttT-ttC}`;
+            document.getElementById('game-accuracy-summary').textContent = `WinRate: ${(ttT>0?ttC/ttT*100:0).toFixed(1)}%`;
         } 
+
         function renderEmptyChart() { 
             if(gameAccuracyChart) gameAccuracyChart.destroy(); 
-            gameAccuracyChart = new Chart(document.getElementById('gameAccuracyChart').getContext('2d'), { type:'bar', data:{labels:[''], datasets:[{data:[0]}]}, options:{scales:{x:{display:false},y:{display:false}}, plugins:{legend:{display:false}}} }); 
+            gameAccuracyChart = new Chart(document.getElementById('gameAccuracyChart').getContext('2d'), {
+                type:'bar',
+                data:{ labels:[''], datasets:[{data:[0]}] },
+                options:{ scales:{x:{display:false}, y:{display:false}}, plugins:{legend:{display:false}} }
+            }); 
         }
 
         /* Config sliders setup */
@@ -1127,25 +1580,53 @@
             document.getElementById('minConfidenceValue').innerText = `${patternConfig.minConfidence}%`;
             calculateFinalDecision();
         }
-        function resetPatternConfigToDefault() { document.getElementById('minOccurrencesSlider').value = 10; document.getElementById('minConfidenceSlider').value = 100; updatePatternConfig(); }
+
+        function resetPatternConfigToDefault() {
+            document.getElementById('minOccurrencesSlider').value = 10;
+            document.getElementById('minConfidenceSlider').value = 100;
+            updatePatternConfig();
+        }
 
         function showToast(msg, type='info') {
-            const colors = { success: 'border-green-500', info: 'border-blue-500', warning: 'border-yellow-500', error: 'border-red-500' };
-            const div = document.createElement('div'); div.className = `toast-notification ${colors[type]}`; div.textContent = msg;
+            const colors = {
+                success: 'border-green-500',
+                info: 'border-blue-500',
+                warning: 'border-yellow-500',
+                error: 'border-red-500'
+            };
+            const div = document.createElement('div');
+            div.className = `toast-notification ${colors[type]}`;
+            div.textContent = msg;
             document.getElementById('toast-container').appendChild(div);
-            setTimeout(() => { div.style.animation = 'fadeOut 0.5s ease'; setTimeout(() => div.remove(), 500); }, 3000);
+            
+            setTimeout(() => {
+                div.style.animation = 'fadeOut 0.5s ease';
+                setTimeout(() => div.remove(), 500);
+            }, 3000);
         }
 
         /* INIT */
         document.addEventListener('DOMContentLoaded', function() {
-            renderEmptyChart(); loadMasterSessions(); loadFinalDecisionHistory();
+            renderEmptyChart();
+            loadMasterSessions();
+            loadFinalDecisionHistory();
+            
             document.getElementById('minOccurrencesSlider').addEventListener('input', updatePatternConfig);
             document.getElementById('minConfidenceSlider').addEventListener('input', updatePatternConfig);
+            
             document.getElementById('masterSessionSelector').addEventListener('change', function(e) {
-                if (e.target.value && masterState.sessions[e.target.value]) { masterState.currentSessionId = e.target.value; masterState.currentSessionName = masterState.sessions[e.target.value].name; updateCurrentSessionInfo(); syncAllSystems(); }
+                if (e.target.value && masterState.sessions[e.target.value]) {
+                    masterState.currentSessionId = e.target.value;
+                    masterState.currentSessionName = masterState.sessions[e.target.value].name;
+                    updateCurrentSessionInfo();
+                    syncAllSystems();
+                }
             });
+            
             initializeOriginalPatternDB();
         });
     </script>
 </body>
 </html>
+
+```
