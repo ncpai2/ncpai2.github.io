@@ -8,196 +8,43 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        html {
-            scroll-behavior: smooth; /* Thêm cuộn mượt cho lối tắt */
-        }
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #111827;
-            color: #F9FAFB;
-        }
-        .btn {
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-        }
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-        }
-        .btn:active {
-            transform: translateY(1px);
-        }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Inter', sans-serif; background-color: #111827; color: #F9FAFB; }
+        .btn { transition: all 0.3s ease; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); }
+        .btn:active { transform: translateY(1px); }
         .card-glow-total { box-shadow: 0 0 25px rgba(168, 85, 247, 0.7); }
-        .modal-backdrop {
-            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-            background-color: rgba(0,0,0,0.7);
-            display: flex; align-items: center; justify-content: center;
-            z-index: 50; animation: fadeIn 0.3s ease;
-        }
-        .modal-content {
-            background-color: #1f2937;
-            padding: 1.5rem; border-radius: 1rem;
-            width: 90%; max-width: 500px;
-            animation: slideIn 0.3s ease-out;
-            border: 1px solid #374151;
-        }
-        .toast-notification {
-            position: fixed; top: 20px; right: 20px;
-            background-color: #1f2937; color: white;
-            padding: 1rem 1.5rem; border-radius: 0.5rem;
-            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.3);
-            z-index: 100; animation: slideDown 0.5s ease;
-            border-left: 4px solid;
-        }
-        .warning-alert {
-            position: fixed; top: 20px; left: 50%;
-            transform: translateX(-50%);
-            background-color: #f59e0b; color: white;
-            padding: 1rem 2rem; border-radius: 0.5rem;
-            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.3);
-            z-index: 100; animation: slideDown 0.5s ease;
-            border-left: 4px solid #d97706;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateY(-20px) scale(0.95); }
-            to { opacity: 1; transform: translateY(0) scale(1); }
-        }
-        @keyframes slideDown {
-            from { opacity: 0; transform: translateY(-100%); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes fadeOut {
-            from { opacity: 1; transform: translateY(0); }
-            to { opacity: 0; transform: translateY(-20px); }
-        }
-        .system-frame {
-            border: 2px solid #374151;
-            border-radius: 0.75rem;
-            background: #1f2937;
-            transition: all 0.3s ease;
-        }
-        .system-frame.active {
-            border-color: #8b5cf6;
-            box-shadow: 0 0 15px rgba(139, 92, 246, 0.5);
-        }
-        .history-chart {
-            display: flex;
-            align-items: flex-end;
-            justify-content: flex-start;
-            gap: 2px;
-            height: 60px;
-            padding: 5px 0 8px 0;
-            overflow-x: auto;
-            overflow-y: hidden;
-            scroll-behavior: smooth;
-        }
-        .history-bar {
-            flex-shrink: 0;
-            width: 4px;
-            border-radius: 1px;
-        }
-        .history-bar-correct {
-            background-color: #3b82f6;
-            height: 100%;
-        }
-        .history-bar-incorrect {
-            background-color: #ef4444;
-            height: 40%;
-        }
-        .accuracy-badge {
-            padding: 0.25rem 0.5rem;
-            border-radius: 9999px;
-            font-size: 0.75rem;
-            font-weight: 600;
-        }
+        .modal-backdrop { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0,0,0,0.7); display: flex; align-items: center; justify-content: center; z-index: 50; animation: fadeIn 0.3s ease; }
+        .modal-content { background-color: #1f2937; padding: 1.5rem; border-radius: 1rem; width: 90%; max-width: 500px; animation: slideIn 0.3s ease-out; border: 1px solid #374151; }
+        .toast-notification { position: fixed; top: 20px; right: 20px; background-color: #1f2937; color: white; padding: 1rem 1.5rem; border-radius: 0.5rem; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.3); z-index: 100; animation: slideDown 0.5s ease; border-left: 4px solid; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideIn { from { opacity: 0; transform: translateY(-20px) scale(0.95); } to { opacity: 1; transform: translateY(0) scale(1); } }
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-100%); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeOut { from { opacity: 1; transform: translateY(0); } to { opacity: 0; transform: translateY(-20px); } }
+        .system-frame { border: 2px solid #374151; border-radius: 0.75rem; background: #1f2937; transition: all 0.3s ease; }
+        .system-frame.active { border-color: #8b5cf6; box-shadow: 0 0 15px rgba(139, 92, 246, 0.5); }
+        .history-chart { display: flex; align-items: flex-end; justify-content: flex-start; gap: 2px; height: 60px; padding: 5px 0 8px 0; overflow-x: auto; overflow-y: hidden; scroll-behavior: smooth; }
+        .history-bar { flex-shrink: 0; width: 4px; border-radius: 1px; }
+        .history-bar-correct { background-color: #3b82f6; height: 100%; }
+        .history-bar-incorrect { background-color: #ef4444; height: 40%; }
+        .accuracy-badge { padding: 0.25rem 0.5rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 600; }
         .accuracy-high { background-color: #10b981; color: white; }
         .accuracy-medium { background-color: #f59e0b; color: white; }
         .accuracy-low { background-color: #ef4444; color: white; }
-        .system-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1rem;
-        }
-        @media (min-width: 1024px) {
-            .system-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-        .game-bar-chart {
-            height: 300px;
-            margin-top: 1rem;
-        }
-        .confidence-interval-chart {
-            height: 200px;
-            margin-top: 1rem;
-        }
-        .game-result-chip {
-            display: inline-block;
-            padding: 2px 8px;
-            border-radius: 12px;
-            font-size: 0.75rem;
-            font-weight: bold;
-            margin: 1px;
-        }
-        .game-correct { background-color: #10b981; color: white; }
-        .game-incorrect { background-color: #ef4444; color: white; }
-        .game-neutral { background-color: #6b7280; color: white; }
-        .final-decision-bar {
-            flex-shrink: 0;
-            width: 8px;
-            border-radius: 2px;
-            margin: 0 1px;
-        }
-        .final-decision-correct {
-            background-color: #3b82f6;
-            height: 100%;
-        }
-        .final-decision-incorrect {
-            background-color: #ef4444;
-            height: 40%;
-        }
-        input[type=range] {
-            -webkit-appearance: none;
-            background: #374151;
-            height: 4px;
-            border-radius: 2px;
-        }
-        input[type=range]::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            width: 16px;
-            height: 16px;
-            border-radius: 50%;
-            background: #8b5cf6;
-            cursor: pointer;
-        }
+        .system-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+        @media (min-width: 1024px) { .system-grid { grid-template-columns: repeat(2, 1fr); } }
+        .game-bar-chart { height: 300px; margin-top: 1rem; }
+        .final-decision-bar { flex-shrink: 0; width: 8px; border-radius: 2px; margin: 0 1px; }
+        .final-decision-correct { background-color: #3b82f6; height: 100%; }
+        .final-decision-incorrect { background-color: #ef4444; height: 40%; }
+        input[type=range] { -webkit-appearance: none; background: #374151; height: 4px; border-radius: 2px; }
+        input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 16px; height: 16px; border-radius: 50%; background: #8b5cf6; cursor: pointer; }
         .custom-scrollbar::-webkit-scrollbar, .history-chart::-webkit-scrollbar { height: 6px; width: 6px; }
         .custom-scrollbar::-webkit-scrollbar-track, .history-chart::-webkit-scrollbar-track { background: #1f2937; border-radius: 4px; }
         .custom-scrollbar::-webkit-scrollbar-thumb, .history-chart::-webkit-scrollbar-thumb { background: #4b5563; border-radius: 4px; }
         .custom-scrollbar::-webkit-scrollbar-thumb:hover, .history-chart::-webkit-scrollbar-thumb:hover { background: #6b7280; }
-
-        /* TÍNH NĂNG MỚI: CSS Thu Gọn Content */
-        .section-content {
-            transition: max-height 0.4s ease-in-out, opacity 0.4s ease-in-out, margin 0.4s ease-in-out, padding 0.4s ease-in-out;
-            max-height: 2000px;
-            opacity: 1;
-            overflow: hidden;
-        }
-        .section-content.collapsed {
-            max-height: 0;
-            opacity: 0;
-            margin-top: 0 !important;
-            margin-bottom: 0 !important;
-            padding-top: 0 !important;
-            padding-bottom: 0 !important;
-        }
+        .section-content { transition: max-height 0.4s ease-in-out, opacity 0.4s ease-in-out, margin 0.4s ease-in-out, padding 0.4s ease-in-out; max-height: 2000px; opacity: 1; overflow: hidden; }
+        .section-content.collapsed { max-height: 0; opacity: 0; margin-top: 0 !important; margin-bottom: 0 !important; padding-top: 0 !important; padding-bottom: 0 !important; }
     </style>
 </head>
 <body class="p-4 md:p-8 relative">
@@ -205,7 +52,7 @@
     <div id="toast-container"></div>
     <div id="warning-container"></div>
 
-    <!-- TÍNH NĂNG MỚI: Floating Action Menu -->
+    <!-- Floating Action Menu -->
     <div class="fixed bottom-6 right-6 z-[200] flex flex-col items-center gap-3">
         <div id="fab-menu" class="flex flex-col gap-3 transition-all duration-300 translate-y-4 opacity-0 pointer-events-none origin-bottom">
             <button onclick="addResultToAll('P')" class="w-12 h-12 bg-blue-600 rounded-full text-white font-bold shadow-[0_0_15px_rgba(37,99,235,0.5)] hover:bg-blue-500 hover:scale-110 transition-all flex justify-center items-center select-none" title="Nhập PLAYER (P)">P</button>
@@ -876,1292 +723,524 @@
     </div>
 
     <script>
-        /* =========================================================================
-           0. TIỆN ÍCH AN TOÀN BỘ NHỚ & TÍNH NĂNG MỚI (COLLAPSE/FAB)
-           ========================================================================= */
-        function safeStorageSet(key, dataObj) {
-            try {
-                localStorage.setItem(key, JSON.stringify(dataObj));
-            } catch (e) {
-                console.error("Storage Error:", e);
-                if (e.name === 'QuotaExceededError' || e.code === 22) {
-                    showToast('Bộ nhớ trình duyệt đã đầy! Hãy dọn dẹp hoặc tạo phiên mới.', 'error');
-                }
+        (function() {
+            // --- PATTERN DATABASE & CORE AI FUNCTIONS ---
+            const defaultRawSamples = `1. DSSSSDSDSSDSSDSSSSSSSSDDDDD\n2. SSDSSDDSSSDDSSDSDSDSSDS\n3. DSSSSSSDDDSSDDDSDDDDSDDDDSDSDSD\n4. DDSSSSDSDSDDDDDSSSSDSDSDDSSSDSDSSD\n5. DSSDDDSDDDSDDSSDSDDSDSSDDSSDSDSDSSDDD\n6. SDSDSSDDDDDSSDSSDDSSDDDSDSDSSSDDSSSD\n7. SDSDSSSDDDDDSSDSSDDSSDDDSDSD\n8. SDSSSSSDDSSSDSDSDSSSDDDS\n9. SDSSDDSSSSDDSDSSDDSSDSSDSDSDD\n10. DDSDSSDSDSDSDSDDSDDDDDDDSDDSDSDSD\n11. SSSSDDSSDDDDSDSSDSDSDSSDDSSDSDSDDSDSDS\n12. SSSSSSDSSDDSDDDSDDSSD\n13. SDSSSDDSSSSDDDSDSSSDSDDD\n14. DDSSSSDSSSSSDSDDDDSDDSDDSDDSSSDDSDSS\n15. SSSDSSDDSSDDSSSSSSSSSDDSSDSDSSSDS\n16. DSSDSSDSDSDDSDSSSSDDSSSSDSSSSDSSDSS\n17. DDSDSSSDDSDSDDSDSDSSD\n18. DDDSSDDSDSSSDDSSDDSDSSSDDSDD\n19. DDDSDSDSDDSSDSDDDDDDSDDSSSD\n20. DDSSSSSDSSDSDSDDDDDDDSDSDS\n21. DSDDDSSDSDSDDSDSSDSSDSD\n22. DSDDDSDDSDDDDDSDSDSDSDDSS\n23. DSSSDSSSDSSDSSSDSSDDDSDSDSDSSDDSSDDDS\n24. DDDDSDSSSDSDSSSDSDSDDDSDDDDSS\n25. DDSSSDSSDSSDSSDSSDSDDSSSSDSDDSDSS\n26. DDSSDDDSSDSDDDSSDSDSSSDSSDSS\n27. DSDDSSSDDDDDDDDDSSDSSDSSSDSDS\n28. DDSDSDSDDDDSSDDSDDSDDSDSSS\n29. SDDSSSDDSSSDDSDDSSSDSDSDSDSD\n30. DDDDSDSSSDDDDSSDSSSSDSSS\n31. SDSDDSDSDDDDSSSDDDDSDSD\n32. SDDDDSDSSDDSDSDSDDSDSDSS\n33. SSDSDDSSDSDDSSDSDSSSSSSDSD\n34. DSSDSSSSDSDDDSDDDDDSDDSDSSDDSSS\n35. DDDDDSDSSDSSDSSDDDDSSDSSDDDSDDDDDSDSDDSSS\n36. SDDDSSDDDDSSSSSDDDSSDSDDSSSDDSDS\n37. SDDDSSDDDDSDSDSDDSDDSSDDDDD\n38. SSDDDDDSDSSSSSSDDDDDDDD\n39. DDSDSSSDDSDSDSSSSDDDSD\n40. SSSDSDDSDDSSDSDDDSDDSSSDDSSD\n41. SSSDSDSDSSDSSDDDD\n42. SSSSSDSSSDSDSSSDSSSSSDS\n43. SDDSSDSDDSSSDDSDSSSDSDSDDDDDS\n44. DDSDSSDSSDSSSDDSSSSDSSSSDSSDSDSDSDDDD\n45. DDSDDSSSDDDSSSDSDSDS\n46. DDSDDDDSSDDDDDSSDSDSDSDSDSDDSDSDS\n47. SDSDSSDSDDSDDSSDSDDSDSS\n48. DDSSSSDDSDSSSSSDDDDDSDSDDSDDSSDSSSDSSSD\n49. SSDDSDDDDDDDDSDDDSDDDDSDSDSDDSSDDSS\n50. SSDDSSDSDSSSDDSSSDDSDSDDDDDDSSDSDSSSDS\n51. DSSDDDDDSSSDDDSDSSDSDSDSDDDD\n52. SSSSSDDDSSSSDDDDDDSDSDSDSD\n53. DSDSDDSSSDDDDSSSDDDS\n54. SSSDSSSSDDSDSSDSSDDDS\n55. SDSSSSSDDDDDDSSDDDDSDDDSSDDDSDD\n56. SDSSSSDSDDSDDSDDDDSSSSDDDDSDDDDDSDD\n57. DSDDDDDDDSSDDDSDSSSDSDSDDDDSSSSDSDSD\n58. SSSSDDSDDSDSDDDDSSSSSDSSSDDD\n59. SSDSSDSDSDSSSDSSDSSDSDSDSDDSSSD\n60. SDDDSDSSDSDDDDDDSDDSSSDSDSSDDDDDDDDS\n61. DDSDDSDSDDSSDSDDSDDSDDSDSSSDSDDSSDSSDSDDD\n62. DDDSDDDSDDSDDSSDDSDDD\n63. DSDDSDDSSSDSSSDSDDDSSSDSDSDSDSDSSSS\n64. SDSSDDSSDDDSSDDSDDDDSDDSSDSSS\n65. SDSSDSDSDSSSDSDDSSDDSSSDDSDD\n66. DSSSDDDDDDDDSSDSDDDDD\n67. DSSSSSDSSSDDDSSDDDDSDDSDDSDDDDDDSS\n68. DSSSSDSSDSSDDDSSDDDSDSSSDDSDDDD\n69. DSDDSSDSSSSSSDDDSSSSDDSDDDDSSS\n70. SDDSDDDDDDSSDDDDDDSDSDDDSDSDDDSSSDSSDSDD\n71. SDDDSDSDSDSDSSSDSSSDDSSSDSDDDSDSSDDD\n72. DDDDSSDSDDSSDSDSDDDSDDSSDSSDSSSDSDS\n73. DSSDSDDDDDSSDDDDDSSSSSSDDDSDSDS\n74. SDSSSDSDDDSDSDSDSSDDSDDSSDDDSDS\n75. DDSDDDDDDDSSDSSDDDSDSSSDDDDDDS\n76. SSSSSDSSDDDDSDSSDSDDDDDDDDD\n77. DDSDSDSDSSDSSDDSSSDSSDSSSDSD\n78. DSSSSSDDDSDSDSSDSSDSSSSSDDS\n79. DSSSSSDDDSDSDSSDSSDSSSSSDDSSSDDS\n80. SSDSDDSSSDDSDSSSSDDSDDDSSDSSDSDSDDDDSDSDSDSD\n81. DSDDSDSSSSSSSSSSSDDDDDDSSSDSSSS\n82. SDDSSSDDDSSDSSDDSDDDDDSSSSDS\n83. SDDSDDDSDDDSSDSDSSDSDSDDSDSSDS\n84. DDDSSDDDSSSSDDDDDSDDDDSDDSDSSSSDSSDDS\n85. DDDDSSSDSSDSSSSDDDDSDSSSSSDS\n86. DDSDDDDDSSSDDSDSSSDSDSDSSDDDDSSSSSSSSSDD\n87. DDDDDDSSDSDDSDDSDSDSDSSSSSD\n88. DSDDSSSSDSSDSSDDSDSDDDDDS\n89. DDDSSDDSSDDSDSDSDSDSDSSD\n90. DSDDSDDDDSDSSSSSDSDDDDDSDDSDDSSSDSDDDD\n91. SSDSDDSSSDDSDSSSSDDSDDDSSDSSDSDSDDDDSDSDSDSDSD\n92. DSDDSDSSSSSSSSSSSDDDDDSSSDSSSS\n93. DDSSDDDSSDSSDDSDDDSDSDSDDSS\n94. DSSDDSSDSDSSDDSSDDSSDDSSD\n95. SSDDSSDSDSDSDDSSDDSSSDDD\n96. DDDDDSDDDSSDSSSSDDSDSDDDSDDSS\n97. SDDSSDDDSDSSDSSDDDDSDSSDDSD\n98. SSDDDDDDSDDSDSDSSSSSSSSSDDSSSSSDDDSSDD\n99. DSDSSSDDDSSSDDDSSDDSDSDSDDSDSSDSDS\n100. DSSSSDSDSSDDDDSSDSDDDS\n101. SSSSDSDDDSSSSDSDDDSSDSSSSDSSDDSSDDDSS\n102. DSSDSDSDDSDSDSSDSDSDDSSDDDDSDDDDDDSSSDSDSS`;
+            let currentRawSamples = localStorage.getItem('vanSuNhuY_customPatterns') || defaultRawSamples;
+            let patternDatabase = {};
+
+            // Config
+            let patternConfig = { minOccurrences: 10, minConfidence: 100 };
+
+            // Master State
+            const masterState = {
+                currentSessionId: null, currentSessionName: 'Chưa chọn', sessions: {},
+                ht1Accuracy: 0, ht2Accuracy: 0, ht3Accuracy: 0, ht4Accuracy: 0,
+                ht1ChotHistory: [], ht2ChotHistory: [], ht3ChotHistory: [], ht4ChotHistory: [],
+                lastDecision: null, lastDecisionReason: '', systemsReady: { ht1: false, ht2: false, ht3: false, ht4: false },
+                predictions: { ht1: null, ht2: null, ht3: null, ht4: null },
+                systemDetails: {
+                    ht1: { verdict: null, chot: null, range: null, rangeAccuracy: null, intervalHistory: [] },
+                    ht2: { verdict: null, chot: null, range: null, rangeAccuracy: null, intervalHistory: [] },
+                    ht3: { verdict: null, chot: null, range: null, rangeAccuracy: null, intervalHistory: [] },
+                    ht4: { verdict: null, chot: null, range: null, rangeAccuracy: null, intervalHistory: [] }
+                },
+                finalDecisionHistory: [], pendingResultToEvaluate: null, 
+                currentMatches: [], lastLearnedGameCount: 0, totalLearnedPatterns: 0
+            };
+            let gameAccuracyChart = null, currentChartSystem = 'ht1';
+
+            // --- UTILS ---
+            function safeStorageSet(k,v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch(e) { showToast('Bộ nhớ đầy', 'error'); } }
+            function showToast(m, t='info') {
+                const c = document.getElementById('toast-container'), d = document.createElement('div');
+                d.className = `toast-notification ${ {success:'border-green-500',info:'border-blue-500',warning:'border-yellow-500',error:'border-red-500'}[t]}`;
+                d.textContent = m; c.appendChild(d);
+                setTimeout(() => { d.style.animation = 'fadeOut 0.5s ease'; setTimeout(() => d.remove(), 500); }, 3000);
             }
-        }
-
-        function toggleSection(contentId, iconId) {
-            const content = document.getElementById(contentId);
-            const icon = document.getElementById(iconId);
-            
-            if (content.classList.contains('collapsed')) {
-                content.classList.remove('collapsed');
-                icon.classList.remove('rotate-180');
-            } else {
-                content.classList.add('collapsed');
-                icon.classList.add('rotate-180');
+            function toggleSection(cId, iId) {
+                const cnt = document.getElementById(cId), ico = document.getElementById(iId);
+                cnt.classList.toggle('collapsed'); ico.classList.toggle('rotate-180');
             }
-        }
-
-        function toggleFAB() {
-            const menu = document.getElementById('fab-menu');
-            const icon = document.getElementById('fab-icon');
-            const isClosed = menu.classList.contains('opacity-0');
-            
-            if (isClosed) {
-                menu.classList.remove('translate-y-4', 'opacity-0', 'pointer-events-none');
-                icon.classList.add('rotate-45'); // Chữ + thành chữ X
-            } else {
-                menu.classList.add('translate-y-4', 'opacity-0', 'pointer-events-none');
-                icon.classList.remove('rotate-45');
+            function toggleFAB() {
+                const m = document.getElementById('fab-menu'), i = document.getElementById('fab-icon');
+                m.classList.toggle('opacity-0'); m.classList.toggle('pointer-events-none'); m.classList.toggle('translate-y-4');
+                i.classList.toggle('rotate-45');
             }
-        }
 
-        /* Helper Tặng Kèm: Chống lỗi nếu logic cũ cần hàm findBestMatch */
-        function findBestMatch(inputSeq, minOccur, minConf) {
-            const matches = findAllMatches(inputSeq, minOccur, minConf);
-            if (matches.length === 0) return null;
-            return matches.reduce((prev, current) => (prev.score > current.score) ? prev : current);
-        }
-
-        /* =========================================================================
-           1. CƠ SỞ DỮ LIỆU PATTERN MẪU GỐC & CƠ CHẾ KHỞI TẠO (QUẢN LÝ KHO MẪU)
-           ========================================================================= */
-        const defaultRawSamples = `1. DSSSSDSDSSDSSDSSSSSSSSDDDDD
-2. SSDSSDDSSSDDSSDSDSDSSDS
-3. DSSSSSSDDDSSDDDSDDDDSDDDDSDSDSD
-4. DDSSSSDSDSDDDDDSSSSDSDSDDSSSDSDSSD
-5. DSSDDDSDDDSDDSSDSDDSDSSDDSSDSDSDSSDDD
-6. SDSDSSDDDDDSSDSSDDSSDDDSDSDSSSDDSSSD
-7. SDSDSSSDDDDDSSDSSDDSSDDDSDSD
-8. SDSSSSSDDSSSDSDSDSSSDDDS
-9. SDSSDDSSSSDDSDSSDDSSDSSDSDSDD
-10. DDSDSSDSDSDSDSDDSDDDDDDDSDDSDSDSD
-11. SSSSDDSSDDDDSDSSDSDSDSSDDSSDSDSDDSDSDS
-12. SSSSSSDSSDDSDDDSDDSSD
-13. SDSSSDDSSSSDDDSDSSSDSDDD
-14. DDSSSSDSSSSSDSDDDDSDDSDDSDDSSSDDSDSS
-15. SSSDSSDDSSDDSSSSSSSSSDDSSDSDSSSDS
-16. DSSDSSDSDSDDSDSSSSDDSSSSDSSSSDSSDSS
-17. DDSDSSSDDSDSDDSDSDSSD
-18. DDDSSDDSDSSSDDSSDDSDSSSDDSDD
-19. DDDSDSDSDDSSDSDDDDDDSDDSSSD
-20. DDSSSSSDSSDSDSDDDDDDDSDSDS
-21. DSDDDSSDSDSDDSDSSDSSDSD
-22. DSDDDSDDSDDDDDSDSDSDSDDSS
-23. DSSSDSSSDSSDSSSDSSDDDSDSDSDSSDDSSDDDS
-24. DDDDSDSSSDSDSSSDSDSDDDSDDDDSS
-25. DDSSSDSSDSSDSSDSSDSDDSSSSDSDDSDSS
-26. DDSSDDDSSDSDDDSSDSDSSSDSSDSS
-27. DSDDSSSDDDDDDDDDSSDSSDSSSDSDS
-28. DDSDSDSDDDDSSDDSDDSDDSDSSS
-29. SDDSSSDDSSSDDSDDSSSDSDSDSDSD
-30. DDDDSDSSSDDDDSSDSSSSDSSS
-31. SDSDDSDSDDDDSSSDDDDSDSD
-32. SDDDDSDSSDDSDSDSDDSDSDSS
-33. SSDSDDSSDSDDSSDSDSSSSSSDSD
-34. DSSDSSSSDSDDDSDDDDDSDDSDSSDDSSS
-35. DDDDDSDSSDSSDSSDDDDSSDSSDDDSDDDDDSDSDDSSS
-36. SDDDSSDDDDSSSSSDDDSSDSDDSSSDDSDS
-37. SDDDSSDDDDSDSDSDDSDDSSDDDDD
-38. SSDDDDDSDSSSSSSDDDDDDDD
-39. DDSDSSSDDSDSDSSSSDDDSD
-40. SSSDSDDSDDSSDSDDDSDDSSSDDSSD
-41. SSSDSDSDSSDSSDDDD
-42. SSSSSDSSSDSDSSSDSSSSSDS
-43. SDDSSDSDDSSSDDSDSSSDSDSDDDDDS
-44. DDSDSSDSSDSSSDDSSSSDSSSSDSSDSDSDSDDDD
-45. DDSDDSSSDDDSSSDSDSDS
-46. DDSDDDDSSDDDDDSSDSDSDSDSDSDDSDSDS
-47. SDSDSSDSDDSDDSSDSDDSDSS
-48. DDSSSSDDSDSSSSSDDDDDSDSDDSDDSSDSSSDSSSD
-49. SSDDSDDDDDDDDSDDDSDDDDSDSDSDDSSDDSS
-50. SSDDSSDSDSSSDDSSSDDSDSDDDDDDSSDSDSSSDS
-51. DSSDDDDDSSSDDDSDSSDSDSDSDDDD
-52. SSSSSDDDSSSSDDDDDDSDSDSDSD
-53. DSDSDDSSSDDDDSSSDDDS
-54. SSSDSSSSDDSDSSDSSDDDS
-55. SDSSSSSDDDDDDSSDDDDSDDDSSDDDSDD
-56. SDSSSSDSDDSDDSDDDDSSSSDDDDSDDDDDSDD
-57. DSDDDDDDDSSDDDSDSSSDSDSDDDDSSSSDSDSD
-58. SSSSDDSDDSDSDDDDSSSSSDSSSDDD
-59. SSDSSDSDSDSSSDSSDSSDSDSDSDDSSSD
-60. SDDDSDSSDSDDDDDDSDDSSSDSDSSDDDDDDDDS
-61. DDSDDSDSDDSSDSDDSDDSDDSDSSSDSDDSSDSSDSDDD
-62. DDDSDDDSDDSDDSSDDSDDD
-63. DSDDSDDSSSDSSSDSDDDSSSDSDSDSDSDSSSS
-64. SDSSDDSSDDDSSDDSDDDDSDDSSDSSS
-65. SDSSDSDSDSSSDSDDSSDDSSSDDSDD
-66. DSSSDDDDDDDDSSDSDDDDD
-67. DSSSSSDSSSDDDSSDDDDSDDSDDSDDDDDDSS
-68. DSSSSDSSDSSDDDSSDDDSDSSSDDSDDDD
-69. DSDDSSDSSSSSSDDDSSSSDDSDDDDSSS
-70. SDDSDDDDDDSSDDDDDDSDSDDDSDSDDDSSSDSSDSDD
-71. SDDDSDSDSDSDSSSDSSSDDSSSDSDDDSDSSDDD
-72. DDDDSSDSDDSSDSDSDDDSDDSSDSSDSSSDSDS
-73. DSSDSDDDDDSSDDDDDSSSSSSDDDSDSDS
-74. SDSSSDSDDDSDSDSDSSDDSDDSSDDDSDS
-75. DDSDDDDDDDSSDSSDDDSDSSSDDDDDDS
-76. SSSSSDSSDDDDSDSSDSDDDDDDDDD
-77. DDSDSDSDSSDSSDDSSSDSSDSSSDSD
-78. DSSSSSDDDSDSDSSDSSDSSSSSDDS
-79. DSSSSSDDDSDSDSSDSSDSSSSSDDSSSDDS
-80. SSDSDDSSSDDSDSSSSDDSDDDSSDSSDSDSDDDDSDSDSDSD
-81. DSDDSDSSSSSSSSSSSDDDDDDSSSDSSSS
-82. SDDSSSDDDSSDSSDDSDDDDDSSSSDS
-83. SDDSDDDSDDDSSDSDSSDSDSDDSDSSDS
-84. DDDSSDDDSSSSDDDDDSDDDDSDDSDSSSSDSSDDS
-85. DDDDSSSDSSDSSSSDDDDSDSSSSSDS
-86. DDSDDDDDSSSDDSDSSSDSDSDSSDDDDSSSSSSSSSDD
-87. DDDDDDSSDSDDSDDSDSDSDSSSSSD
-88. DSDDSSSSDSSDSSDDSDSDDDDDS
-89. DDDSSDDSSDDSDSDSDSDSDSSD
-90. DSDDSDDDDSDSSSSSDSDDDDDSDDSDDSSSDSDDDD
-91. SSDSDDSSSDDSDSSSSDDSDDDSSDSSDSDSDDDDSDSDSDSDSD
-92. DSDDSDSSSSSSSSSSSDDDDDSSSDSSSS
-93. DDSSDDDSSDSSDDSDDDSDSDSDDSS
-94. DSSDDSSDSDSSDDSSDDSSDDSSD
-95. SSDDSSDSDSDSDDSSDDSSSDDD
-96. DDDDDSDDDSSDSSSSDDSDSDDDSDDSS
-97. SDDSSDDDSDSSDSSDDDDSDSSDDSD
-98. SSDDDDDDSDDSDSDSSSSSSSSSDDSSSSSDDDSSDD
-99. DSDSSSDDDSSSDDDSSDDSDSDSDDSDSSDSDS
-100. DSSSSDSDSSDDDDSSDSDDDS
-101. SSSSDSDDDSSSSDSDDDSSDSSSSDSSDDSSDDDSS
-102. DSSDSDSDDSDSDSSDSDSDDSSDDDDSDDDDDDSSSDSDSS`;
-
-        let currentRawSamples = localStorage.getItem('vanSuNhuY_customPatterns') || defaultRawSamples;
-
-        function updatePatternCountUI() {
-            const lines = currentRawSamples.split('\n').filter(l => l.replace(/[^DS]/ig, '').trim().length > 0);
-            document.getElementById('db-pattern-count').textContent = lines.length;
-            document.getElementById('db-pattern-display-count').textContent = lines.length;
-        }
-
-        function openPatternDBModal() {
-            document.getElementById('pattern-db-textarea').value = currentRawSamples;
-            document.getElementById('pattern-db-modal').classList.remove('hidden');
-        }
-
-        function closePatternDBModal() {
-            document.getElementById('pattern-db-modal').classList.add('hidden');
-        }
-
-        async function savePatternDB() {
-            const newSamples = document.getElementById('pattern-db-textarea').value.trim();
-            if(!newSamples) { showToast('Không được để trống kho mẫu', 'error'); return; }
-            currentRawSamples = newSamples;
-            
-            try { localStorage.setItem('vanSuNhuY_customPatterns', currentRawSamples); } catch(e){}
-            
-            closePatternDBModal();
-            showToast('Đang xử lý Kho Mẫu AI...', 'info');
-            await initializeOriginalPatternDB();
-            showToast('Đã lưu và dạy lại AI thành công!', 'success');
-            calculateFinalDecision();
-        }
-
-        function resetPatternDBToDefault() {
-            if(confirm("Bạn có chắc muốn khôi phục về 102 mẫu gốc của hệ thống?")) {
-                currentRawSamples = defaultRawSamples;
-                document.getElementById('pattern-db-textarea').value = currentRawSamples;
+            // --- PATTERN DB FUNCTIONS ---
+            function parseSampleStrings() {
+                return currentRawSamples.split('\n').map(l => l.replace(/^\d+\.\s*/, '').trim().toUpperCase().replace(/[^DS]/g, '')).filter(s => s.length > 0);
             }
-        }
-
-        function parseSampleStrings() {
-            return currentRawSamples.split('\n').map(line => {
-                let clean = line.replace(/^\d+\.\s*/, '').trim().toUpperCase();
-                return clean.replace(/[^DS]/g, '');
-            }).filter(s => s.length > 0);
-        }
-
-        let patternDatabase = {};
-
-        async function buildPatternDatabaseAsync(samples) {
-            const db = {};
-            const ngramSizes = Array.from({length: 18}, (_, i) => i + 3); 
-            const chunkSize = 50; 
-            
-            for (let idx = 0; idx < samples.length; idx += chunkSize) {
-                const chunk = samples.slice(idx, idx + chunkSize);
-                for (const line of chunk) {
-                    const binaryLine = line.replace(/D/g, '1').replace(/S/g, '0');
-                    for (const size of ngramSizes) {
-                        for (let i = 0; i <= binaryLine.length - size - 1; i++) {
-                            const seqBin = binaryLine.substring(i, i + size);
-                            const nextBit = binaryLine[i + size];
-                            const seqDS = seqBin.replace(/1/g, 'D').replace(/0/g, 'S');
-                            
-                            const key = `${size}|${seqDS}`;
-                            if (!db[key]) {
-                                db[key] = { seq: seqDS, length: size, total: 0, nextD: 0, nextS: 0 };
+            async function buildPatternDatabaseAsync(samples) {
+                const db = {}; const sizes = Array.from({length: 18}, (_,i)=> i+3);
+                for (let idx = 0; idx < samples.length; idx += 50) {
+                    const chunk = samples.slice(idx, idx+50);
+                    for (const line of chunk) {
+                        const bin = line.replace(/D/g,'1').replace(/S/g,'0');
+                        for (const sz of sizes) {
+                            for (let i=0; i <= bin.length - sz - 1; i++) {
+                                const seqBin = bin.substring(i, i+sz), nxt = bin[i+sz];
+                                const key = `${sz}|${seqBin.replace(/1/g,'D').replace(/0/g,'S')}`;
+                                if (!db[key]) db[key] = { seq: seqBin.replace(/1/g,'D').replace(/0/g,'S'), length: sz, total:0, nextD:0, nextS:0 };
+                                db[key].total++;
+                                if (nxt === '1') db[key].nextD++; else db[key].nextS++;
                             }
-                            db[key].total++;
-                            if (nextBit === '1') db[key].nextD++;
-                            else db[key].nextS++;
                         }
                     }
+                    await new Promise(r => setTimeout(r, 0));
                 }
-                await new Promise(resolve => setTimeout(resolve, 0));
+                return db;
             }
-            return db;
-        }
-
-        async function initializeOriginalPatternDB() {
-            const displayEl = document.getElementById('db-pattern-display-count');
-            if(displayEl) displayEl.textContent = 'Đang học...';
-
-            const sampleStrings = parseSampleStrings();
-            patternDatabase = await buildPatternDatabaseAsync(sampleStrings);
-
-            masterState.totalLearnedPatterns = 0;
-            masterState.lastLearnedGameCount = 0;
-            updatePatternCountUI();
-            updateLearnedCountDisplay();
-        }
-
-        // MỚI: TÌM TẤT CẢ CÁC TRƯỜNG HỢP KHỚP THAY VÌ CHỈ TÌM 1 CÁI
-        function findAllMatches(inputSeq, minOccur, minConf) {
-            let matches = [];
-            const maxSearchLen = Math.min(inputSeq.length, 20);
-            
-            for (let size = 3; size <= maxSearchLen; size++) {
-                const subSeq = inputSeq.slice(-size);
-                const key = `${size}|${subSeq}`;
-                const rule = patternDatabase[key];
-                
-                if (rule && rule.total >= minOccur) {
-                    const pD = (rule.nextD / rule.total) * 100;
-                    const pS = (rule.nextS / rule.total) * 100;
-                    const confidence = Math.max(pD, pS);
-                    
-                    if (confidence >= minConf) {
-                        const target = pD > pS ? 'D' : 'S';
-                        const logTotal = Math.log10(rule.total > 0 ? rule.total : 1);
-                        const score = (confidence * 1000) + (logTotal * 100);
-                        
-                        matches.push({ target, confidence, total: rule.total, seq: subSeq, size, score, pD, pS });
-                    }
-                }
+            async function initializeOriginalPatternDB() {
+                document.getElementById('db-pattern-display-count').textContent = 'Đang học...';
+                patternDatabase = await buildPatternDatabaseAsync(parseSampleStrings());
+                masterState.totalLearnedPatterns = 0; masterState.lastLearnedGameCount = 0;
+                updatePatternCountUI(); updateLearnedCountDisplay();
             }
-            return matches;
-        }
-
-
-        /* =========================================================================
-           2. GLOBAL STATE & CƠ CHẾ AI TỰ HỌC (CONTINUOUS LEARNING)
-           ========================================================================= */
-        let patternConfig = { minOccurrences: 10, minConfidence: 100 };
-
-        const masterState = {
-            currentSessionId: null,
-            currentSessionName: 'Chưa chọn',
-            sessions: {},
-            ht1Accuracy: 0, ht2Accuracy: 0, ht3Accuracy: 0, ht4Accuracy: 0,
-            ht1ChotHistory: [], ht2ChotHistory: [], ht3ChotHistory: [], ht4ChotHistory: [],
-            lastDecision: null,
-            lastDecisionReason: '',
-            systemsReady: { ht1: false, ht2: false, ht3: false, ht4: false },
-            predictions: { ht1: null, ht2: null, ht3: null, ht4: null },
-            systemDetails: {
-                ht1: { verdict: null, chot: null, range: null, rangeAccuracy: null, intervalHistory: [] },
-                ht2: { verdict: null, chot: null, range: null, rangeAccuracy: null, intervalHistory: [] },
-                ht3: { verdict: null, chot: null, range: null, rangeAccuracy: null, intervalHistory: [] },
-                ht4: { verdict: null, chot: null, range: null, rangeAccuracy: null, intervalHistory: [] }
-            },
-            finalDecisionHistory: [],
-            pendingResultToEvaluate: null, 
-            
-            // LƯU CÁC MATCHES ĐỂ RENDER BẢNG PHÂN TÍCH
-            currentMatches: [],
-            
-            lastLearnedGameCount: 0,
-            totalLearnedPatterns: 0
-        };
-
-        let gameAccuracyChart = null;
-        let currentChartSystem = 'ht1';
-
-        function learnFromNewData(intervalHistory) {
-            if (!intervalHistory || intervalHistory.length === 0) return;
-            
-            if (intervalHistory.length < masterState.lastLearnedGameCount) {
-                initializeOriginalPatternDB();
+            function updatePatternCountUI() {
+                const lines = currentRawSamples.split('\n').filter(l => l.replace(/[^DS]/ig, '').trim().length > 0);
+                document.getElementById('db-pattern-count').textContent = lines.length;
+                document.getElementById('db-pattern-display-count').textContent = lines.length;
             }
-
-            if (intervalHistory.length < 4) {
-                masterState.lastLearnedGameCount = intervalHistory.length;
-                return;
+            function openPatternDBModal() {
+                document.getElementById('pattern-db-textarea').value = currentRawSamples;
+                document.getElementById('pattern-db-modal').classList.remove('hidden');
             }
-
-            let learnedSomething = false;
-
-            for (let i = Math.max(4, masterState.lastLearnedGameCount + 1); i <= intervalHistory.length; i++) {
-                const currentSubHistory = intervalHistory.slice(0, i);
-                
-                let dsSequence = currentSubHistory.map(item => {
-                    const isCorrect = item.correct === true || item.isCorrect === true || item.predicted === item.actual;
-                    return isCorrect ? "D" : "S";
-                }).join('');
-
-                const newBit = dsSequence.slice(-1);
-                const contextSeq = dsSequence.slice(0, -1);
-
-                const ngramSizes = [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]; 
-                
-                for (const size of ngramSizes) {
-                    if (contextSeq.length >= size) {
-                        const pattern = contextSeq.slice(-size);
-                        const key = `${size}|${pattern}`;
-
-                        if (!patternDatabase[key]) {
-                            patternDatabase[key] = { seq: pattern, length: size, total: 0, nextD: 0, nextS: 0 };
-                            masterState.totalLearnedPatterns++;
-                        }
-
-                        patternDatabase[key].total++;
-                        if (newBit === 'D') patternDatabase[key].nextD++;
-                        else patternDatabase[key].nextS++;
-                        
-                        learnedSomething = true;
-                    }
-                }
-            }
-
-            masterState.lastLearnedGameCount = intervalHistory.length;
-
-            if (learnedSomething) {
-                updateLearnedCountDisplay();
-            }
-        }
-
-        function updateLearnedCountDisplay() {
-            const displayEl = document.getElementById('learned-count-display');
-            if (displayEl) {
-                displayEl.textContent = `(+${masterState.totalLearnedPatterns} Tự học)`;
-                displayEl.classList.add('text-white', 'scale-110');
-                setTimeout(() => displayEl.classList.remove('text-white', 'scale-110'), 500);
-            }
-        }
-
-
-        /* =========================================================================
-           3. THUẬT TOÁN QUYẾT ĐỊNH CUỐI CÙNG TỪ LÕI PATTERN MATCHING
-           ========================================================================= */
-        function calculateFinalDecision() {
-            const ht1Details = masterState.systemDetails.ht1;
-            
-            if (!ht1Details || !ht1Details.intervalHistory || ht1Details.intervalHistory.length === 0) {
-                updateFinalDecisionDisplay(null, "Hệ thống đang chờ bạn nhập kết quả ván đầu tiên để quét HT1...", "CHỜ DỮ LIỆU HT1");
-                masterState.currentMatches = [];
-                renderMatchesAnalysis();
-                return;
-            }
-
-            const currentRange = ht1Details.range || '';
-            if (!currentRange.includes('90') && !currentRange.includes('100')) {
-                updateFinalDecisionDisplay(null, `BỎ QUA DO KHOẢNG TỶ LỆ HT1 CHƯA ĐẠT 90-100% (Hiện tại đang là ${currentRange || 'Chưa rõ'}).`, "KHÔNG ĐẠT ĐIỀU KIỆN RANGE");
-                masterState.currentMatches = [];
-                renderMatchesAnalysis();
-                return;
-            }
-
-            let dsSequence = "";
-            ht1Details.intervalHistory.forEach(item => {
-                const isCorrect = item.correct === true || item.isCorrect === true || item.predicted === item.actual;
-                dsSequence += isCorrect ? "D" : "S";
-            });
-
-            if (dsSequence.length < 3) {
-                updateFinalDecisionDisplay(null, `Cần tối thiểu 3 tín hiệu từ HT1 (hiện có ${dsSequence.length}). Hệ thống đang tích luỹ...`, "TÍCH LUỸ TÍN HIỆU");
-                masterState.currentMatches = [];
-                renderMatchesAnalysis();
-                return;
-            }
-
-            // MỚI: LẤY TẤT CẢ MATCHES ĐỂ RENDER PHÂN TÍCH ĐA CHIỀU
-            const allMatches = findAllMatches(dsSequence, patternConfig.minOccurrences, patternConfig.minConfidence);
-            masterState.currentMatches = allMatches;
-
-            if (allMatches.length === 0) {
-                updateFinalDecisionDisplay(null, `CHƯA CÓ CỤM BIT TIN CẬY NÀO ĐẠT YÊU CẦU NÊN BỎ QUA.`, "BỎ QUA TÍN HIỆU");
-                renderMatchesAnalysis();
-                return;
-            }
-
-            // TÌM MATCH CÓ ĐIỂM CAO NHẤT CHO QUYẾT ĐỊNH CHÍNH
-            const bestMatch = allMatches.reduce((prev, current) => (prev.score > current.score) ? prev : current);
-
-            const ht1VerdictRaw = ht1Details.verdict ? ht1Details.verdict.toUpperCase().trim() : '';
-            let baseSignal = null;
-            let impliedResult = 'D'; 
-
-            if (ht1VerdictRaw.includes('P')) baseSignal = 'P';
-            else if (ht1VerdictRaw.includes('B')) baseSignal = 'B';
-
-            if (ht1VerdictRaw.includes('NGƯỢC')) { impliedResult = 'S'; }
-
-            if (!baseSignal) {
-                updateFinalDecisionDisplay(null, `ĐÃ PHÁT HIỆN MẪU (${bestMatch.confidence.toFixed(0)}%). Nhưng chưa có lệnh tại 🧠 Phán Quyết.`, "CHỜ LỆNH TỪ PHÁN QUYẾT");
-                renderMatchesAnalysis();
-                return;
-            }
-
-            let finalDecision = '';
-            if (bestMatch.target === impliedResult) {
-                finalDecision = baseSignal; 
-            } else {
-                finalDecision = (baseSignal === 'P') ? 'B' : 'P'; 
-            }
-
-            let impliedText = impliedResult === 'S' ? 'CỘT ĐỎ (NGƯỢC)' : 'CỘT XANH (THEO)';
-            let actionText = bestMatch.target === impliedResult ? 'GIỮ NGUYÊN' : 'BẺ NGƯỢC';
-
-            const reasonHtml = `
-                <div class="bg-gray-900 border border-gray-600 rounded-lg p-5 text-left w-full max-w-md mx-auto shadow-lg relative">
-                    <div class="absolute -top-3 right-4 bg-purple-600 text-[10px] font-black px-2 py-0.5 rounded shadow-sm text-white">MẪU TỐT NHẤT ${bestMatch.size} BIT</div>
-                    <div class="mb-3 text-gray-300">
-                        HỆ THỐNG ƯU TIÊN CỤM BIT VỚI TỈ LỆ <br/>
-                        <span class="text-green-400 font-black text-2xl">${bestMatch.confidence.toFixed(0)}%</span>
-                        VỚI
-                        <span class="text-pink-400 font-black text-2xl">${bestMatch.total}</span>
-                        LẦN CHỐT
-                        <span class="text-yellow-400 font-black text-2xl">${bestMatch.target}</span>
-                    </div>
-                    <div class="mb-3 text-gray-400 border-t border-gray-700 pt-3">
-                        ➜ Xem 🧠 Phán Quyết:<br/>
-                        <span class="text-white font-bold text-lg">${ht1VerdictRaw}</span>
-                        <span class="text-gray-500">(Kỳ vọng ${impliedText}).</span>
-                    </div>
-                    <div class="text-gray-300 border-t border-gray-700 pt-3 flex items-center justify-between">
-                        <div>
-                            ➜ AI KẾT LUẬN: Cần ra <br/>
-                            <span class="font-bold text-lg ${bestMatch.target === 'S' ? 'text-red-400' : 'text-blue-400'}">CỘT ${bestMatch.target === 'S' ? 'ĐỎ' : 'XANH'} (${bestMatch.target})</span><br/>
-                            ➜ Phải <span class="text-purple-400 font-bold">${actionText}</span> Lệnh
-                        </div>
-                        <div class="text-right">
-                            <span class="text-gray-500 text-xs">CHỐT</span><br/>
-                            <span class="text-white font-black text-3xl drop-shadow-md">${finalDecision}</span>
-                        </div>
-                    </div>
-                </div>
-            `;
-            
-            updateFinalDecisionDisplay(finalDecision, reasonHtml, `AI KÍCH HOẠT: Mẫu ưu tiên ${bestMatch.size} Bit`);
-            renderMatchesAnalysis(); // GỌI RENDER BẢNG PHÂN TÍCH ĐA CHIỀU
-        }
-
-        // HÀM RENDER BẢNG PHÂN TÍCH ĐA CHIỀU TẤT CẢ MATCHES
-        function renderMatchesAnalysis() {
-            const matches = [...masterState.currentMatches];
-            const tbody = document.getElementById('matches-analysis-body');
-            const totalEl = document.getElementById('analysis-total-matches');
-            const dCountEl = document.getElementById('analysis-d-count');
-            const dPercEl = document.getElementById('analysis-d-perc');
-            const sCountEl = document.getElementById('analysis-s-count');
-            const sPercEl = document.getElementById('analysis-s-perc');
-            const verdictEl = document.getElementById('analysis-verdict');
-            
-            if (matches.length === 0) {
-                totalEl.textContent = '0'; dCountEl.textContent = '0'; dPercEl.textContent = '0%';
-                sCountEl.textContent = '0'; sPercEl.textContent = '0%'; verdictEl.textContent = '-';
-                verdictEl.className = 'text-lg font-black text-gray-500';
-                tbody.innerHTML = '<tr><td colspan="6" class="p-4 text-center text-gray-500 italic">Không có cụm Pattern nào thoả mãn điều kiện N-Gram.</td></tr>';
-                return;
-            }
-
-            // Xử lý Sort
-            const sortMode = document.getElementById('matchesSortMode').value;
-            matches.sort((a, b) => {
-                if (sortMode === 'score_desc') return b.score - a.score;
-                if (sortMode === 'size_asc') return a.size - b.size;
-                if (sortMode === 'size_desc') return b.size - a.size;
-                if (sortMode === 'conf_desc') return b.confidence - a.confidence;
-                if (sortMode === 'conf_asc') return a.confidence - b.confidence;
-                return 0;
-            });
-
-            // Tính Thống kê tổng quan
-            const total = matches.length;
-            const countD = matches.filter(m => m.target === 'D').length;
-            const countS = matches.filter(m => m.target === 'S').length;
-            const percD = ((countD / total) * 100).toFixed(1);
-            const percS = ((countS / total) * 100).toFixed(1);
-
-            totalEl.textContent = total;
-            dCountEl.textContent = countD; dPercEl.textContent = percD + '%';
-            sCountEl.textContent = countS; sPercEl.textContent = percS + '%';
-
-            // Kết luận đám đông
-            if (countD > countS) {
-                verdictEl.textContent = 'THIÊN VỀ XANH (D)';
-                verdictEl.className = 'text-lg font-black text-blue-400 drop-shadow-md';
-            } else if (countS > countD) {
-                verdictEl.textContent = 'THIÊN VỀ ĐỎ (S)';
-                verdictEl.className = 'text-lg font-black text-red-400 drop-shadow-md';
-            } else {
-                verdictEl.textContent = 'CÂN BẰNG NHAU (50/50)';
-                verdictEl.className = 'text-lg font-black text-yellow-400 drop-shadow-md';
-            }
-
-            // Render Table
-            let html = '';
-            matches.forEach((m, index) => {
-                const targetBadge = m.target === 'D' 
-                    ? '<span class="bg-blue-900/40 text-blue-400 px-2 py-0.5 rounded font-bold border border-blue-500/30 inline-block w-16 text-center">XANH (D)</span>'
-                    : '<span class="bg-red-900/40 text-red-400 px-2 py-0.5 rounded font-bold border border-red-500/30 inline-block w-16 text-center">ĐỎ (S)</span>';
-                
-                // Highlight dòng top 1 nếu đang sort theo ưu tiên AI
-                const isTop1 = (sortMode === 'score_desc' && index === 0);
-                const trClass = isTop1 ? 'bg-purple-900/20 border-l-4 border-purple-500' : 'hover:bg-gray-800/80 transition-colors';
-                
-                html += `
-                    <tr class="${trClass}">
-                        <td class="p-3 text-yellow-300 font-bold">${m.size}</td>
-                        <td class="p-3 text-gray-400 font-mono tracking-widest">${m.seq}</td>
-                        <td class="p-3 text-center">${targetBadge}</td>
-                        <td class="p-3 text-center font-bold text-green-400">${m.confidence.toFixed(1)}%</td>
-                        <td class="p-3 text-center font-bold text-pink-400">${m.total}</td>
-                        <td class="p-3 text-right text-gray-500 font-mono text-[10px]">${m.score.toFixed(0)} pt</td>
-                    </tr>
-                `;
-            });
-            tbody.innerHTML = html;
-        }
-
-        function updateFinalDecisionDisplay(decision, reasonHtml, prioritySystem) {
-            const container = document.getElementById('finalDecisionContainer');
-            const text = document.getElementById('finalDecisionText');
-            const reasonEl = document.getElementById('decisionReason');
-            const priorityEl = document.getElementById('priority-system');
-            
-            priorityEl.textContent = prioritySystem || 'CHỜ XỬ LÝ';
-            
-            if (decision === 'P') {
-                text.innerHTML = '👤 CHỐT PLAYER';
-                text.className = 'text-4xl md:text-5xl font-black text-blue-400 drop-shadow-md';
-                container.className = "py-8 rounded-xl border-2 mb-5 transition-all duration-500 shadow-[inset_0_0_20px_rgba(59,130,246,0.2)] border-blue-500 bg-blue-900/30";
-            } else if (decision === 'B') {
-                text.innerHTML = '🏦 CHỐT BANKER';
-                text.className = 'text-4xl md:text-5xl font-black text-red-400 drop-shadow-md';
-                container.className = "py-8 rounded-xl border-2 mb-5 transition-all duration-500 shadow-[inset_0_0_20px_rgba(239,68,68,0.2)] border-red-500 bg-red-900/30";
-            } else {
-                text.innerHTML = '⏳ CHỜ TÍN HIỆU';
-                text.className = 'text-3xl md:text-4xl font-black text-gray-500 opacity-70';
-                container.className = "py-8 rounded-xl border-2 border-dashed border-gray-600 mb-5 bg-gray-800/50 transition-all duration-500 shadow-inner";
-            }
-            
-            if (decision === null) {
-                reasonEl.innerHTML = `<div class="text-gray-400 font-mono text-sm">${reasonHtml}</div>`;
-            } else {
-                reasonEl.innerHTML = reasonHtml;
-            }
-            
-            masterState.lastDecision = decision;
-            masterState.lastDecisionReason = reasonHtml.replace(/<[^>]*>?/gm, ' '); 
-        }
-
-        function updatePatternConfig() {
-            const occ = parseInt(document.getElementById('minOccurrencesSlider').value);
-            const conf = parseInt(document.getElementById('minConfidenceSlider').value);
-            
-            patternConfig.minOccurrences = occ;
-            patternConfig.minConfidence = conf;
-            
-            document.getElementById('minOccurrencesValue').innerText = occ;
-            document.getElementById('display-occur').innerText = `${occ} lần`;
-            
-            document.getElementById('minConfidenceValue').innerText = `${conf}%`;
-            document.getElementById('display-conf').innerText = `${conf}%`;
-            
-            calculateFinalDecision();
-        }
-
-        function resetPatternConfigToDefault() {
-            document.getElementById('minOccurrencesSlider').value = 10;
-            document.getElementById('minConfidenceSlider').value = 100;
-            updatePatternConfig();
-            showToast('Đã khôi phục N-gram: 10 lần lặp & Độ tin cậy 100%', 'info');
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            document.getElementById('minOccurrencesSlider').addEventListener('input', updatePatternConfig);
-            document.getElementById('minConfidenceSlider').addEventListener('input', updatePatternConfig);
-            
-            document.getElementById('minOccurrencesSlider').value = patternConfig.minOccurrences;
-            document.getElementById('minConfidenceSlider').value = patternConfig.minConfidence;
-            updatePatternConfig(); 
-
-            initializeOriginalPatternDB();
-        });
-
-
-        /* =========================================================================
-           4. ĐỒNG BỘ TỰ ĐỘNG & LƯU TRỮ LỊCH SỬ LÕI AI
-           ========================================================================= */
-        function syncFinalDecisionHistoryFromHT1(intervalHistory) {
-            if (!intervalHistory || intervalHistory.length < 4) return;
-            
-            let newHistory = [];
-            let dsSequence = "";
-            
-            for (let i = 0; i < intervalHistory.length; i++) {
-                const item = intervalHistory[i];
-                const isCorrect = item.correct === true || item.isCorrect === true || item.predicted === item.actual;
-                const currentBit = isCorrect ? "D" : "S";
-                
-                if (i >= 3) {
-                    const bestMatch = findBestMatch(dsSequence, patternConfig.minOccurrences, patternConfig.minConfidence);
-                    
-                    if (bestMatch && item.predicted && item.actual) {
-                        const ht1Verdict = item.predicted.toUpperCase().trim();
-                        let baseSignal = null;
-                        if (ht1Verdict.includes('P')) baseSignal = 'P';
-                        else if (ht1Verdict.includes('B')) baseSignal = 'B';
-                        
-                        if (baseSignal) {
-                            let finalDecision = '';
-                            if (bestMatch.target === 'D') finalDecision = baseSignal;
-                            else finalDecision = (baseSignal === 'P') ? 'B' : 'P';
-                            
-                            newHistory.push({
-                                gameNumber: i + 1,
-                                decision: finalDecision,
-                                actual: item.actual,
-                                correct: finalDecision === item.actual,
-                                reason: `[Auto-Sync] Mẫu ${bestMatch.size} Bit (${bestMatch.confidence.toFixed(0)}%)`,
-                                timestamp: Date.now() - (intervalHistory.length - i) * 1000
-                            });
-                        }
-                    }
-                }
-                dsSequence += currentBit; 
-            }
-            
-            if (newHistory.length > 0) {
-                masterState.finalDecisionHistory = newHistory;
-                updateFinalDecisionStats();
-                saveFinalDecisionHistory();
-            }
-        }
-
-        function addFinalDecisionToHistory(actualResult) {
-            if (!masterState.lastDecision) return; 
-
-            const newRecord = {
-                gameNumber: masterState.finalDecisionHistory.length + 1,
-                decision: masterState.lastDecision,
-                actual: actualResult,
-                correct: masterState.lastDecision === actualResult,
-                reason: masterState.lastDecisionReason || '',
-                timestamp: Date.now()
-            };
-            
-            masterState.finalDecisionHistory.push(newRecord);
-            updateFinalDecisionStats();
-            saveFinalDecisionHistory();
-        }
-
-        function updateFinalDecisionStats() {
-            const history = masterState.finalDecisionHistory;
-            const totalGames = history.length;
-            const correctGames = history.filter(item => item.correct).length;
-            const accuracyRate = totalGames > 0 ? ((correctGames / totalGames) * 100).toFixed(1) : 0;
-            
-            document.getElementById('final-total-games').textContent = totalGames;
-            document.getElementById('final-correct-games').textContent = correctGames;
-            document.getElementById('final-accuracy-rate').textContent = `${accuracyRate}%`;
-            
-            updateFinalDecisionChart();
-            updateFinalDecisionHistoryTable();
-        }
-
-        function updateFinalDecisionChart() {
-            const history = masterState.finalDecisionHistory;
-            const chartEl = document.getElementById('final-decision-chart');
-            if (!chartEl) return;
-            
-            if (!history || history.length === 0) { 
-                chartEl.innerHTML = '<p class="text-gray-500 text-center text-sm w-full mt-3">Chưa có lịch sử khớp lệnh</p>'; 
-                return; 
-            }
-            
-            let chartHTML = '<div class="flex items-end justify-start h-full gap-1 min-w-max px-1">'; 
-            
-            history.forEach((item, index) => {
-                const isCorrect = item.correct;
-                const barClass = isCorrect ? 'h-full bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.6)]' : 'h-2/5 bg-red-500 shadow-[0_0_5px_rgba(239,68,68,0.5)]';
-                const gameNum = item.gameNumber || (index + 1);
-                chartHTML += `<div class="w-2.5 flex items-end"><div class="w-full rounded-[1px] ${barClass}" title="Ván ${gameNum}: Đánh ${item.decision} - Ra ${item.actual} -> ${isCorrect ? 'WIN' : 'LOSE'}"></div></div>`;
-            });
-            chartHTML += '</div>';
-            chartEl.innerHTML = chartHTML;
-            chartEl.scrollLeft = chartEl.scrollWidth; 
-        }
-
-        function updateFinalDecisionHistoryTable() {
-            const history = masterState.finalDecisionHistory;
-            const tableBody = document.getElementById('final-decision-history-body');
-            if (!tableBody) return;
-            
-            if (!history || history.length === 0) { 
-                tableBody.innerHTML = '<tr><td colspan="5" class="p-6 text-center text-gray-500 italic">Hệ thống đang chờ đợi dữ liệu đầu vào...</td></tr>'; 
-                return; 
-            }
-            
-            const recentHistory = history.slice(-15).reverse();
-            let tableHTML = '';
-            
-            recentHistory.forEach((item) => {
-                const gameNum = item.gameNumber;
-                const decisionText = item.decision === 'P' ? 'PLAYER' : 'BANKER';
-                const actualText = item.actual === 'P' ? 'PLAYER' : 'BANKER';
-                const isWin = item.correct;
-                const statusBadge = isWin 
-                    ? '<span class="bg-green-900/40 text-green-400 px-2 py-0.5 rounded font-bold text-xs border border-green-500/30">WIN</span>'
-                    : '<span class="bg-red-900/40 text-red-400 px-2 py-0.5 rounded font-bold text-xs border border-red-500/30">LOSE</span>';
-                
-                tableHTML += `
-                    <tr class="hover:bg-gray-800/80 transition-colors">
-                        <td class="p-3 text-gray-300 font-mono">${gameNum}</td>
-                        <td class="p-3 font-bold ${item.decision === 'P' ? 'text-blue-400' : 'text-red-400'}">${decisionText}</td>
-                        <td class="p-3 font-bold ${item.actual === 'P' ? 'text-blue-400' : 'text-red-400'}">${actualText}</td>
-                        <td class="p-3">${statusBadge}</td>
-                        <td class="p-3 text-[11px] text-gray-400 leading-relaxed font-mono opacity-80 hover:opacity-100 truncate max-w-[200px]" title="${item.reason}">${item.reason.substring(0, 50)}...</td>
-                    </tr>`;
-            });
-            tableBody.innerHTML = tableHTML;
-        }
-
-        function saveFinalDecisionHistory() { safeStorageSet('vanSuNhuY_finalDecisionHistory_v5', masterState.finalDecisionHistory); }
-        function loadFinalDecisionHistory() { try { const saved = localStorage.getItem('vanSuNhuY_finalDecisionHistory_v5'); if(saved) { masterState.finalDecisionHistory = JSON.parse(saved); updateFinalDecisionStats(); } } catch(e){} }
-
-
-        /* =========================================================================
-           5. LIÊN KẾT IFRAME VÀ UI CÁC HỆ THỐNG CON
-           ========================================================================= */
-        function sendToIframe(iframeId, command, data = null) {
-            const iframe = document.getElementById(iframeId);
-            if (iframe && iframe.contentWindow) {
-                iframe.contentWindow.postMessage({ command: command, data: data, source: 'master' }, '*');
-                return true;
-            }
-            return false;
-        }
-
-        function broadcastToAll(command, data = null) {
-            ['ht1', 'ht2', 'ht3', 'ht4'].forEach(sys => sendToIframe(`${sys}-iframe`, command, data));
-        }
-
-        window.addEventListener('message', function(event) {
-            if (['ht1', 'ht2', 'ht3', 'ht4'].includes(event.data.source)) {
-                handleSystemMessage(event.data);
-            }
-        });
-
-        function handleSystemMessage(data) {
-            const system = data.source;
-            switch(data.type) {
-                case 'ready':
-                    masterState.systemsReady[system] = true;
-                    updateSystemStatus();
-                    if (allSystemsReady()) initializeSystems();
-                    break;
-                case 'accuracy_update':
-                    updateSystemAccuracy(system, data.accuracy);
-                    break;
-                case 'chot_history_update':
-                    updateChotHistory(system, data.history);
-                    updateCombinedChart(system, data.history);
-                    break;
-                case 'session_update':
-                    updateSessionInfo(system, data.session);
-                    break;
-                case 'prediction_update':
-                    if (data.prediction) masterState.predictions[system] = data.prediction;
-                    break;
-                case 'system_details_update':
-                    updateSystemDetails(system, data.details);
-                    
-                    if (system === 'ht1') {
-                        learnFromNewData(data.details.intervalHistory); 
-
-                        if (masterState.pendingResultToEvaluate !== null) {
-                            addFinalDecisionToHistory(masterState.pendingResultToEvaluate);
-                            masterState.pendingResultToEvaluate = null;
-                        } 
-                        else if (masterState.finalDecisionHistory.length === 0 && data.details.intervalHistory && data.details.intervalHistory.length >= 4) {
-                            syncFinalDecisionHistoryFromHT1(data.details.intervalHistory);
-                        }
-
-                        calculateFinalDecision();       
-                    }
-                    break;
-                case 'export_data':
-                    if (data.sessions) masterState[`${system}Sessions`] = data.sessions;
-                    break;
-            }
-        }
-
-        function updateSystemAccuracy(system, accuracy) {
-            masterState[`${system}Accuracy`] = accuracy;
-            const el = document.getElementById(`${system}-accuracy`);
-            const dis = document.getElementById(`accuracy-${system}-display`);
-            if (el) {
-                el.textContent = `${accuracy.toFixed(1)}%`;
-                el.className = `accuracy-badge ${accuracy >= 70 ? 'accuracy-high' : accuracy >= 50 ? 'accuracy-medium' : 'accuracy-low'}`;
-            }
-            if (dis) dis.textContent = `${accuracy.toFixed(1)}%`;
-        }
-
-        function updateSystemDetails(system, details) {
-            if (!details) return;
-            masterState.systemDetails[system] = {
-                verdict: details.verdict || null, chot: details.chot || null,
-                range: details.range || null, rangeAccuracy: details.rangeAccuracy || null,
-                intervalHistory: details.intervalHistory || []
-            };
-            
-            const vEl = document.getElementById(`${system}-verdict-prediction`);
-            if (vEl) {
-                vEl.textContent = details.verdict || '-';
-                vEl.className = `font-bold text-xl ${details.verdict === 'P' ? 'text-blue-400' : details.verdict === 'B' ? 'text-red-400' : 'text-gray-400'}`;
-            }
-            
-            const cEl = document.getElementById(`${system}-chot-prediction`);
-            if (cEl) {
-                cEl.textContent = details.chot || '-';
-                cEl.className = `font-bold text-xl ${details.chot === 'P' ? 'text-blue-400' : details.chot === 'B' ? 'text-red-400' : 'text-gray-400'}`;
-            }
-            
-            const rEl = document.getElementById(`${system}-confidence-range`);
-            if (rEl) rEl.textContent = details.range || '-';
-            
-            const raEl = document.getElementById(`${system}-range-accuracy`);
-            if (raEl) raEl.textContent = details.rangeAccuracy ? `${details.rangeAccuracy}%` : '-';
-            
-            updateIntervalChart(system, details.intervalHistory);
-        }
-
-        function updateIntervalChart(system, history) {
-            const chartEl = document.getElementById(`${system}-interval-chart`);
-            const rangeGamesEl = document.getElementById(`${system}-range-games`);
-            if (!chartEl) return;
-            
-            if (!history || history.length === 0) {
-                chartEl.innerHTML = '<p class="text-gray-600 text-xs text-center w-full mt-3">Chưa có dữ liệu biểu đồ</p>';
-                if (rangeGamesEl) rangeGamesEl.textContent = '0 ván';
-                return;
-            }
-            
-            let chartHTML = '<div class="flex items-end justify-start h-full gap-1 min-w-max px-1">'; 
-            let correctCount = 0;
-            
-            history.forEach(pred => {
-                const isCorrect = pred.isCorrect || (pred.predicted === pred.actual) || (pred.correct === true);
-                if (isCorrect) correctCount++;
-                const barClass = isCorrect ? 'bg-blue-500 shadow-[0_0_5px_rgba(59,130,246,0.6)] h-full' : 'bg-red-500 shadow-[0_0_5px_rgba(239,68,68,0.6)] h-2/5';
-                const title = `Ván: ${pred.game || 'N/A'} | Cầu báo: ${pred.predicted} | Thực tế: ${pred.actual}`;
-                chartHTML += `<div class="w-1.5 rounded-[1px] ${barClass}" title="${title}"></div>`;
-            });
-            chartHTML += '</div>';
-            chartEl.innerHTML = chartHTML;
-            chartEl.scrollLeft = chartEl.scrollWidth; 
-            
-            if (rangeGamesEl) {
-                const acc = history.length > 0 ? ((correctCount / history.length) * 100).toFixed(1) : 0;
-                rangeGamesEl.innerHTML = `<span class="text-white">${history.length} ván</span> (<span class="text-green-400">${correctCount} win</span> - <span class="text-yellow-400">${acc}%</span>)`;
-            }
-        }
-
-        function updateCombinedChart(system, chotHistory) {
-            const chartEl = document.getElementById(`${system}-combined-chart`);
-            if (!chartEl) return;
-            
-            if (!chotHistory || chotHistory.length === 0) {
-                chartEl.innerHTML = '<p class="text-gray-600 text-xs text-center w-full mt-3">Chưa có dữ liệu chốt</p>';
-                return;
-            }
-            
-            let chartHTML = '<div class="flex items-end justify-start h-full gap-1 min-w-max px-1">';
-            chotHistory.forEach(pred => {
-                if(pred && pred.predicted && pred.actual) {
-                    const isCorrect = pred.predicted === pred.actual;
-                    const barClass = isCorrect ? 'bg-purple-500 shadow-[0_0_5px_rgba(168,85,247,0.6)] h-full' : 'bg-gray-500 h-2/5';
-                    chartHTML += `<div class="w-1.5 rounded-[1px] ${barClass}" title="Chốt: ${pred.predicted} - Ra: ${pred.actual}"></div>`;
-                }
-            });
-            chartHTML += '</div>';
-            chartEl.innerHTML = chartHTML;
-            chartEl.scrollLeft = chartEl.scrollWidth; 
-        }
-
-        /* =========================================================================
-           6. XỬ LÝ NHẬP LỆNH, HOÀN TÁC, SESSION
-           ========================================================================= */
-        function addResultToAll(result) {
-            if (!masterState.currentSessionId) { showToast('Vui lòng chọn hoặc tạo phiên trước!', 'warning'); return; }
-            const session = masterState.sessions[masterState.currentSessionId];
-            if (!session.history) session.history = [];
-            session.history.push(result);
-            
-            saveMasterSessions();
-            updateCurrentSessionInfo();
-            
-            masterState.pendingResultToEvaluate = result; 
-            broadcastToAll('add_result', result);
-            
-            setTimeout(() => {
-                broadcastToAll('get_accuracy');
-                broadcastToAll('get_chot_history');
-                broadcastToAll('get_system_details');
-            }, 150);
-            
-            showToast(`Đã lưu kết quả: ${result === 'P' ? 'PLAYER' : 'BANKER'}`, 'success');
-        }
-
-        function undoLastAll() {
-            if (!masterState.currentSessionId) return;
-            const session = masterState.sessions[masterState.currentSessionId];
-            if (session.history.length === 0) return;
-            
-            session.history.pop();
-            saveMasterSessions();
-            updateCurrentSessionInfo();
-            broadcastToAll('undo_last');
-            
-            if (masterState.finalDecisionHistory.length > 0) {
-                masterState.finalDecisionHistory.pop();
-                updateFinalDecisionStats();
-                saveFinalDecisionHistory();
-            }
-            
-            masterState.pendingResultToEvaluate = null; 
-            
-            setTimeout(() => {
-                broadcastToAll('get_accuracy'); 
-                broadcastToAll('get_chot_history'); 
-                broadcastToAll('get_system_details'); 
-            }, 150);
-            
-            showToast('Đã hoàn tác 1 kết quả', 'info');
-        }
-
-        function clearHistoryAll() {
-            if (!masterState.currentSessionId) return;
-            if (confirm('Xóa sạch lịch sử của phiên hiện tại?')) {
-                masterState.sessions[masterState.currentSessionId].history = [];
-                saveMasterSessions(); updateCurrentSessionInfo();
-                broadcastToAll('clear_history');
-                
-                masterState.finalDecisionHistory = [];
-                masterState.pendingResultToEvaluate = null;
-                initializeOriginalPatternDB();
-                
-                updateFinalDecisionStats();
-                saveFinalDecisionHistory();
-                calculateFinalDecision(); 
-                showToast('Lịch sử đã được xoá trắng', 'info');
-            }
-        }
-        
-        function forcePlayerDecision() { updateFinalDecisionDisplay('P', 'BẠN ÉP HỆ THỐNG LÊN LỆNH: PLAYER', 'THỦ CÔNG'); showToast('Đã ép chốt PLAYER', 'info'); }
-        function forceBankerDecision() { updateFinalDecisionDisplay('B', 'BẠN ÉP HỆ THỐNG LÊN LỆNH: BANKER', 'THỦ CÔNG'); showToast('Đã ép chốt BANKER', 'info'); }
-
-        function loadMasterSessions() { try { const saved = localStorage.getItem('vanSuNhuY_sessions_v2'); if (saved) { masterState.sessions = JSON.parse(saved); updateMasterSessionSelector(); } } catch (e) {} }
-        function saveMasterSessions() { safeStorageSet('vanSuNhuY_sessions_v2', masterState.sessions); }
-
-        function updateMasterSessionSelector() {
-            const selector = document.getElementById('masterSessionSelector');
-            selector.innerHTML = '<option value="">Chọn phiên để đồng bộ...</option>';
-            Object.keys(masterState.sessions).forEach(id => {
-                const opt = document.createElement('option'); opt.value = id; opt.textContent = masterState.sessions[id].name;
-                selector.appendChild(opt);
-            });
-        }
-        function createNewSessionAll() {
-            const sessionName = prompt('Nhập tên phiên mới:', `Phiên ${new Date().toLocaleString('vi-VN')}`);
-            if (sessionName) {
-                const id = `session-${Date.now()}`;
-                masterState.sessions[id] = { id: id, name: sessionName, created: new Date().toISOString(), history: [] };
-                masterState.currentSessionId = id; masterState.currentSessionName = sessionName;
-                saveMasterSessions(); updateMasterSessionSelector(); updateCurrentSessionInfo();
-                broadcastToAll('create_session', { name: sessionName, id: id });
-                initializeOriginalPatternDB();
-                showToast('Đã tạo phiên mới', 'success');
-            }
-        }
-        function renameMasterSession() {
-            if (!masterState.currentSessionId) return;
-            const newName = prompt('Nhập tên mới:', masterState.currentSessionName);
-            if (newName) {
-                masterState.sessions[masterState.currentSessionId].name = newName;
-                masterState.currentSessionName = newName;
-                saveMasterSessions(); updateMasterSessionSelector(); updateCurrentSessionInfo();
-                broadcastToAll('rename_session', { id: masterState.currentSessionId, name: newName });
-                showToast('Đã đổi tên', 'success');
-            }
-        }
-        function updateCurrentSessionInfo() {
-            document.getElementById('currentSessionName').textContent = masterState.currentSessionName;
-            const session = masterState.sessions[masterState.currentSessionId];
-            if (session && session.history) document.getElementById('totalGamesMaster').textContent = session.history.length;
-        }
-        function syncAllSystems() {
-            if (!masterState.currentSessionId) { showToast('Vui lòng chọn phiên trước!', 'warning'); return; }
-            const session = masterState.sessions[masterState.currentSessionId];
-            
-            initializeOriginalPatternDB();
-            masterState.pendingResultToEvaluate = null;
-            masterState.finalDecisionHistory = []; 
-            
-            broadcastToAll('load_session', { id: masterState.currentSessionId, name: session.name, history: [...session.history] });
-            document.getElementById('sync-status').textContent = '🔄 Đang đồng bộ...';
-            
-            setTimeout(() => {
-                document.getElementById('sync-status').textContent = '🟢 Đã đồng bộ';
-                broadcastToAll('get_accuracy'); 
-                broadcastToAll('get_chot_history'); 
-                broadcastToAll('get_system_details');
-            }, 150);
-        }
-        function resetAllSystems() {
-            if (confirm('Xoá tất cả phiên làm việc và reset toàn bộ hệ thống?')) {
-                masterState.sessions = {}; masterState.currentSessionId = null; masterState.currentSessionName = 'Chưa chọn';
-                masterState.finalDecisionHistory = []; 
-                masterState.pendingResultToEvaluate = null;
-                initializeOriginalPatternDB();
-                
-                localStorage.removeItem('vanSuNhuY_sessions_v2'); localStorage.removeItem('vanSuNhuY_finalDecisionHistory_v5');
-                updateMasterSessionSelector(); updateCurrentSessionInfo(); updateFinalDecisionStats();
-                broadcastToAll('reset_system');
-                resetCharts();
+            function closePatternDBModal() { document.getElementById('pattern-db-modal').classList.add('hidden'); }
+            async function savePatternDB() {
+                const newSamples = document.getElementById('pattern-db-textarea').value.trim();
+                if(!newSamples) { showToast('Không được để trống', 'error'); return; }
+                currentRawSamples = newSamples;
+                try { localStorage.setItem('vanSuNhuY_customPatterns', currentRawSamples); } catch(e){}
+                closePatternDBModal(); showToast('Đang dạy AI...', 'info');
+                await initializeOriginalPatternDB();
+                showToast('Đã lưu và dạy lại AI!', 'success');
                 calculateFinalDecision();
-                showToast('Hệ thống đã reset hoàn toàn', 'info');
             }
-        }
-
-
-        /* =========================================================================
-           7. XỬ LÝ BIỂU ĐỒ 4 HỆ THỐNG GIAO DIỆN CHÍNH
-           ========================================================================= */
-        function updateChotHistory(system, history) {
-            masterState[`${system}ChotHistory`] = history;
-            if (system === currentChartSystem || currentChartSystem === 'all') {
-                if(currentChartSystem === 'all') showAllGameCharts();
-                else showGameChart(system);
+            function resetPatternDBToDefault() {
+                if(confirm("Khôi phục 102 mẫu gốc?")) {
+                    currentRawSamples = defaultRawSamples;
+                    document.getElementById('pattern-db-textarea').value = currentRawSamples;
+                }
             }
-        }
-        
-        function showGameChart(system) {
-            currentChartSystem = system;
-            document.querySelectorAll('.system-chart-btn').forEach(btn => {
-                btn.classList.remove('active', 'bg-opacity-100');
-                if (btn.getAttribute('data-system') === system) btn.classList.add('active', 'bg-opacity-100');
-            });
-            document.getElementById('current-system-label').textContent = system.toUpperCase();
-            document.getElementById('current-system-label').className = 
-                system === 'ht1' ? 'text-blue-400' : system === 'ht2' ? 'text-green-400' : system === 'ht3' ? 'text-orange-400' : 'text-pink-400';
-            
-            const history = masterState[`${system}ChotHistory`];
-            if (!history || history.length === 0) { renderEmptyChart(); updateGameResultsTable(system); return; }
-            
-            const ctx = document.getElementById('gameAccuracyChart').getContext('2d');
-            const labels = []; const correctData = []; const incorrectData = [];
-            history.forEach((pred, idx) => {
-                labels.push(`Ván ${idx+1}`);
-                if (pred && pred.predicted !== undefined && pred.actual !== undefined) {
-                    const isCorrect = pred.predicted === pred.actual;
-                    correctData.push(isCorrect ? 1 : 0); incorrectData.push(isCorrect ? 0 : 1);
-                }
-            });
-
-            const chartArea = document.getElementById('chart-area-container');
-            const requiredWidth = labels.length * 30;
-            chartArea.style.minWidth = Math.max(requiredWidth, chartArea.parentElement.clientWidth) + 'px';
-            
-            if (gameAccuracyChart) gameAccuracyChart.destroy();
-            gameAccuracyChart = new Chart(ctx, {
-                type: 'bar',
-                data: { labels: labels, datasets: [
-                    { label: 'Đúng', data: correctData, backgroundColor: 'rgba(34, 197, 94, 0.8)', borderRadius: 2 },
-                    { label: 'Sai', data: incorrectData, backgroundColor: 'rgba(239, 68, 68, 0.8)', borderRadius: 2 }
-                ]},
-                options: { responsive: true, maintainAspectRatio: false, scales: { x: { stacked: true, grid:{display:false} }, y: { stacked: true, max: 1, display:false } }, plugins: { legend: { display: false } } }
-            });
-            updateGameResultsTable(system);
-        }
-        
-        function showAllGameCharts() {
-            currentChartSystem = 'all';
-            document.querySelectorAll('.system-chart-btn').forEach(btn => btn.classList.remove('active', 'bg-opacity-100'));
-            document.querySelector('[data-system="all"]').classList.add('active', 'bg-opacity-100');
-            document.getElementById('current-system-label').textContent = 'TỔNG HỢP CẢ 4';
-            document.getElementById('current-system-label').className = 'text-purple-400';
-            
-            let allHistories = [];
-            ['ht1', 'ht2', 'ht3', 'ht4'].forEach(sys => {
-                const hist = masterState[`${sys}ChotHistory`];
-                if (hist) allHistories.push(...hist.map(p => ({...p, system: sys})));
-            });
-            if (allHistories.length === 0) { renderEmptyChart(); return; }
-            
-            allHistories.sort((a, b) => (a.gameNumber || 0) - (b.gameNumber || 0));
-            const ctx = document.getElementById('gameAccuracyChart').getContext('2d');
-            const labels = []; const cData = []; const iData = [];
-            
-            let currentVán = 0; let cCorrect = 0; let cTotal = 0;
-            allHistories.forEach(pred => {
-                if(pred.gameNumber !== currentVán) {
-                    if(currentVán !== 0) { labels.push(`Ván ${currentVán}`); cData.push(cCorrect); iData.push(cTotal-cCorrect); }
-                    currentVán = pred.gameNumber || 0; cCorrect = 0; cTotal = 0;
-                }
-                cTotal++; if(pred.predicted === pred.actual) cCorrect++;
-            });
-            if(currentVán !== 0) { labels.push(`Ván ${currentVán}`); cData.push(cCorrect); iData.push(cTotal-cCorrect); }
-            
-            const chartArea = document.getElementById('chart-area-container');
-            const requiredWidth = labels.length * 40;
-            chartArea.style.minWidth = Math.max(requiredWidth, chartArea.parentElement.clientWidth) + 'px';
-
-            if (gameAccuracyChart) gameAccuracyChart.destroy();
-            gameAccuracyChart = new Chart(ctx, {
-                type: 'bar',
-                data: { labels: labels, datasets: [
-                    { label: 'Tổng Lệnh Đúng', data: cData, backgroundColor: 'rgba(34, 197, 94, 0.8)', borderRadius: 2 },
-                    { label: 'Tổng Lệnh Sai', data: iData, backgroundColor: 'rgba(239, 68, 68, 0.8)', borderRadius: 2 }
-                ]},
-                options: { responsive: true, maintainAspectRatio: false, scales: { x: { stacked: true, grid:{display:false} }, y: { stacked: true, grid:{color:'#374151'} } } }
-            });
-            
-            document.getElementById('game-results-container').innerHTML = '<p class="text-gray-500 text-center italic text-sm mt-4">Vui lòng chọn từng hệ thống để xem chi tiết.</p>';
-            let ttC=0, ttT=0;
-            cData.forEach(c => ttC+=c); iData.forEach(i => ttT+=i); ttT+=ttC;
-            document.getElementById('game-stats-summary').textContent = `Tổng Lệnh: ${ttT} | Đúng: ${ttC}`;
-            document.getElementById('game-accuracy-summary').textContent = `WinRate: ${(ttT>0?ttC/ttT*100:0).toFixed(1)}%`;
-        }
-        
-        function renderEmptyChart() {
-            const chartArea = document.getElementById('chart-area-container');
-            if(chartArea) chartArea.style.minWidth = '100%';
-
-            if (gameAccuracyChart) gameAccuracyChart.destroy();
-            gameAccuracyChart = new Chart(document.getElementById('gameAccuracyChart').getContext('2d'), {
-                type: 'bar', data: { labels: ['Trống'], datasets: [{ data: [0] }] },
-                options: { responsive: true, maintainAspectRatio: false, scales: { x: { display:false }, y: { display:false } }, plugins: { legend: { display: false } } }
-            });
-        }
-        
-        function updateGameResultsTable(system) {
-            const history = masterState[`${system}ChotHistory`];
-            const container = document.getElementById('game-results-container');
-            if (!history || history.length === 0) {
-                container.innerHTML = '<p class="text-gray-500 text-center italic text-sm mt-4">Chưa có dữ liệu ván chơi...</p>';
-                document.getElementById('game-stats-summary').textContent = 'Tổng: 0 | T/B: 0/0'; document.getElementById('game-accuracy-summary').textContent = 'WinRate: 0%'; return;
-            }
-            let correctCount = 0; let html = '<div class="flex flex-wrap gap-1 mt-2">';
-            history.forEach((pred, idx) => {
-                if (pred.predicted && pred.actual) {
-                    const isWin = pred.predicted === pred.actual;
-                    if (isWin) correctCount++;
-                    html += `<div class="${isWin ? 'bg-green-600' : 'bg-red-600'} text-white w-6 h-6 flex items-center justify-center rounded text-xs font-bold cursor-help" title="Ván ${idx+1}: Cầu ${pred.predicted} - KQ ${pred.actual}">${isWin ? 'W' : 'L'}</div>`;
-                }
-            });
-            html += '</div>'; container.innerHTML = html;
-            document.getElementById('game-stats-summary').textContent = `Tổng: ${history.length} | T/B: ${correctCount}/${history.length - correctCount}`;
-            document.getElementById('game-accuracy-summary').textContent = `WinRate: ${((correctCount/history.length)*100).toFixed(1)}%`;
-        }
-
-
-        /* =========================================================================
-           8. XUẤT NHẬP DỮ LIỆU & TIỆN ÍCH KHÁC
-           ========================================================================= */
-        function exportMasterData() {
-            const exportData = { type: 'vanSuNhuY_export', version: '4.1', timestamp: new Date().toISOString(), sessions: masterState.sessions, finalDecisionHistory: masterState.finalDecisionHistory, system_sessions: {} };
-            let systemsCollected = 0;
-            const handler = (e) => {
-                if (e.data.source && e.data.type === 'export_data') {
-                    exportData.system_sessions[e.data.source] = e.data.sessions; systemsCollected++;
-                    if (systemsCollected === 4) {
-                        window.removeEventListener('message', handler);
-                        const blob = new Blob([JSON.stringify(exportData)], {type: 'application/json'});
-                        const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `VanSuNhuY_Backup_${new Date().toISOString().slice(0,10)}.json`; a.click();
-                        showToast('Xuất file thành công', 'success');
+            function findAllMatches(inputSeq, minOccur, minConf) {
+                let matches = []; const maxLen = Math.min(inputSeq.length, 20);
+                for (let sz=3; sz<=maxLen; sz++) {
+                    const sub = inputSeq.slice(-sz), key = `${sz}|${sub}`, rule = patternDatabase[key];
+                    if (rule && rule.total >= minOccur) {
+                        const pD = (rule.nextD/rule.total)*100, pS = (rule.nextS/rule.total)*100, conf = Math.max(pD, pS);
+                        if (conf >= minConf) {
+                            const target = pD > pS ? 'D' : 'S';
+                            const score = (conf*1000) + (Math.log10(rule.total||1)*100);
+                            matches.push({ target, confidence: conf, total: rule.total, seq: sub, size: sz, score, pD, pS });
+                        }
                     }
                 }
-            };
-            window.addEventListener('message', handler);
-            broadcastToAll('export_data');
-            setTimeout(() => window.removeEventListener('message', handler), 3000);
-        }
+                return matches;
+            }
+            function findBestMatch(seq, minOccur, minConf) {
+                const m = findAllMatches(seq, minOccur, minConf);
+                return m.length ? m.reduce((a,b)=> a.score > b.score ? a : b) : null;
+            }
 
-        function importMasterData(event) {
-            const file = event.target.files[0]; if (!file) return;
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                try {
-                    const data = JSON.parse(e.target.result);
-                    if (data.sessions) { masterState.sessions = data.sessions; saveMasterSessions(); updateMasterSessionSelector(); }
-                    if (data.finalDecisionHistory) { masterState.finalDecisionHistory = data.finalDecisionHistory; saveFinalDecisionHistory(); updateFinalDecisionStats(); }
-                    ['ht1', 'ht2', 'ht3', 'ht4'].forEach(sys => {
-                        sendToIframe(`${sys}-iframe`, 'import_data', { sessions: data.system_sessions?.[sys] || data.sessions, simulate: true, isMasterData: !data.system_sessions?.[sys] });
-                    });
-                    
-                    masterState.finalDecisionHistory = []; 
-                    initializeOriginalPatternDB(); 
-                    
-                    showToast('Phục hồi dữ liệu thành công', 'success');
-                    setTimeout(() => { syncAllSystems(); }, 1000);
-                } catch (err) { showToast('File lỗi', 'error'); }
-                event.target.value = '';
-            };
-            reader.readAsText(file);
-        }
-
-        function toggleFrame(sys) { const el = document.getElementById(`${sys}-content`); el.style.display = (el.style.display === 'none') ? 'block' : 'none'; }
-        function showAllFrames() { ['ht1','ht2','ht3','ht4'].forEach(s => document.getElementById(`${s}-content`).style.display = 'block'); }
-        function hideAllFrames() { ['ht1','ht2','ht3','ht4'].forEach(s => document.getElementById(`${s}-content`).style.display = 'none'); }
-        
-        function allSystemsReady() { return masterState.systemsReady.ht1 && masterState.systemsReady.ht2 && masterState.systemsReady.ht3 && masterState.systemsReady.ht4; }
-        
-        function updateSystemStatus() {
-            ['ht1','ht2','ht3','ht4'].forEach(s => {
-                const el = document.getElementById(`${s}-status`);
-                if(el) el.textContent = masterState.systemsReady[s] ? '🟢 Hoạt động' : '🟡 Chờ kết nối';
-            });
-            if(allSystemsReady()) { const st = document.getElementById('sync-status'); st.textContent = '🟢 Đồng bộ'; st.className = 'text-green-400 font-bold'; }
-        }
-
-        function showToast(msg, type='info') {
-            const colors = { success: 'border-green-500', info: 'border-blue-500', warning: 'border-yellow-500', error: 'border-red-500' };
-            const div = document.createElement('div'); div.className = `toast-notification ${colors[type]}`; div.textContent = msg;
-            document.getElementById('toast-container').appendChild(div);
-            setTimeout(() => { div.style.animation = 'fadeOut 0.5s ease'; setTimeout(() => div.remove(), 500); }, 3000);
-        }
-
-        document.addEventListener('DOMContentLoaded', function() {
-            renderEmptyChart();
-            
-            loadMasterSessions();
-            loadFinalDecisionHistory();
-            
-            document.getElementById('masterSessionSelector').addEventListener('change', function(e) {
-                if (e.target.value && masterState.sessions[e.target.value]) {
-                    masterState.currentSessionId = e.target.value; masterState.currentSessionName = masterState.sessions[e.target.value].name;
-                    updateCurrentSessionInfo(); syncAllSystems();
+            // --- CONTINUOUS LEARNING ---
+            function learnFromNewData(intervalHistory) {
+                if (!intervalHistory || intervalHistory.length === 0) return;
+                if (intervalHistory.length < masterState.lastLearnedGameCount) initializeOriginalPatternDB();
+                if (intervalHistory.length < 4) { masterState.lastLearnedGameCount = intervalHistory.length; return; }
+                let learned = false;
+                for (let i = Math.max(4, masterState.lastLearnedGameCount + 1); i <= intervalHistory.length; i++) {
+                    const subHistory = intervalHistory.slice(0, i);
+                    let dsSeq = subHistory.map(it => (it.correct === true || it.isCorrect === true || it.predicted === it.actual) ? "D" : "S").join('');
+                    const newBit = dsSeq.slice(-1), ctx = dsSeq.slice(0, -1);
+                    for (let sz=3; sz<=20; sz++) {
+                        if (ctx.length >= sz) {
+                            const pat = ctx.slice(-sz), key = `${sz}|${pat}`;
+                            if (!patternDatabase[key]) { patternDatabase[key] = { seq: pat, length: sz, total:0, nextD:0, nextS:0 }; masterState.totalLearnedPatterns++; }
+                            patternDatabase[key].total++;
+                            if (newBit === 'D') patternDatabase[key].nextD++; else patternDatabase[key].nextS++;
+                            learned = true;
+                        }
+                    }
                 }
-            });
-            
-            let checkInit = setInterval(() => {
-                if (allSystemsReady()) { 
-                    broadcastToAll('get_accuracy'); 
-                    broadcastToAll('get_chot_history'); 
-                    broadcastToAll('get_system_details');
-                    clearInterval(checkInit);
-                }
-            }, 500);
-        });
+                masterState.lastLearnedGameCount = intervalHistory.length;
+                if (learned) updateLearnedCountDisplay();
+            }
+            function updateLearnedCountDisplay() {
+                const el = document.getElementById('learned-count-display');
+                if (el) { el.textContent = `(+${masterState.totalLearnedPatterns} Tự học)`; el.classList.add('text-white','scale-110'); setTimeout(()=>el.classList.remove('text-white','scale-110'),500); }
+            }
 
+            // --- DECISION ENGINE ---
+            function calculateFinalDecision() {
+                const dt = masterState.systemDetails.ht1;
+                if (!dt || !dt.intervalHistory || dt.intervalHistory.length === 0) {
+                    updateFinalDecisionDisplay(null, "Hệ thống đang chờ bạn nhập kết quả ván đầu tiên để quét HT1...", "CHỜ DỮ LIỆU HT1");
+                    masterState.currentMatches = []; renderMatchesAnalysis(); return;
+                }
+                const range = dt.range || '';
+                if (!range.includes('90') && !range.includes('100')) {
+                    updateFinalDecisionDisplay(null, `BỎ QUA DO KHOẢNG TỶ LỆ HT1 CHƯA ĐẠT 90-100% (Hiện tại đang là ${range || 'Chưa rõ'}).`, "KHÔNG ĐẠT ĐIỀU KIỆN RANGE");
+                    masterState.currentMatches = []; renderMatchesAnalysis(); return;
+                }
+                let dsSeq = "";
+                dt.intervalHistory.forEach(it => { dsSeq += (it.correct === true || it.isCorrect === true || it.predicted === it.actual) ? "D" : "S"; });
+                if (dsSeq.length < 3) {
+                    updateFinalDecisionDisplay(null, `Cần tối thiểu 3 tín hiệu từ HT1 (hiện có ${dsSeq.length}). Hệ thống đang tích luỹ...`, "TÍCH LUỸ TÍN HIỆU");
+                    masterState.currentMatches = []; renderMatchesAnalysis(); return;
+                }
+                const allMatches = findAllMatches(dsSeq, patternConfig.minOccurrences, patternConfig.minConfidence);
+                masterState.currentMatches = allMatches;
+                if (allMatches.length === 0) {
+                    updateFinalDecisionDisplay(null, `CHƯA CÓ CỤM BIT TIN CẬY NÀO ĐẠT YÊU CẦU NÊN BỎ QUA.`, "BỎ QUA TÍN HIỆU");
+                    renderMatchesAnalysis(); return;
+                }
+                const best = allMatches.reduce((a,b)=> a.score > b.score ? a : b);
+                const rawVerdict = dt.verdict ? dt.verdict.toUpperCase().trim() : '';
+                let baseSignal = null, impliedResult = 'D';
+                if (rawVerdict.includes('P')) baseSignal = 'P'; else if (rawVerdict.includes('B')) baseSignal = 'B';
+                if (rawVerdict.includes('NGƯỢC')) impliedResult = 'S';
+                if (!baseSignal) {
+                    updateFinalDecisionDisplay(null, `ĐÃ PHÁT HIỆN MẪU (${best.confidence.toFixed(0)}%). Nhưng chưa có lệnh tại 🧠 Phán Quyết.`, "CHỜ LỆNH TỪ PHÁN QUYẾT");
+                    renderMatchesAnalysis(); return;
+                }
+                let finalDecision = (best.target === impliedResult) ? baseSignal : (baseSignal === 'P' ? 'B' : 'P');
+                let impliedText = impliedResult === 'S' ? 'CỘT ĐỎ (NGƯỢC)' : 'CỘT XANH (THEO)';
+                let actionText = best.target === impliedResult ? 'GIỮ NGUYÊN' : 'BẺ NGƯỢC';
+                const reasonHtml = `<div class="bg-gray-900 border border-gray-600 rounded-lg p-5 text-left w-full max-w-md mx-auto shadow-lg relative"><div class="absolute -top-3 right-4 bg-purple-600 text-[10px] font-black px-2 py-0.5 rounded shadow-sm text-white">MẪU TỐT NHẤT ${best.size} BIT</div><div class="mb-3 text-gray-300">HỆ THỐNG ƯU TIÊN CỤM BIT VỚI TỈ LỆ <br/><span class="text-green-400 font-black text-2xl">${best.confidence.toFixed(0)}%</span> VỚI <span class="text-pink-400 font-black text-2xl">${best.total}</span> LẦN CHỐT <span class="text-yellow-400 font-black text-2xl">${best.target}</span></div><div class="mb-3 text-gray-400 border-t border-gray-700 pt-3">➜ Xem 🧠 Phán Quyết:<br/><span class="text-white font-bold text-lg">${rawVerdict}</span><span class="text-gray-500">(Kỳ vọng ${impliedText}).</span></div><div class="text-gray-300 border-t border-gray-700 pt-3 flex items-center justify-between"><div>➜ AI KẾT LUẬN: Cần ra <br/><span class="font-bold text-lg ${best.target === 'S' ? 'text-red-400' : 'text-blue-400'}">CỘT ${best.target === 'S' ? 'ĐỎ' : 'XANH'} (${best.target})</span><br/>➜ Phải <span class="text-purple-400 font-bold">${actionText}</span> Lệnh</div><div class="text-right"><span class="text-gray-500 text-xs">CHỐT</span><br/><span class="text-white font-black text-3xl drop-shadow-md">${finalDecision}</span></div></div></div>`;
+                updateFinalDecisionDisplay(finalDecision, reasonHtml, `AI KÍCH HOẠT: Mẫu ưu tiên ${best.size} Bit`);
+                renderMatchesAnalysis();
+            }
+            function renderMatchesAnalysis() {
+                const matches = [...masterState.currentMatches];
+                const tbody = document.getElementById('matches-analysis-body');
+                const totalEl = document.getElementById('analysis-total-matches'), dC = document.getElementById('analysis-d-count'), dP = document.getElementById('analysis-d-perc');
+                const sC = document.getElementById('analysis-s-count'), sP = document.getElementById('analysis-s-perc'), verdictEl = document.getElementById('analysis-verdict');
+                if (matches.length === 0) {
+                    totalEl.textContent = '0'; dC.textContent = '0'; dP.textContent = '0%'; sC.textContent = '0'; sP.textContent = '0%'; verdictEl.textContent = '-'; verdictEl.className = 'text-lg font-black text-gray-500';
+                    tbody.innerHTML = '<tr><td colspan="6" class="p-4 text-center text-gray-500 italic">Không có cụm Pattern nào thoả mãn điều kiện N-Gram.</td></tr>'; return;
+                }
+                const sortMode = document.getElementById('matchesSortMode').value;
+                matches.sort((a,b) => {
+                    if (sortMode === 'score_desc') return b.score - a.score; if (sortMode === 'size_asc') return a.size - b.size;
+                    if (sortMode === 'size_desc') return b.size - a.size; if (sortMode === 'conf_desc') return b.confidence - a.confidence;
+                    if (sortMode === 'conf_asc') return a.confidence - b.confidence; return 0;
+                });
+                const total = matches.length, cntD = matches.filter(m=>m.target==='D').length, cntS = matches.filter(m=>m.target==='S').length;
+                totalEl.textContent = total; dC.textContent = cntD; dP.textContent = ((cntD/total)*100).toFixed(1)+'%';
+                sC.textContent = cntS; sP.textContent = ((cntS/total)*100).toFixed(1)+'%';
+                if (cntD > cntS) { verdictEl.textContent = 'THIÊN VỀ XANH (D)'; verdictEl.className = 'text-lg font-black text-blue-400 drop-shadow-md'; }
+                else if (cntS > cntD) { verdictEl.textContent = 'THIÊN VỀ ĐỎ (S)'; verdictEl.className = 'text-lg font-black text-red-400 drop-shadow-md'; }
+                else { verdictEl.textContent = 'CÂN BẰNG NHAU (50/50)'; verdictEl.className = 'text-lg font-black text-yellow-400 drop-shadow-md'; }
+                let html = '';
+                matches.forEach((m, idx) => {
+                    const targetBadge = m.target === 'D' ? '<span class="bg-blue-900/40 text-blue-400 px-2 py-0.5 rounded font-bold border border-blue-500/30 inline-block w-16 text-center">XANH (D)</span>' : '<span class="bg-red-900/40 text-red-400 px-2 py-0.5 rounded font-bold border border-red-500/30 inline-block w-16 text-center">ĐỎ (S)</span>';
+                    const isTop1 = (sortMode === 'score_desc' && idx === 0);
+                    html += `<tr class="${isTop1 ? 'bg-purple-900/20 border-l-4 border-purple-500' : 'hover:bg-gray-800/80'}"><td class="p-3 text-yellow-300 font-bold">${m.size}</td><td class="p-3 text-gray-400 font-mono tracking-widest">${m.seq}</td><td class="p-3 text-center">${targetBadge}</td><td class="p-3 text-center font-bold text-green-400">${m.confidence.toFixed(1)}%</td><td class="p-3 text-center font-bold text-pink-400">${m.total}</td><td class="p-3 text-right text-gray-500 font-mono text-[10px]">${m.score.toFixed(0)} pt</td></tr>`;
+                });
+                tbody.innerHTML = html;
+            }
+            function updateFinalDecisionDisplay(decision, reasonHtml, prioritySystem) {
+                const container = document.getElementById('finalDecisionContainer'), text = document.getElementById('finalDecisionText');
+                const reasonEl = document.getElementById('decisionReason'), priorityEl = document.getElementById('priority-system');
+                priorityEl.textContent = prioritySystem || 'CHỜ XỬ LÝ';
+                if (decision === 'P') { text.innerHTML = '👤 CHỐT PLAYER'; text.className = 'text-4xl md:text-5xl font-black text-blue-400 drop-shadow-md'; container.className = "py-8 rounded-xl border-2 mb-5 transition-all duration-500 shadow-[inset_0_0_20px_rgba(59,130,246,0.2)] border-blue-500 bg-blue-900/30"; }
+                else if (decision === 'B') { text.innerHTML = '🏦 CHỐT BANKER'; text.className = 'text-4xl md:text-5xl font-black text-red-400 drop-shadow-md'; container.className = "py-8 rounded-xl border-2 mb-5 transition-all duration-500 shadow-[inset_0_0_20px_rgba(239,68,68,0.2)] border-red-500 bg-red-900/30"; }
+                else { text.innerHTML = '⏳ CHỜ TÍN HIỆU'; text.className = 'text-3xl md:text-4xl font-black text-gray-500 opacity-70'; container.className = "py-8 rounded-xl border-2 border-dashed border-gray-600 mb-5 bg-gray-800/50 transition-all duration-500 shadow-inner"; }
+                reasonEl.innerHTML = decision === null ? `<div class="text-gray-400 font-mono text-sm">${reasonHtml}</div>` : reasonHtml;
+                masterState.lastDecision = decision; masterState.lastDecisionReason = reasonHtml.replace(/<[^>]*>?/gm, ' ');
+            }
+            function updatePatternConfig() {
+                const occ = parseInt(document.getElementById('minOccurrencesSlider').value), conf = parseInt(document.getElementById('minConfidenceSlider').value);
+                patternConfig.minOccurrences = occ; patternConfig.minConfidence = conf;
+                document.getElementById('minOccurrencesValue').innerText = occ; document.getElementById('display-occur').innerText = `${occ} lần`;
+                document.getElementById('minConfidenceValue').innerText = `${conf}%`; document.getElementById('display-conf').innerText = `${conf}%`;
+                calculateFinalDecision();
+            }
+            function resetPatternConfigToDefault() {
+                document.getElementById('minOccurrencesSlider').value = 10; document.getElementById('minConfidenceSlider').value = 100;
+                updatePatternConfig(); showToast('Đã khôi phục N-gram mặc định', 'info');
+            }
+            document.addEventListener('DOMContentLoaded', ()=>{
+                document.getElementById('minOccurrencesSlider').addEventListener('input', updatePatternConfig);
+                document.getElementById('minConfidenceSlider').addEventListener('input', updatePatternConfig);
+                document.getElementById('minOccurrencesSlider').value = patternConfig.minOccurrences;
+                document.getElementById('minConfidenceSlider').value = patternConfig.minConfidence;
+                updatePatternConfig(); initializeOriginalPatternDB();
+            });
+
+            // --- HISTORY & SYNC ---
+            function addFinalDecisionToHistory(actual) {
+                if (!masterState.lastDecision) return;
+                const rec = { gameNumber: masterState.finalDecisionHistory.length+1, decision: masterState.lastDecision, actual, correct: masterState.lastDecision === actual, reason: masterState.lastDecisionReason, timestamp: Date.now() };
+                masterState.finalDecisionHistory.push(rec); updateFinalDecisionStats(); saveFinalDecisionHistory();
+            }
+            function updateFinalDecisionStats() {
+                const h = masterState.finalDecisionHistory, tot = h.length, corr = h.filter(i=>i.correct).length;
+                document.getElementById('final-total-games').textContent = tot;
+                document.getElementById('final-correct-games').textContent = corr;
+                document.getElementById('final-accuracy-rate').textContent = `${tot>0?((corr/tot)*100).toFixed(1):0}%`;
+                updateFinalDecisionChart(); updateFinalDecisionHistoryTable();
+            }
+            function updateFinalDecisionChart() {
+                const h = masterState.finalDecisionHistory, el = document.getElementById('final-decision-chart');
+                if (!el) return;
+                if (!h.length) { el.innerHTML = '<p class="text-gray-500 text-center text-sm w-full mt-3">Chưa có lịch sử khớp lệnh</p>'; return; }
+                let html = '<div class="flex items-end justify-start h-full gap-1 min-w-max px-1">';
+                h.forEach((it, idx) => { const bar = it.correct ? 'h-full bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.6)]' : 'h-2/5 bg-red-500 shadow-[0_0_5px_rgba(239,68,68,0.5)]'; html += `<div class="w-2.5 flex items-end"><div class="w-full rounded-[1px] ${bar}" title="Ván ${idx+1}: Đánh ${it.decision} - Ra ${it.actual} -> ${it.correct?'WIN':'LOSE'}"></div></div>`; });
+                html += '</div>'; el.innerHTML = html; el.scrollLeft = el.scrollWidth;
+            }
+            function updateFinalDecisionHistoryTable() {
+                const h = masterState.finalDecisionHistory, tbody = document.getElementById('final-decision-history-body');
+                if (!h.length) { tbody.innerHTML = '<tr><td colspan="5" class="p-6 text-center text-gray-500 italic">Hệ thống đang chờ đợi dữ liệu đầu vào...</td></tr>'; return; }
+                let html = ''; h.slice(-15).reverse().forEach(it => {
+                    const status = it.correct ? '<span class="bg-green-900/40 text-green-400 px-2 py-0.5 rounded font-bold text-xs border border-green-500/30">WIN</span>' : '<span class="bg-red-900/40 text-red-400 px-2 py-0.5 rounded font-bold text-xs border border-red-500/30">LOSE</span>';
+                    html += `<tr><td class="p-3 text-gray-300 font-mono">${it.gameNumber}</td><td class="p-3 font-bold ${it.decision==='P'?'text-blue-400':'text-red-400'}">${it.decision==='P'?'PLAYER':'BANKER'}</td><td class="p-3 font-bold ${it.actual==='P'?'text-blue-400':'text-red-400'}">${it.actual==='P'?'PLAYER':'BANKER'}</td><td class="p-3">${status}</td><td class="p-3 text-[11px] text-gray-400 leading-relaxed font-mono opacity-80 hover:opacity-100 truncate max-w-[200px]" title="${it.reason}">${it.reason.substring(0,50)}...</td></tr>`;
+                });
+                tbody.innerHTML = html;
+            }
+            function saveFinalDecisionHistory() { safeStorageSet('vanSuNhuY_finalDecisionHistory_v5', masterState.finalDecisionHistory); }
+            function loadFinalDecisionHistory() { try { const s = localStorage.getItem('vanSuNhuY_finalDecisionHistory_v5'); if(s) { masterState.finalDecisionHistory = JSON.parse(s); updateFinalDecisionStats(); } } catch(e){} }
+
+            // --- IFRAME COMMUNICATION ---
+            function sendToIframe(id, cmd, data=null) {
+                const ifr = document.getElementById(id); if(ifr && ifr.contentWindow) ifr.contentWindow.postMessage({command:cmd, data, source:'master'}, '*');
+            }
+            function broadcastToAll(cmd, data=null) { ['ht1','ht2','ht3','ht4'].forEach(s => sendToIframe(`${s}-iframe`, cmd, data)); }
+            window.addEventListener('message', (e) => {
+                if (['ht1','ht2','ht3','ht4'].includes(e.data.source)) handleSystemMessage(e.data);
+            });
+            function handleSystemMessage(data) {
+                const sys = data.source;
+                switch(data.type) {
+                    case 'ready': masterState.systemsReady[sys] = true; updateSystemStatus(); if (allSystemsReady()) initializeSystems(); break;
+                    case 'accuracy_update': updateSystemAccuracy(sys, data.accuracy); break;
+                    case 'chot_history_update': updateChotHistory(sys, data.history); updateCombinedChart(sys, data.history); break;
+                    case 'session_update': updateSessionInfo(sys, data.session); break;
+                    case 'prediction_update': if(data.prediction) masterState.predictions[sys] = data.prediction; break;
+                    case 'system_details_update':
+                        updateSystemDetails(sys, data.details);
+                        if (sys === 'ht1') {
+                            learnFromNewData(data.details.intervalHistory);
+                            if (masterState.pendingResultToEvaluate !== null) { addFinalDecisionToHistory(masterState.pendingResultToEvaluate); masterState.pendingResultToEvaluate = null; }
+                            else if (masterState.finalDecisionHistory.length === 0 && data.details.intervalHistory?.length >= 4) syncFinalDecisionHistoryFromHT1(data.details.intervalHistory);
+                            calculateFinalDecision();
+                        }
+                        break;
+                    case 'export_data': if(data.sessions) masterState[`${sys}Sessions`] = data.sessions; break;
+                }
+            }
+            function syncFinalDecisionHistoryFromHT1(hist) {
+                if (!hist || hist.length < 4) return; let dsSeq = "", newHist = [];
+                for (let i=0; i<hist.length; i++) {
+                    const it = hist[i], isCorr = it.correct === true || it.isCorrect === true || it.predicted === it.actual;
+                    const curBit = isCorr ? "D" : "S";
+                    if (i>=3) {
+                        const best = findBestMatch(dsSeq, patternConfig.minOccurrences, patternConfig.minConfidence);
+                        if (best && it.predicted && it.actual) {
+                            const raw = it.predicted.toUpperCase().trim(); let base = null;
+                            if (raw.includes('P')) base = 'P'; else if (raw.includes('B')) base = 'B';
+                            if (base) {
+                                const dec = (best.target === 'D') ? base : (base==='P'?'B':'P');
+                                newHist.push({ gameNumber: i+1, decision: dec, actual: it.actual, correct: dec === it.actual, reason: `[Auto-Sync] Mẫu ${best.size} Bit (${best.confidence.toFixed(0)}%)`, timestamp: Date.now() - (hist.length-i)*1000 });
+                            }
+                        }
+                    }
+                    dsSeq += curBit;
+                }
+                if (newHist.length) { masterState.finalDecisionHistory = newHist; updateFinalDecisionStats(); saveFinalDecisionHistory(); }
+            }
+            function updateSystemAccuracy(sys, acc) {
+                masterState[`${sys}Accuracy`] = acc;
+                const el = document.getElementById(`${sys}-accuracy`);
+                if (el) { el.textContent = `${acc.toFixed(1)}%`; el.className = `accuracy-badge ${acc>=70?'accuracy-high':acc>=50?'accuracy-medium':'accuracy-low'}`; }
+            }
+            function updateSystemDetails(sys, det) {
+                if (!det) return;
+                masterState.systemDetails[sys] = { verdict: det.verdict, chot: det.chot, range: det.range, rangeAccuracy: det.rangeAccuracy, intervalHistory: det.intervalHistory || [] };
+                const vEl = document.getElementById(`${sys}-verdict-prediction`); if(vEl) { vEl.textContent = det.verdict||'-'; vEl.className = `font-bold text-xl ${det.verdict==='P'?'text-blue-400':det.verdict==='B'?'text-red-400':'text-gray-400'}`; }
+                const cEl = document.getElementById(`${sys}-chot-prediction`); if(cEl) { cEl.textContent = det.chot||'-'; cEl.className = `font-bold text-xl ${det.chot==='P'?'text-blue-400':det.chot==='B'?'text-red-400':'text-gray-400'}`; }
+                document.getElementById(`${sys}-confidence-range`).textContent = det.range||'-';
+                document.getElementById(`${sys}-range-accuracy`).textContent = det.rangeAccuracy ? `${det.rangeAccuracy}%` : '-';
+                updateIntervalChart(sys, det.intervalHistory);
+            }
+            function updateIntervalChart(sys, hist) {
+                const el = document.getElementById(`${sys}-interval-chart`), rg = document.getElementById(`${sys}-range-games`);
+                if (!el) return;
+                if (!hist || !hist.length) { el.innerHTML = '<p class="text-gray-600 text-xs text-center w-full mt-3">Chưa có dữ liệu biểu đồ</p>'; if(rg) rg.textContent = '0 ván'; return; }
+                let html = '<div class="flex items-end justify-start h-full gap-1 min-w-max px-1">', corr=0;
+                hist.forEach(p => { const isC = p.isCorrect || (p.predicted===p.actual) || p.correct===true; if(isC) corr++; html += `<div class="w-1.5 rounded-[1px] ${isC?'bg-blue-500 shadow-[0_0_5px_rgba(59,130,246,0.6)] h-full':'bg-red-500 shadow-[0_0_5px_rgba(239,68,68,0.6)] h-2/5'}" title="Ván: ${p.game||'N/A'} | Cầu: ${p.predicted} | Thực tế: ${p.actual}"></div>`; });
+                html += '</div>'; el.innerHTML = html; el.scrollLeft = el.scrollWidth;
+                if(rg) rg.innerHTML = `<span class="text-white">${hist.length} ván</span> (<span class="text-green-400">${corr} win</span> - <span class="text-yellow-400">${hist.length?((corr/hist.length)*100).toFixed(1):0}%</span>)`;
+            }
+            function updateCombinedChart(sys, chotHist) {
+                const el = document.getElementById(`${sys}-combined-chart`); if(!el) return;
+                if (!chotHist || !chotHist.length) { el.innerHTML = '<p class="text-gray-600 text-xs text-center w-full mt-3">Chưa có dữ liệu chốt</p>'; return; }
+                let html = '<div class="flex items-end justify-start h-full gap-1 min-w-max px-1">';
+                chotHist.forEach(p => { if(p && p.predicted && p.actual) { const isC = p.predicted===p.actual; html += `<div class="w-1.5 rounded-[1px] ${isC?'bg-purple-500 shadow-[0_0_5px_rgba(168,85,247,0.6)] h-full':'bg-gray-500 h-2/5'}" title="Chốt: ${p.predicted} - Ra: ${p.actual}"></div>`; } });
+                html += '</div>'; el.innerHTML = html; el.scrollLeft = el.scrollWidth;
+            }
+
+            // --- ACTIONS ---
+            function addResultToAll(r) {
+                if (!masterState.currentSessionId) { showToast('Chọn phiên trước', 'warning'); return; }
+                const sess = masterState.sessions[masterState.currentSessionId];
+                if (!sess.history) sess.history = []; sess.history.push(r);
+                saveMasterSessions(); updateCurrentSessionInfo();
+                masterState.pendingResultToEvaluate = r; broadcastToAll('add_result', r);
+                setTimeout(() => { broadcastToAll('get_accuracy'); broadcastToAll('get_chot_history'); broadcastToAll('get_system_details'); }, 150);
+                showToast(`Đã lưu: ${r==='P'?'PLAYER':'BANKER'}`, 'success');
+            }
+            function undoLastAll() {
+                if (!masterState.currentSessionId) return;
+                const sess = masterState.sessions[masterState.currentSessionId];
+                if (!sess.history.length) return;
+                sess.history.pop(); saveMasterSessions(); updateCurrentSessionInfo(); broadcastToAll('undo_last');
+                if (masterState.finalDecisionHistory.length) { masterState.finalDecisionHistory.pop(); updateFinalDecisionStats(); saveFinalDecisionHistory(); }
+                masterState.pendingResultToEvaluate = null;
+                setTimeout(() => { broadcastToAll('get_accuracy'); broadcastToAll('get_chot_history'); broadcastToAll('get_system_details'); }, 150);
+                showToast('Đã hoàn tác', 'info');
+            }
+            function clearHistoryAll() {
+                if (!masterState.currentSessionId) return;
+                if (confirm('Xóa lịch sử phiên?')) {
+                    masterState.sessions[masterState.currentSessionId].history = []; saveMasterSessions(); updateCurrentSessionInfo(); broadcastToAll('clear_history');
+                    masterState.finalDecisionHistory = []; masterState.pendingResultToEvaluate = null; initializeOriginalPatternDB();
+                    updateFinalDecisionStats(); saveFinalDecisionHistory(); calculateFinalDecision();
+                    showToast('Đã xóa lịch sử', 'info');
+                }
+            }
+            function forcePlayerDecision() { updateFinalDecisionDisplay('P', 'BẠN ÉP HỆ THỐNG LÊN LỆNH: PLAYER', 'THỦ CÔNG'); showToast('Ép chốt PLAYER', 'info'); }
+            function forceBankerDecision() { updateFinalDecisionDisplay('B', 'BẠN ÉP HỆ THỐNG LÊN LỆNH: BANKER', 'THỦ CÔNG'); showToast('Ép chốt BANKER', 'info'); }
+            function loadMasterSessions() { try { const s = localStorage.getItem('vanSuNhuY_sessions_v2'); if(s) { masterState.sessions = JSON.parse(s); updateMasterSessionSelector(); } } catch(e){} }
+            function saveMasterSessions() { safeStorageSet('vanSuNhuY_sessions_v2', masterState.sessions); }
+            function updateMasterSessionSelector() {
+                const sel = document.getElementById('masterSessionSelector'); sel.innerHTML = '<option value="">Chọn phiên...</option>';
+                Object.keys(masterState.sessions).forEach(id => { const opt = document.createElement('option'); opt.value = id; opt.textContent = masterState.sessions[id].name; sel.appendChild(opt); });
+            }
+            function createNewSessionAll() {
+                const name = prompt('Tên phiên:', `Phiên ${new Date().toLocaleString('vi-VN')}`); if (!name) return;
+                const id = `session-${Date.now()}`; masterState.sessions[id] = { id, name, created: new Date().toISOString(), history: [] };
+                masterState.currentSessionId = id; masterState.currentSessionName = name;
+                saveMasterSessions(); updateMasterSessionSelector(); updateCurrentSessionInfo();
+                broadcastToAll('create_session', { name, id }); initializeOriginalPatternDB(); showToast('Tạo phiên mới', 'success');
+            }
+            function renameMasterSession() {
+                if (!masterState.currentSessionId) return;
+                const newName = prompt('Tên mới:', masterState.currentSessionName); if (!newName) return;
+                masterState.sessions[masterState.currentSessionId].name = newName; masterState.currentSessionName = newName;
+                saveMasterSessions(); updateMasterSessionSelector(); updateCurrentSessionInfo();
+                broadcastToAll('rename_session', { id: masterState.currentSessionId, name: newName }); showToast('Đổi tên thành công', 'success');
+            }
+            function updateCurrentSessionInfo() {
+                document.getElementById('currentSessionName').textContent = masterState.currentSessionName;
+                const sess = masterState.sessions[masterState.currentSessionId];
+                if (sess?.history) document.getElementById('totalGamesMaster').textContent = sess.history.length;
+            }
+            function syncAllSystems() {
+                if (!masterState.currentSessionId) { showToast('Chọn phiên trước', 'warning'); return; }
+                const sess = masterState.sessions[masterState.currentSessionId];
+                initializeOriginalPatternDB(); masterState.pendingResultToEvaluate = null; masterState.finalDecisionHistory = [];
+                broadcastToAll('load_session', { id: masterState.currentSessionId, name: sess.name, history: [...sess.history] });
+                document.getElementById('sync-status').textContent = '🔄 Đang đồng bộ...';
+                setTimeout(() => { document.getElementById('sync-status').textContent = '🟢 Đã đồng bộ'; broadcastToAll('get_accuracy'); broadcastToAll('get_chot_history'); broadcastToAll('get_system_details'); }, 150);
+            }
+            function resetAllSystems() {
+                if (confirm('Reset toàn bộ?')) {
+                    masterState.sessions = {}; masterState.currentSessionId = null; masterState.currentSessionName = 'Chưa chọn';
+                    masterState.finalDecisionHistory = []; masterState.pendingResultToEvaluate = null; initializeOriginalPatternDB();
+                    localStorage.removeItem('vanSuNhuY_sessions_v2'); localStorage.removeItem('vanSuNhuY_finalDecisionHistory_v5');
+                    updateMasterSessionSelector(); updateCurrentSessionInfo(); updateFinalDecisionStats();
+                    broadcastToAll('reset_system'); resetCharts(); calculateFinalDecision(); showToast('Đã reset', 'info');
+                }
+            }
+
+            // --- CHARTS ---
+            function updateChotHistory(sys, hist) { masterState[`${sys}ChotHistory`] = hist; if(sys===currentChartSystem||currentChartSystem==='all') { if(currentChartSystem==='all') showAllGameCharts(); else showGameChart(sys); } }
+            function showGameChart(sys) {
+                currentChartSystem = sys; document.querySelectorAll('.system-chart-btn').forEach(b => { b.classList.remove('active','bg-opacity-100'); if(b.dataset.system===sys) b.classList.add('active','bg-opacity-100'); });
+                document.getElementById('current-system-label').textContent = sys.toUpperCase();
+                document.getElementById('current-system-label').className = sys==='ht1'?'text-blue-400':sys==='ht2'?'text-green-400':sys==='ht3'?'text-orange-400':'text-pink-400';
+                const hist = masterState[`${sys}ChotHistory`];
+                if (!hist || !hist.length) { renderEmptyChart(); updateGameResultsTable(sys); return; }
+                const ctx = document.getElementById('gameAccuracyChart').getContext('2d');
+                const labels = [], cData = [], iData = [];
+                hist.forEach((p, idx) => { labels.push(`Ván ${idx+1}`); if(p?.predicted && p.actual) { const isC = p.predicted===p.actual; cData.push(isC?1:0); iData.push(isC?0:1); } });
+                const area = document.getElementById('chart-area-container'); area.style.minWidth = Math.max(labels.length*30, area.parentElement.clientWidth) + 'px';
+                if(gameAccuracyChart) gameAccuracyChart.destroy();
+                gameAccuracyChart = new Chart(ctx, { type:'bar', data:{labels, datasets:[{label:'Đúng',data:cData,backgroundColor:'rgba(34,197,94,0.8)',borderRadius:2},{label:'Sai',data:iData,backgroundColor:'rgba(239,68,68,0.8)',borderRadius:2}]}, options:{ responsive:true, maintainAspectRatio:false, scales:{x:{stacked:true,grid:{display:false}},y:{stacked:true,max:1,display:false}}, plugins:{legend:{display:false}} } });
+                updateGameResultsTable(sys);
+            }
+            function showAllGameCharts() {
+                currentChartSystem = 'all'; document.querySelectorAll('.system-chart-btn').forEach(b => b.classList.remove('active','bg-opacity-100')); document.querySelector('[data-system="all"]').classList.add('active','bg-opacity-100');
+                document.getElementById('current-system-label').textContent = 'TỔNG HỢP CẢ 4'; document.getElementById('current-system-label').className = 'text-purple-400';
+                let all = []; ['ht1','ht2','ht3','ht4'].forEach(s => { const h = masterState[`${s}ChotHistory`]; if(h) all.push(...h.map(p=>({...p, system:s}))); });
+                if(!all.length) { renderEmptyChart(); return; }
+                all.sort((a,b)=> (a.gameNumber||0)-(b.gameNumber||0));
+                const ctx = document.getElementById('gameAccuracyChart').getContext('2d'); const labels=[], cData=[], iData=[];
+                let curV=0, cC=0, cT=0;
+                all.forEach(p => { if(p.gameNumber !== curV) { if(curV!==0) { labels.push(`Ván ${curV}`); cData.push(cC); iData.push(cT-cC); } curV = p.gameNumber||0; cC=0; cT=0; } cT++; if(p.predicted===p.actual) cC++; });
+                if(curV!==0) { labels.push(`Ván ${curV}`); cData.push(cC); iData.push(cT-cC); }
+                const area = document.getElementById('chart-area-container'); area.style.minWidth = Math.max(labels.length*40, area.parentElement.clientWidth) + 'px';
+                if(gameAccuracyChart) gameAccuracyChart.destroy();
+                gameAccuracyChart = new Chart(ctx, { type:'bar', data:{labels, datasets:[{label:'Tổng Đúng',data:cData,backgroundColor:'rgba(34,197,94,0.8)',borderRadius:2},{label:'Tổng Sai',data:iData,backgroundColor:'rgba(239,68,68,0.8)',borderRadius:2}]}, options:{ responsive:true, maintainAspectRatio:false, scales:{x:{stacked:true,grid:{display:false}},y:{stacked:true,grid:{color:'#374151'}}} } });
+                document.getElementById('game-results-container').innerHTML = '<p class="text-gray-500 text-center italic text-sm mt-4">Vui lòng chọn từng hệ thống để xem chi tiết.</p>';
+                let tC=0, tT=0; cData.forEach(c=>tC+=c); iData.forEach(i=>tT+=i); tT+=tC;
+                document.getElementById('game-stats-summary').textContent = `Tổng Lệnh: ${tT} | Đúng: ${tC}`;
+                document.getElementById('game-accuracy-summary').textContent = `WinRate: ${(tT>0?tC/tT*100:0).toFixed(1)}%`;
+            }
+            function renderEmptyChart() {
+                const area = document.getElementById('chart-area-container'); if(area) area.style.minWidth = '100%';
+                if(gameAccuracyChart) gameAccuracyChart.destroy();
+                gameAccuracyChart = new Chart(document.getElementById('gameAccuracyChart').getContext('2d'), { type:'bar', data:{labels:['Trống'], datasets:[{data:[0]}]}, options:{ responsive:true, maintainAspectRatio:false, scales:{x:{display:false},y:{display:false}}, plugins:{legend:{display:false}} } });
+            }
+            function updateGameResultsTable(sys) {
+                const hist = masterState[`${sys}ChotHistory`], cont = document.getElementById('game-results-container');
+                if (!hist || !hist.length) { cont.innerHTML = '<p class="text-gray-500 text-center italic text-sm mt-4">Chưa có dữ liệu ván chơi...</p>'; document.getElementById('game-stats-summary').textContent = 'Tổng: 0 | T/B: 0/0'; document.getElementById('game-accuracy-summary').textContent = 'WinRate: 0%'; return; }
+                let corr=0, html='<div class="flex flex-wrap gap-1 mt-2">';
+                hist.forEach((p, idx) => { if(p.predicted && p.actual) { const isW = p.predicted===p.actual; if(isW) corr++; html += `<div class="${isW?'bg-green-600':'bg-red-600'} text-white w-6 h-6 flex items-center justify-center rounded text-xs font-bold cursor-help" title="Ván ${idx+1}: Cầu ${p.predicted} - KQ ${p.actual}">${isW?'W':'L'}</div>`; } });
+                html += '</div>'; cont.innerHTML = html;
+                document.getElementById('game-stats-summary').textContent = `Tổng: ${hist.length} | T/B: ${corr}/${hist.length-corr}`;
+                document.getElementById('game-accuracy-summary').textContent = `WinRate: ${((corr/hist.length)*100).toFixed(1)}%`;
+            }
+
+            // --- IMPORT/EXPORT ---
+            function exportMasterData() {
+                const exp = { type:'vanSuNhuY_export', version:'4.1', timestamp: new Date().toISOString(), sessions: masterState.sessions, finalDecisionHistory: masterState.finalDecisionHistory, system_sessions: {} };
+                let cnt=0; const h = (e) => { if(e.data.source && e.data.type==='export_data') { exp.system_sessions[e.data.source] = e.data.sessions; cnt++; if(cnt===4) { window.removeEventListener('message',h); const b = new Blob([JSON.stringify(exp)],{type:'application/json'}); const a=document.createElement('a'); a.href=URL.createObjectURL(b); a.download=`VanSuNhuY_Backup_${new Date().toISOString().slice(0,10)}.json`; a.click(); showToast('Xuất file thành công','success'); } } };
+                window.addEventListener('message', h); broadcastToAll('export_data'); setTimeout(()=>window.removeEventListener('message',h), 3000);
+            }
+            function importMasterData(e) {
+                const f = e.target.files[0]; if(!f) return; const r = new FileReader();
+                r.onload = (ev) => { try { const d = JSON.parse(ev.target.result); if(d.sessions) { masterState.sessions = d.sessions; saveMasterSessions(); updateMasterSessionSelector(); } if(d.finalDecisionHistory) { masterState.finalDecisionHistory = d.finalDecisionHistory; saveFinalDecisionHistory(); updateFinalDecisionStats(); } ['ht1','ht2','ht3','ht4'].forEach(s => sendToIframe(`${s}-iframe`, 'import_data', { sessions: d.system_sessions?.[s] || d.sessions, simulate: true, isMasterData: !d.system_sessions?.[s] })); masterState.finalDecisionHistory = []; initializeOriginalPatternDB(); showToast('Phục hồi dữ liệu thành công','success'); setTimeout(()=>syncAllSystems(), 1000); } catch(err) { showToast('File lỗi','error'); } e.target.value = ''; };
+                r.readAsText(f);
+            }
+            function toggleFrame(sys) { const el = document.getElementById(`${sys}-content`); el.style.display = el.style.display === 'none' ? 'block' : 'none'; }
+            function showAllFrames() { ['ht1','ht2','ht3','ht4'].forEach(s => document.getElementById(`${s}-content`).style.display = 'block'); }
+            function hideAllFrames() { ['ht1','ht2','ht3','ht4'].forEach(s => document.getElementById(`${s}-content`).style.display = 'none'); }
+            function allSystemsReady() { return masterState.systemsReady.ht1 && masterState.systemsReady.ht2 && masterState.systemsReady.ht3 && masterState.systemsReady.ht4; }
+            function updateSystemStatus() { ['ht1','ht2','ht3','ht4'].forEach(s => { const el = document.getElementById(`${s}-status`); if(el) el.textContent = masterState.systemsReady[s] ? '🟢 Hoạt động' : '🟡 Chờ kết nối'; }); if(allSystemsReady()) { const st = document.getElementById('sync-status'); st.textContent = '🟢 Đồng bộ'; st.className = 'text-green-400 font-bold'; } }
+            function initializeSystems() { setTimeout(() => { broadcastToAll('get_accuracy'); broadcastToAll('get_chot_history'); broadcastToAll('get_system_details'); }, 200); }
+
+            // --- INIT ---
+            document.addEventListener('DOMContentLoaded', ()=>{
+                renderEmptyChart(); loadMasterSessions(); loadFinalDecisionHistory();
+                document.getElementById('masterSessionSelector').addEventListener('change', (e) => { if(e.target.value && masterState.sessions[e.target.value]) { masterState.currentSessionId = e.target.value; masterState.currentSessionName = masterState.sessions[e.target.value].name; updateCurrentSessionInfo(); syncAllSystems(); } });
+                let check = setInterval(() => { if(allSystemsReady()) { initializeSystems(); clearInterval(check); } }, 500);
+            });
+            window.addResultToAll = addResultToAll; window.undoLastAll = undoLastAll; window.clearHistoryAll = clearHistoryAll;
+            window.forcePlayerDecision = forcePlayerDecision; window.forceBankerDecision = forceBankerDecision;
+            window.syncAllSystems = syncAllSystems; window.resetAllSystems = resetAllSystems;
+            window.createNewSessionAll = createNewSessionAll; window.renameMasterSession = renameMasterSession;
+            window.exportMasterData = exportMasterData; window.importMasterData = importMasterData;
+            window.showAllFrames = showAllFrames; window.hideAllFrames = hideAllFrames; window.toggleFrame = toggleFrame;
+            window.showGameChart = showGameChart; window.showAllGameCharts = showAllGameCharts;
+            window.toggleSection = toggleSection; window.toggleFAB = toggleFAB;
+            window.openPatternDBModal = openPatternDBModal; window.closePatternDBModal = closePatternDBModal;
+            window.savePatternDB = savePatternDB; window.resetPatternDBToDefault = resetPatternDBToDefault;
+            window.resetPatternConfigToDefault = resetPatternConfigToDefault;
+        })();
     </script>
 </body>
-</html>
+                                </html>
