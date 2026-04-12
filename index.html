@@ -9,7 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         html {
-            scroll-behavior: smooth; /* Thêm cuộn mượt cho lối tắt */
+            scroll-behavior: smooth;
         }
         body {
             font-family: 'Inter', sans-serif;
@@ -183,7 +183,6 @@
         .custom-scrollbar::-webkit-scrollbar-thumb, .history-chart::-webkit-scrollbar-thumb { background: #4b5563; border-radius: 4px; }
         .custom-scrollbar::-webkit-scrollbar-thumb:hover, .history-chart::-webkit-scrollbar-thumb:hover { background: #6b7280; }
 
-        /* TÍNH NĂNG MỚI: CSS Thu Gọn Content */
         .section-content {
             transition: max-height 0.4s ease-in-out, opacity 0.4s ease-in-out, margin 0.4s ease-in-out, padding 0.4s ease-in-out;
             max-height: 2000px;
@@ -863,14 +862,13 @@
             
             if (isClosed) {
                 menu.classList.remove('translate-y-4', 'opacity-0', 'pointer-events-none');
-                icon.classList.add('rotate-45'); // Chữ + thành chữ X
+                icon.classList.add('rotate-45'); 
             } else {
                 menu.classList.add('translate-y-4', 'opacity-0', 'pointer-events-none');
                 icon.classList.remove('rotate-45');
             }
         }
 
-        /* Helper Tặng Kèm: Chống lỗi nếu logic cũ cần hàm findBestMatch */
         function findBestMatch(inputSeq, minOccur, minConf) {
             const matches = findAllMatches(inputSeq, minOccur, minConf);
             if (matches.length === 0) return null;
@@ -1018,7 +1016,7 @@
             if(confirm("Bạn có chắc muốn khôi phục về 102 mẫu gốc của hệ thống?")) {
                 currentRawSamples = defaultRawSamples;
                 document.getElementById('pattern-db-textarea').value = currentRawSamples;
-                masterState.bulkImportedPatterns = []; // Xoá luôn mẫu import khi khôi phục gốc
+                masterState.bulkImportedPatterns = []; 
             }
         }
 
@@ -1066,21 +1064,18 @@
             if(displayEl) displayEl.textContent = 'Đang học...';
 
             const sampleStrings = parseSampleStrings();
-            
-            // Gộp mẫu gốc và mẫu import (nếu có) để tránh mất dữ liệu khi tạo Phiên Mới
             const bulkPatterns = masterState.bulkImportedPatterns || [];
             const combinedSamples = sampleStrings.concat(bulkPatterns);
             
             patternDatabase = await buildPatternDatabaseAsync(combinedSamples);
 
-            masterState.totalLearnedPatterns = bulkPatterns.length; // Số mẫu import + tự học (nếu có)
+            masterState.totalLearnedPatterns = bulkPatterns.length; 
             masterState.lastLearnedGameCount = 0;
             
             updatePatternCountUI();
             updateLearnedCountDisplay();
         }
 
-        // MỚI: TÌM TẤT CẢ CÁC TRƯỜNG HỢP KHỚP THAY VÌ CHỈ TÌM 1 CÁI
         function findAllMatches(inputSeq, minOccur, minConf) {
             let matches = [];
             const maxSearchLen = Math.min(inputSeq.length, 20);
@@ -1107,7 +1102,6 @@
             return matches;
         }
 
-
         /* =========================================================================
            2. GLOBAL STATE & CƠ CHẾ AI TỰ HỌC (CONTINUOUS LEARNING)
            ========================================================================= */
@@ -1131,13 +1125,8 @@
             },
             finalDecisionHistory: [],
             pendingResultToEvaluate: null, 
-            
-            // LƯU CÁC MATCHES ĐỂ RENDER BẢNG PHÂN TÍCH
             currentMatches: [],
-            
-            // BIẾN LƯU TRỮ DỮ LIỆU IMPORT TRÁNH BỊ XÓA (AMNESIA BUG FIX)
             bulkImportedPatterns: [],
-            
             lastLearnedGameCount: 0,
             totalLearnedPatterns: 0
         };
@@ -1145,11 +1134,11 @@
         let gameAccuracyChart = null;
         let currentChartSystem = 'ht1';
 
-        function learnFromNewData(intervalHistory) {
+        async function learnFromNewData(intervalHistory) {
             if (!intervalHistory || intervalHistory.length === 0) return;
             
             if (intervalHistory.length < masterState.lastLearnedGameCount) {
-                initializeOriginalPatternDB();
+                await initializeOriginalPatternDB();
             }
 
             if (intervalHistory.length < 4) {
@@ -1201,7 +1190,6 @@
         function updateLearnedCountDisplay() {
             const displayEl = document.getElementById('learned-count-display');
             const bulkCount = masterState.bulkImportedPatterns ? masterState.bulkImportedPatterns.length : 0;
-            // Tính số lượng tự học = Tổng đã học - Mẫu import
             const autoLearnedCount = masterState.totalLearnedPatterns - bulkCount;
             
             if (displayEl) {
@@ -1214,7 +1202,6 @@
                 setTimeout(() => displayEl.classList.remove('text-white', 'scale-110'), 500);
             }
         }
-
 
         /* =========================================================================
            3. THUẬT TOÁN QUYẾT ĐỊNH CUỐI CÙNG TỪ LÕI PATTERN MATCHING
@@ -1250,7 +1237,6 @@
                 return;
             }
 
-            // MỚI: LẤY TẤT CẢ MATCHES ĐỂ RENDER PHÂN TÍCH ĐA CHIỀU
             const allMatches = findAllMatches(dsSequence, patternConfig.minOccurrences, patternConfig.minConfidence);
             masterState.currentMatches = allMatches;
 
@@ -1260,7 +1246,6 @@
                 return;
             }
 
-            // TÌM MATCH CÓ ĐIỂM CAO NHẤT CHO QUYẾT ĐỊNH CHÍNH
             const bestMatch = allMatches.reduce((prev, current) => (prev.score > current.score) ? prev : current);
 
             const ht1VerdictRaw = ht1Details.verdict ? ht1Details.verdict.toUpperCase().trim() : '';
@@ -1319,10 +1304,9 @@
             `;
             
             updateFinalDecisionDisplay(finalDecision, reasonHtml, `AI KÍCH HOẠT: Mẫu ưu tiên ${bestMatch.size} Bit`);
-            renderMatchesAnalysis(); // GỌI RENDER BẢNG PHÂN TÍCH ĐA CHIỀU
+            renderMatchesAnalysis(); 
         }
 
-        // HÀM RENDER BẢNG PHÂN TÍCH ĐA CHIỀU TẤT CẢ MATCHES
         function renderMatchesAnalysis() {
             const matches = [...masterState.currentMatches];
             const tbody = document.getElementById('matches-analysis-body');
@@ -1341,7 +1325,6 @@
                 return;
             }
 
-            // Xử lý Sort
             const sortMode = document.getElementById('matchesSortMode').value;
             matches.sort((a, b) => {
                 if (sortMode === 'score_desc') return b.score - a.score;
@@ -1352,7 +1335,6 @@
                 return 0;
             });
 
-            // Tính Thống kê tổng quan
             const total = matches.length;
             const countD = matches.filter(m => m.target === 'D').length;
             const countS = matches.filter(m => m.target === 'S').length;
@@ -1363,7 +1345,6 @@
             dCountEl.textContent = countD; dPercEl.textContent = percD + '%';
             sCountEl.textContent = countS; sPercEl.textContent = percS + '%';
 
-            // Kết luận đám đông
             if (countD > countS) {
                 verdictEl.textContent = 'THIÊN VỀ XANH (D)';
                 verdictEl.className = 'text-lg font-black text-blue-400 drop-shadow-md';
@@ -1375,14 +1356,12 @@
                 verdictEl.className = 'text-lg font-black text-yellow-400 drop-shadow-md';
             }
 
-            // Render Table
             let html = '';
             matches.forEach((m, index) => {
                 const targetBadge = m.target === 'D' 
                     ? '<span class="bg-blue-900/40 text-blue-400 px-2 py-0.5 rounded font-bold border border-blue-500/30 inline-block w-16 text-center">XANH (D)</span>'
                     : '<span class="bg-red-900/40 text-red-400 px-2 py-0.5 rounded font-bold border border-red-500/30 inline-block w-16 text-center">ĐỎ (S)</span>';
                 
-                // Highlight dòng top 1 nếu đang sort theo ưu tiên AI
                 const isTop1 = (sortMode === 'score_desc' && index === 0);
                 const trClass = isTop1 ? 'bg-purple-900/20 border-l-4 border-purple-500' : 'hover:bg-gray-800/80 transition-colors';
                 
@@ -1466,7 +1445,6 @@
             initializeOriginalPatternDB();
         });
 
-
         /* =========================================================================
            4. ĐỒNG BỘ TỰ ĐỘNG & LƯU TRỮ LỊCH SỬ LÕI AI
            ========================================================================= */
@@ -1487,12 +1465,16 @@
                     if (bestMatch && item.predicted && item.actual) {
                         const ht1Verdict = item.predicted.toUpperCase().trim();
                         let baseSignal = null;
+                        let impliedResult = 'D';
+                        
                         if (ht1Verdict.includes('P')) baseSignal = 'P';
                         else if (ht1Verdict.includes('B')) baseSignal = 'B';
                         
+                        if (ht1Verdict.includes('NGƯỢC')) { impliedResult = 'S'; }
+                        
                         if (baseSignal) {
                             let finalDecision = '';
-                            if (bestMatch.target === 'D') finalDecision = baseSignal;
+                            if (bestMatch.target === impliedResult) finalDecision = baseSignal;
                             else finalDecision = (baseSignal === 'P') ? 'B' : 'P';
                             
                             newHistory.push({
@@ -1607,7 +1589,6 @@
         function saveFinalDecisionHistory() { safeStorageSet('vanSuNhuY_finalDecisionHistory_v5', masterState.finalDecisionHistory); }
         function loadFinalDecisionHistory() { try { const saved = localStorage.getItem('vanSuNhuY_finalDecisionHistory_v5'); if(saved) { masterState.finalDecisionHistory = JSON.parse(saved); updateFinalDecisionStats(); } } catch(e){} }
 
-
         /* =========================================================================
            5. LIÊN KẾT IFRAME VÀ UI CÁC HỆ THỐNG CON
            ========================================================================= */
@@ -1630,7 +1611,6 @@
             }
         });
 
-        // ĐÃ KHÔI PHỤC HÀM initializeSystems BỊ MẤT Ở CODE 2
         function initializeSystems() {
             loadMasterSessions();
             loadFinalDecisionHistory();
@@ -1668,24 +1648,24 @@
                     updateSystemDetails(system, data.details);
                     
                     if (system === 'ht1') {
-                        learnFromNewData(data.details.intervalHistory); 
+                        (async () => {
+                            await learnFromNewData(data.details.intervalHistory); 
 
-                        if (masterState.pendingResultToEvaluate !== null) {
-                            addFinalDecisionToHistory(masterState.pendingResultToEvaluate);
-                            masterState.pendingResultToEvaluate = null;
-                        } 
-                        else if (masterState.finalDecisionHistory.length === 0 && data.details.intervalHistory && data.details.intervalHistory.length >= 4) {
-                            syncFinalDecisionHistoryFromHT1(data.details.intervalHistory);
-                        }
+                            if (masterState.pendingResultToEvaluate !== null) {
+                                addFinalDecisionToHistory(masterState.pendingResultToEvaluate);
+                                masterState.pendingResultToEvaluate = null;
+                            } 
+                            else if (masterState.finalDecisionHistory.length === 0 && data.details.intervalHistory && data.details.intervalHistory.length >= 4) {
+                                syncFinalDecisionHistoryFromHT1(data.details.intervalHistory);
+                            }
 
-                        calculateFinalDecision();       
+                            calculateFinalDecision();       
+                        })();
                     }
                     break;
                 case 'export_data':
                     if (data.sessions) masterState[`${system}Sessions`] = data.sessions;
                     break;
-                
-                // THÊM CASE MỚI NÀY VÀO ĐÂY:
                 case 'batch_learn_data':
                     if (system === 'ht1' && data.dsData && data.dsData.length > 0) {
                         bulkLearnFromImportedData(data.dsData);
@@ -1693,6 +1673,7 @@
                     break;
             }
         }
+        
         function updateSystemAccuracy(system, accuracy) {
             masterState[`${system}Accuracy`] = accuracy;
             const el = document.getElementById(`${system}-accuracy`);
@@ -1801,7 +1782,6 @@
             masterState.pendingResultToEvaluate = result; 
             broadcastToAll('add_result', result);
             
-            // ĐÃ SỬA: Tăng thời gian chờ lên 800ms để AI xử lý kịp
             setTimeout(() => {
                 broadcastToAll('get_accuracy');
                 broadcastToAll('get_chot_history');
@@ -1829,7 +1809,6 @@
             
             masterState.pendingResultToEvaluate = null; 
             
-            // ĐÃ SỬA: Tăng thời gian chờ lên 800ms để AI xử lý kịp
             setTimeout(() => {
                 broadcastToAll('get_accuracy'); 
                 broadcastToAll('get_chot_history'); 
@@ -1839,7 +1818,7 @@
             showToast('Đã hoàn tác 1 kết quả', 'info');
         }
 
-        function clearHistoryAll() {
+        async function clearHistoryAll() {
             if (!masterState.currentSessionId) return;
             if (confirm('Xóa sạch lịch sử của phiên hiện tại?')) {
                 masterState.sessions[masterState.currentSessionId].history = [];
@@ -1848,7 +1827,8 @@
                 
                 masterState.finalDecisionHistory = [];
                 masterState.pendingResultToEvaluate = null;
-                initializeOriginalPatternDB();
+                
+                await initializeOriginalPatternDB();
                 
                 updateFinalDecisionStats();
                 saveFinalDecisionHistory();
@@ -1871,7 +1851,8 @@
                 selector.appendChild(opt);
             });
         }
-        function createNewSessionAll() {
+        
+        async function createNewSessionAll() {
             const sessionName = prompt('Nhập tên phiên mới:', `Phiên ${new Date().toLocaleString('vi-VN')}`);
             if (sessionName) {
                 const id = `session-${Date.now()}`;
@@ -1879,10 +1860,13 @@
                 masterState.currentSessionId = id; masterState.currentSessionName = sessionName;
                 saveMasterSessions(); updateMasterSessionSelector(); updateCurrentSessionInfo();
                 broadcastToAll('create_session', { name: sessionName, id: id });
-                initializeOriginalPatternDB();
+                
+                await initializeOriginalPatternDB();
+                
                 showToast('Đã tạo phiên mới', 'success');
             }
         }
+        
         function renameMasterSession() {
             if (!masterState.currentSessionId) return;
             const newName = prompt('Nhập tên mới:', masterState.currentSessionName);
@@ -1894,23 +1878,25 @@
                 showToast('Đã đổi tên', 'success');
             }
         }
+        
         function updateCurrentSessionInfo() {
             document.getElementById('currentSessionName').textContent = masterState.currentSessionName;
             const session = masterState.sessions[masterState.currentSessionId];
             if (session && session.history) document.getElementById('totalGamesMaster').textContent = session.history.length;
         }
-        function syncAllSystems() {
+        
+        async function syncAllSystems() {
             if (!masterState.currentSessionId) { showToast('Vui lòng chọn phiên trước!', 'warning'); return; }
             const session = masterState.sessions[masterState.currentSessionId];
             
-            initializeOriginalPatternDB();
+            await initializeOriginalPatternDB();
+            
             masterState.pendingResultToEvaluate = null;
             masterState.finalDecisionHistory = []; 
             
             broadcastToAll('load_session', { id: masterState.currentSessionId, name: session.name, history: [...session.history] });
             document.getElementById('sync-status').textContent = '🔄 Đang đồng bộ...';
             
-            // ĐÃ SỬA: Tăng thời gian chờ lên 1000ms để AI xử lý kịp
             setTimeout(() => {
                 document.getElementById('sync-status').textContent = '🟢 Đã đồng bộ';
                 broadcastToAll('get_accuracy'); 
@@ -1918,12 +1904,14 @@
                 broadcastToAll('get_system_details');
             }, 1000);
         }
-        function resetAllSystems() {
+        
+        async function resetAllSystems() {
             if (confirm('Xoá tất cả phiên làm việc và reset toàn bộ hệ thống?')) {
                 masterState.sessions = {}; masterState.currentSessionId = null; masterState.currentSessionName = 'Chưa chọn';
                 masterState.finalDecisionHistory = []; 
                 masterState.pendingResultToEvaluate = null;
-                initializeOriginalPatternDB();
+                
+                await initializeOriginalPatternDB();
                 
                 localStorage.removeItem('vanSuNhuY_sessions_v2'); localStorage.removeItem('vanSuNhuY_finalDecisionHistory_v5');
                 updateMasterSessionSelector(); updateCurrentSessionInfo(); updateFinalDecisionStats();
@@ -1933,7 +1921,6 @@
                 showToast('Hệ thống đã reset hoàn toàn', 'info');
             }
         }
-
 
         /* =========================================================================
            7. XỬ LÝ BIỂU ĐỒ 4 HỆ THỐNG GIAO DIỆN CHÍNH
@@ -1995,23 +1982,38 @@
             let allHistories = [];
             ['ht1', 'ht2', 'ht3', 'ht4'].forEach(sys => {
                 const hist = masterState[`${sys}ChotHistory`];
-                if (hist) allHistories.push(...hist.map(p => ({...p, system: sys})));
+                if (hist) allHistories.push(...hist.map((p, index) => ({...p, system: sys, gameIndex: index + 1})));
             });
+            
             if (allHistories.length === 0) { renderEmptyChart(); return; }
             
-            allHistories.sort((a, b) => (a.gameNumber || 0) - (b.gameNumber || 0));
+            allHistories.sort((a, b) => a.gameIndex - b.gameIndex);
+            
             const ctx = document.getElementById('gameAccuracyChart').getContext('2d');
             const labels = []; const cData = []; const iData = [];
             
             let currentVán = 0; let cCorrect = 0; let cTotal = 0;
+            
             allHistories.forEach(pred => {
-                if(pred.gameNumber !== currentVán) {
-                    if(currentVán !== 0) { labels.push(`Ván ${currentVán}`); cData.push(cCorrect); iData.push(cTotal-cCorrect); }
-                    currentVán = pred.gameNumber || 0; cCorrect = 0; cTotal = 0;
+                if(pred.gameIndex !== currentVán) {
+                    if(currentVán !== 0) { 
+                        labels.push(`Ván ${currentVán}`); 
+                        cData.push(cCorrect); 
+                        iData.push(cTotal-cCorrect); 
+                    }
+                    currentVán = pred.gameIndex; 
+                    cCorrect = 0; 
+                    cTotal = 0;
                 }
-                cTotal++; if(pred.predicted === pred.actual) cCorrect++;
+                cTotal++; 
+                if(pred.predicted === pred.actual) cCorrect++;
             });
-            if(currentVán !== 0) { labels.push(`Ván ${currentVán}`); cData.push(cCorrect); iData.push(cTotal-cCorrect); }
+            
+            if(currentVán !== 0) { 
+                labels.push(`Ván ${currentVán}`); 
+                cData.push(cCorrect); 
+                iData.push(cTotal-cCorrect); 
+            }
             
             const chartArea = document.getElementById('chart-area-container');
             const requiredWidth = labels.length * 40;
@@ -2065,7 +2067,6 @@
             document.getElementById('game-accuracy-summary').textContent = `WinRate: ${((correctCount/history.length)*100).toFixed(1)}%`;
         }
 
-
         /* =========================================================================
            8. XUẤT NHẬP DỮ LIỆU & TIỆN ÍCH KHÁC
            ========================================================================= */
@@ -2101,10 +2102,13 @@
                     });
                     
                     masterState.finalDecisionHistory = []; 
-                    initializeOriginalPatternDB(); 
                     
-                    showToast('Phục hồi dữ liệu thành công', 'success');
-                    setTimeout(() => { syncAllSystems(); }, 1000);
+                    (async () => {
+                        await initializeOriginalPatternDB(); 
+                        showToast('Phục hồi dữ liệu thành công', 'success');
+                        setTimeout(() => { syncAllSystems(); }, 1000);
+                    })();
+                    
                 } catch (err) { showToast('File lỗi', 'error'); }
                 event.target.value = '';
             };
@@ -2145,7 +2149,6 @@
                 }
             });
             
-            // ĐÃ SỬA: Phục hồi vòng lặp kiểm tra liên tục 8 giây giống như Code 1
             setInterval(() => {
                 if (allSystemsReady()) {
                     broadcastToAll('get_accuracy');
@@ -2154,35 +2157,29 @@
                 }
             }, 8000);
         });
+        
         async function bulkLearnFromImportedData(newDS_Strings) {
             showToast(`Phát hiện ${newDS_Strings.length} chuỗi 90-100% từ Lịch sử. Đang nạp vào não bộ AI...`, 'info');
             
             const displayEl = document.getElementById('db-pattern-display-count');
             if(displayEl) displayEl.textContent = 'Đang đồng hóa dữ liệu...';
 
-            // 1. Lấy 102 mẫu gốc
             const baseSamples = parseSampleStrings();
             
-            // 2. Gộp mẫu gốc và mẫu từ lịch sử import
             const combinedSamples = baseSamples.concat(newDS_Strings);
             
-            // 3. Huấn luyện lại toàn bộ Pattern Database
             patternDatabase = await buildPatternDatabaseAsync(combinedSamples);
 
-            // 4. Cập nhật UI
-            masterState.totalLearnedPatterns = newDS_Strings.length; // Ghi nhận số chuỗi đã học
+            masterState.bulkImportedPatterns = newDS_Strings; 
+            masterState.totalLearnedPatterns = newDS_Strings.length; 
             
-            // Cập nhật hiển thị số lượng mẫu
-            if (displayEl) {
-                displayEl.innerHTML = `102 Gốc <span class="text-green-400 text-xs ml-1">(+${newDS_Strings.length} Mẫu Import)</span>`;
-            }
+            updatePatternCountUI();
+            updateLearnedCountDisplay();
             
             showToast('Nạp dữ liệu Import vào não bộ AI thành công! Sẵn sàng chốt.', 'success');
-            
-            // Tính toán lại chốt lệnh ngay lập tức với não bộ mới
             calculateFinalDecision();
         }
 
     </script>
 </body>
-                            </html>
+    </html>
