@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -206,7 +205,6 @@
     <div id="toast-container"></div>
     <div id="warning-container"></div>
 
-    <!-- TÍNH NĂNG MỚI: Floating Action Menu -->
     <div class="fixed bottom-6 right-6 z-[200] flex flex-col items-center gap-3">
         <div id="fab-menu" class="flex flex-col gap-3 transition-all duration-300 translate-y-4 opacity-0 pointer-events-none origin-bottom">
             <button onclick="addResultToAll('P')" class="w-12 h-12 bg-blue-600 rounded-full text-white font-bold shadow-[0_0_15px_rgba(37,99,235,0.5)] hover:bg-blue-500 hover:scale-110 transition-all flex justify-center items-center select-none" title="Nhập PLAYER (P)">P</button>
@@ -219,7 +217,6 @@
         </button>
     </div>
 
-    <!-- Pattern DB Modal -->
     <div id="pattern-db-modal" class="fixed inset-0 bg-black/80 z-[100] hidden flex items-center justify-center backdrop-blur-sm">
         <div class="bg-gray-800 border border-yellow-500/30 rounded-2xl w-11/12 max-w-4xl p-6 shadow-[0_0_30px_rgba(202,138,4,0.15)] flex flex-col max-h-[90vh]">
             <div class="flex justify-between items-center mb-4 flex-shrink-0">
@@ -244,7 +241,6 @@
     </div>
 
     <div class="max-w-7xl mx-auto">
-        <!-- Header -->
         <div class="bg-gradient-to-r from-purple-900 via-violet-900 to-purple-900 p-8 rounded-2xl shadow-2xl text-center mb-8 relative">
             <h1 class="text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 via-pink-400 to-purple-400 mb-3">
                 VẠN SỰ NHƯ Ý
@@ -258,7 +254,6 @@
                 <span class="px-3 py-1 bg-purple-600 rounded-full text-sm font-semibold shadow-lg border border-purple-400">🧠 QUYẾT ĐỊNH = AI PATTERN TỰ HỌC</span>
             </div>
             
-            <!-- LỐI TẮT -->
             <div class="flex flex-wrap justify-center gap-4 mt-6 border-t border-gray-700/50 pt-6">
                 <a href="#input-section" class="px-6 py-2.5 bg-blue-600 hover:bg-blue-500 rounded-full text-white font-bold shadow-[0_0_15px_rgba(37,99,235,0.4)] transition-all flex items-center gap-2 transform hover:-translate-y-1 active:scale-95">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
@@ -272,10 +267,8 @@
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
-            <!-- Left Column: Control Panel & Pattern AI Config -->
             <div class="lg:col-span-1 space-y-6">
                 
-                <!-- System Control -->
                 <div class="bg-gray-800 p-6 rounded-2xl shadow-lg">
                     <h2 class="text-xl font-semibold mb-4 text-blue-300">⚙️ Điều Khiển Hệ Thống</h2>
                     <div class="space-y-4">
@@ -290,7 +283,6 @@
                     </div>
                 </div>
 
-                <!-- AI Pattern Matching Config -->
                 <div class="bg-gray-800 p-6 rounded-2xl shadow-lg border border-purple-500/30 relative overflow-hidden">
                     <div class="absolute top-0 right-0 bg-purple-600 text-xs font-bold px-2 py-1 rounded-bl-lg z-10">CORE AI</div>
                     
@@ -320,7 +312,6 @@
                         <div class="text-xs text-gray-400 italic bg-gray-900 p-2 rounded border border-gray-700">
                             * AI CHỈ ĐƯỢC KÍCH HOẠT khi Khoảng tỷ lệ HT1 đạt chính xác 90-100%. Lệnh gốc ưu tiên theo 🧠 Phán Quyết.
                         </div>
-                        <!-- Nút mở modal chỉnh sửa mẫu -->
                         <button onclick="openPatternDBModal()" class="w-full mt-2 py-2 bg-yellow-600/20 text-yellow-400 border border-yellow-500/50 hover:bg-yellow-600 hover:text-black rounded-lg text-sm font-bold transition-all flex justify-center items-center gap-2">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4"></path></svg>
                             Quản Lý Kho Dữ Liệu (Hiện: <span id="db-pattern-count">102</span> Mẫu)
@@ -328,7 +319,6 @@
                     </div>
                 </div>
 
-                <!-- Session Management -->
                 <div class="bg-gray-800 p-6 rounded-2xl shadow-lg">
                     <h2 class="text-xl font-semibold mb-4 text-blue-300">📁 Quản Lý Phiên Chung</h2>
                     
@@ -347,7 +337,6 @@
                     </div>
                 </div>
 
-                <!-- Input Section -->
                 <div id="input-section" class="bg-gray-800 p-6 rounded-2xl shadow-lg scroll-mt-8">
                     <h2 class="text-xl font-semibold mb-4 text-blue-300">🎲 Nhập Kết Quả Ván Hiện Tại</h2>
                     <p class="text-gray-400 text-sm mb-4">Kết quả sẽ được đồng bộ đến tất cả hệ thống</p>
@@ -365,7 +354,6 @@
                     </div>
                 </div>
 
-                <!-- Current Session Stats -->
                 <div class="bg-gray-800 p-6 rounded-2xl shadow-lg">
                     <h2 class="text-xl font-semibold mb-4 text-green-300">📊 Thống Kê Phiên Hiện Tại</h2>
                     <div class="space-y-4">
@@ -381,10 +369,8 @@
                 </div>
             </div>
 
-            <!-- Right Column: Systems Display (4 systems) -->
             <div class="lg:col-span-3">
                 <div class="system-grid">
-                    <!-- HT1 Frame (TÔ ĐẬM VÌ LÀ TRUNG TÂM PHÂN TÍCH) -->
                     <div class="system-frame" id="ht1-frame" style="border-color: #8b5cf6; box-shadow: 0 0 10px rgba(139, 92, 246, 0.3);">
                         <div class="flex justify-between items-center bg-gradient-to-r from-gray-900 to-indigo-900 p-4 rounded-t-lg">
                             <h2 class="text-xl font-bold text-blue-300">🔷 HT1 - Pattern Matching (Lõi Tín Hiệu AI)</h2>
@@ -403,7 +389,6 @@
                         </div>
                     </div>
 
-                    <!-- HT2 Frame -->
                     <div class="system-frame" id="ht2-frame">
                         <div class="flex justify-between items-center bg-gray-900 p-4 rounded-t-lg">
                             <h2 class="text-xl font-semibold text-green-300">🔶 HT2 - Fixed & Optimized</h2>
@@ -422,7 +407,6 @@
                         </div>
                     </div>
 
-                    <!-- HT3 Frame -->
                     <div class="system-frame" id="ht3-frame">
                         <div class="flex justify-between items-center bg-gray-900 p-4 rounded-t-lg">
                             <h2 class="text-xl font-semibold text-orange-300">🔸 HT3 - Standard System</h2>
@@ -441,7 +425,6 @@
                         </div>
                     </div>
 
-                    <!-- HT4 Frame -->
                     <div class="system-frame" id="ht4-frame">
                         <div class="flex justify-between items-center bg-gray-900 p-4 rounded-t-lg">
                             <h2 class="text-xl font-semibold text-pink-300">🔹 HT4 - Advanced System</h2>
@@ -463,12 +446,10 @@
             </div>
         </div>
 
-        <!-- Độ Chính Xác Hệ Thống Đề Xuất Hiện Tại -->
         <div class="mt-8 bg-gradient-to-r from-purple-900 to-blue-900 p-6 rounded-2xl shadow-lg">
             <h2 class="text-2xl font-semibold mb-6 text-center text-yellow-300">📊 ĐỘ CHÍNH XÁC HỆ THỐNG ĐỀ XUẤT HIỆN TẠI (4 HỆ THỐNG)</h2>
             
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <!-- HT1 System Details -->
                 <div class="bg-gray-800 bg-opacity-70 p-4 rounded-xl border border-blue-500/20 shadow-[0_0_15px_rgba(59,130,246,0.1)]">
                     <h3 class="text-lg font-bold mb-3 text-center text-blue-300">🔷 HT1 - Pattern Matching</h3>
                     <div class="space-y-3">
@@ -489,7 +470,6 @@
                             <span id="ht1-range-accuracy" class="font-bold text-green-400">-</span>
                         </div>
                         
-                        <!-- Biểu đồ khoảng tỷ lệ (NGUỒN DỮ LIỆU CỦA AI) -->
                         <div class="bg-gray-900 p-3 rounded-lg mt-4 border border-yellow-500/30 relative">
                             <div class="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-yellow-600 text-black text-[10px] font-bold px-2 py-0.5 rounded-full shadow-lg">NGUỒN DỮ AI</div>
                             <h4 class="text-center text-sm text-yellow-300 mb-2 font-bold">Biểu đồ khoảng tỷ lệ (90-100%)</h4>
@@ -497,7 +477,6 @@
                             <div id="ht1-range-games" class="mt-2 text-xs text-gray-400 text-center"></div>
                         </div>
                         
-                        <!-- BIỂU ĐỒ KẾT HỢP -->
                         <div class="bg-gray-900 p-3 rounded-lg mt-4">
                             <h4 class="text-center text-sm text-gray-400 mb-2">Biểu đồ kết hợp (Chốt)</h4>
                             <div id="ht1-combined-chart" class="history-chart">
@@ -507,7 +486,6 @@
                     </div>
                 </div>
 
-                <!-- HT2 System Details -->
                 <div class="bg-gray-800 bg-opacity-70 p-4 rounded-xl">
                     <h3 class="text-lg font-semibold mb-3 text-center text-green-300">🔶 HT2 - Fixed & Optimized</h3>
                     <div class="space-y-3">
@@ -528,14 +506,12 @@
                             <span id="ht2-range-accuracy" class="font-bold text-green-400">-</span>
                         </div>
                         
-                        <!-- Biểu đồ khoảng tỷ lệ -->
                         <div class="bg-gray-900 p-3 rounded-lg mt-4">
                             <h4 class="text-center text-sm text-gray-400 mb-2">Biểu đồ khoảng tỷ lệ</h4>
                             <div id="ht2-interval-chart" class="history-chart"></div>
                             <div id="ht2-range-games" class="mt-2 text-xs text-gray-400 text-center"></div>
                         </div>
                         
-                        <!-- BIỂU ĐỒ KẾT HỢP -->
                         <div class="bg-gray-900 p-3 rounded-lg mt-4">
                             <h4 class="text-center text-sm text-gray-400 mb-2">Biểu đồ kết hợp (Chốt)</h4>
                             <div id="ht2-combined-chart" class="history-chart">
@@ -545,7 +521,6 @@
                     </div>
                 </div>
 
-                <!-- HT3 System Details -->
                 <div class="bg-gray-800 bg-opacity-70 p-4 rounded-xl">
                     <h3 class="text-lg font-semibold mb-3 text-center text-orange-300">🔸 HT3 - Standard System</h3>
                     <div class="space-y-3">
@@ -566,14 +541,12 @@
                             <span id="ht3-range-accuracy" class="font-bold text-green-400">-</span>
                         </div>
                         
-                        <!-- Biểu đồ khoảng tỷ lệ -->
                         <div class="bg-gray-900 p-3 rounded-lg mt-4">
                             <h4 class="text-center text-sm text-gray-400 mb-2">Biểu đồ khoảng tỷ lệ</h4>
                             <div id="ht3-interval-chart" class="history-chart"></div>
                             <div id="ht3-range-games" class="mt-2 text-xs text-gray-400 text-center"></div>
                         </div>
                         
-                        <!-- BIỂU ĐỒ KẾT HỢP -->
                         <div class="bg-gray-900 p-3 rounded-lg mt-4">
                             <h4 class="text-center text-sm text-gray-400 mb-2">Biểu đồ kết hợp (Chốt)</h4>
                             <div id="ht3-combined-chart" class="history-chart">
@@ -583,7 +556,6 @@
                     </div>
                 </div>
 
-                <!-- HT4 System Details -->
                 <div class="bg-gray-800 bg-opacity-70 p-4 rounded-xl">
                     <h3 class="text-lg font-semibold mb-3 text-center text-pink-300">🔹 HT4 - Advanced System</h3>
                     <div class="space-y-3">
@@ -604,14 +576,12 @@
                             <span id="ht4-range-accuracy" class="font-bold text-green-400">-</span>
                         </div>
                         
-                        <!-- Biểu đồ khoảng tỷ lệ -->
                         <div class="bg-gray-900 p-3 rounded-lg mt-4">
                             <h4 class="text-center text-sm text-gray-400 mb-2">Biểu đồ khoảng tỷ lệ</h4>
                             <div id="ht4-interval-chart" class="history-chart"></div>
                             <div id="ht4-range-games" class="mt-2 text-xs text-gray-400 text-center"></div>
                         </div>
                         
-                        <!-- BIỂU ĐỒ KẾT HỢP -->
                         <div class="bg-gray-900 p-3 rounded-lg mt-4">
                             <h4 class="text-center text-sm text-gray-400 mb-2">Biểu đồ kết hợp (Chốt)</h4>
                             <div id="ht4-combined-chart" class="history-chart">
@@ -623,7 +593,6 @@
             </div>
         </div>
 
-        <!-- KHU VỰC ĐỀ XUẤT CHỐT LỆNH VÀ THỐNG KÊ (ĐIỂM NEO) -->
         <div id="final-decision-section" class="mt-8 scroll-mt-8">
             <div class="bg-gradient-to-r from-purple-900 to-indigo-900 p-6 rounded-2xl shadow-lg card-glow-total border border-purple-500">
                 <h2 class="text-2xl font-black mb-6 text-center text-yellow-300 uppercase tracking-wide flex items-center justify-center gap-3">
@@ -632,7 +601,6 @@
                 </h2>
                 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-                    <!-- AI Database Info -->
                     <div class="bg-gray-900 bg-opacity-60 p-5 rounded-xl border border-gray-700">
                         <h3 class="text-lg font-bold mb-4 text-center text-indigo-300 border-b border-gray-700 pb-2">Thông Số Não Bộ AI</h3>
                         <div class="space-y-4 text-sm">
@@ -648,7 +616,6 @@
                         </div>
                     </div>
 
-                    <!-- Final Decision Output -->
                     <div class="bg-gray-900 bg-opacity-60 p-5 rounded-xl md:col-span-2 border border-gray-700 flex flex-col justify-center relative overflow-hidden">
                         <div class="absolute top-0 right-0 bg-yellow-600 text-black text-[10px] font-black px-3 py-1 rounded-bl-lg shadow-lg z-10">CORE AI DECISION</div>
                         <div class="text-center relative z-0">
@@ -656,7 +623,6 @@
                                 <p class="text-sm text-gray-400 mb-3 font-semibold uppercase tracking-widest">Đề Xuất Lệnh Chốt</p>
                                 <p id="finalDecisionText" class="text-4xl md:text-5xl font-black text-gray-500 tracking-tight drop-shadow-md">⏳ ĐANG CHỜ DỮ LIỆU</p>
                                 
-                                <!-- Khung hiển thị lý do được tối giản hóa -->
                                 <div id="decisionReason" class="mt-5 px-6 flex items-center justify-center">
                                     <div class="text-gray-400 font-mono text-sm">Hệ thống sẽ quét biểu đồ HT1 khi bạn nhập kết quả...</div>
                                 </div>
@@ -669,7 +635,6 @@
                     </div>
                 </div>
 
-                <!-- TÍNH NĂNG MỚI: PHÂN TÍCH ĐA CHIỀU (THU GỌN ĐƯỢC) -->
                 <div class="mb-6 bg-gray-900 bg-opacity-80 p-5 rounded-xl border border-gray-700 shadow-inner">
                     <div class="flex flex-col md:flex-row justify-between items-center mb-4 gap-4 cursor-pointer select-none" onclick="toggleSection('section-analysis-content', 'icon-analysis')">
                         <h3 class="text-lg font-bold text-cyan-300 uppercase tracking-wide flex items-center gap-2 hover:text-cyan-200 transition-colors">
@@ -692,7 +657,6 @@
                     </div>
 
                     <div id="section-analysis-content" class="section-content">
-                        <!-- Bảng Thống Kê Tổng Quan Xanh/Đỏ -->
                         <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
                             <div class="bg-gray-800 p-3 rounded-lg border border-gray-700 text-center">
                                 <div class="text-gray-400 text-[10px] font-bold uppercase">Tổng Trường Hợp</div>
@@ -714,7 +678,6 @@
                             </div>
                         </div>
 
-                        <!-- Bảng Chi Tiết Tất Cả Trường Hợp -->
                         <div class="overflow-x-auto border border-gray-700 rounded-lg custom-scrollbar max-h-64">
                             <table class="w-full text-sm text-left whitespace-nowrap">
                                 <thead class="bg-gray-800 sticky top-0 z-10 shadow-sm">
@@ -735,7 +698,6 @@
                     </div>
                 </div>
 
-                <!-- TÍNH NĂNG MỚI: PHẦN THỐNG KÊ VÀ BIỂU ĐỒ LỊCH SỬ CHỐT (THU GỌN ĐƯỢC) -->
                 <div class="mt-6 bg-gray-900 bg-opacity-60 p-5 rounded-xl border border-gray-700">
                     <div class="flex justify-between items-center mb-5 cursor-pointer select-none" onclick="toggleSection('section-history-content', 'icon-history')">
                         <h3 class="text-lg font-bold text-cyan-300 uppercase tracking-wide hover:text-cyan-200 transition-colors">📊 Thống Kê Lịch Sử Chốt Của AI</h3>
@@ -743,7 +705,6 @@
                     </div>
                     
                     <div id="section-history-content" class="section-content">
-                        <!-- Stats Summary -->
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-6">
                             <div class="bg-gray-800 p-4 rounded-xl text-center shadow-inner border border-gray-700/50">
                                 <div class="text-gray-400 text-xs font-bold uppercase mb-1">Tổng Số Lệnh Khớp</div>
@@ -759,7 +720,6 @@
                             </div>
                         </div>
                         
-                        <!-- Final Decision History Chart -->
                         <div class="mb-5">
                             <h4 class="text-sm font-bold mb-3 text-gray-300 uppercase">Biểu Đồ Lịch Sử Thắng/Thua (AI)</h4>
                             <div class="bg-gray-800 p-4 rounded-xl border border-gray-700/50 relative">
@@ -773,7 +733,6 @@
                             </div>
                         </div>
                         
-                        <!-- Recent Final Decisions Table -->
                         <div class="mt-4 bg-gray-800 rounded-xl overflow-hidden border border-gray-700/50">
                             <div class="p-3 bg-gray-900 border-b border-gray-700">
                                 <h4 class="text-sm font-bold text-gray-300 uppercase text-center">Bảng Chi Tiết Thuật Toán Lõi</h4>
@@ -800,16 +759,13 @@
                     </div>
                 </div>
 
-                <!-- TÍNH NĂNG MỚI: Biểu đồ cột thống kê đúng sai từng ván (THU GỌN ĐƯỢC) -->
                 <div class="mt-6 bg-gray-900 bg-opacity-60 p-5 rounded-xl border border-gray-700 overflow-hidden">
                     <div class="flex justify-between items-center mb-4 cursor-pointer select-none" onclick="toggleSection('section-chart-content', 'icon-chart')">
                         <h3 class="text-lg font-bold text-cyan-300 uppercase tracking-wide hover:text-cyan-200 transition-colors">📈 Biểu Đồ So Sánh Hiệu Suất 4 HT</h3>
                         <svg id="icon-chart" class="w-6 h-6 text-gray-400 transform transition-transform duration-300 rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"></path></svg>
                     </div>
                     
-                    <!-- Bảng này mặc định collapsed (thu gọn) cho đỡ rối mắt vì khá to -->
                     <div id="section-chart-content" class="section-content collapsed">
-                        <!-- Tabs for each system -->
                         <div class="flex flex-wrap gap-2 mb-5 justify-center">
                             <button onclick="showGameChart('ht1')" class="px-5 py-2 bg-blue-600/20 text-blue-400 hover:bg-blue-600 hover:text-white border border-blue-500/50 rounded-lg font-bold text-sm transition-all system-chart-btn active" data-system="ht1">HT1 (Lõi AI)</button>
                             <button onclick="showGameChart('ht2')" class="px-5 py-2 bg-green-600/20 text-green-400 hover:bg-green-600 hover:text-white border border-green-500/50 rounded-lg font-bold text-sm transition-all system-chart-btn" data-system="ht2">HT2</button>
@@ -818,7 +774,6 @@
                             <button onclick="showAllGameCharts()" class="px-5 py-2 bg-purple-600/20 text-purple-400 hover:bg-purple-600 hover:text-white border border-purple-500/50 rounded-lg font-bold text-sm transition-all system-chart-btn" data-system="all">Tổng Hợp Cả 4</button>
                         </div>
                         
-                        <!-- Chart Container WITH SCROLLBAR -->
                         <div class="bg-gray-800 p-4 rounded-xl border border-gray-700/50 shadow-inner">
                             <div class="chart-wrapper overflow-x-auto overflow-y-hidden custom-scrollbar">
                                 <div id="chart-area-container" class="game-bar-chart relative" style="height: 300px; min-width: 100%;">
@@ -827,7 +782,6 @@
                             </div>
                         </div>
                         
-                        <!-- Game Results Table -->
                         <div class="mt-4 bg-gray-800 p-4 rounded-xl border border-gray-700/50">
                             <div class="flex justify-between items-center mb-3 border-b border-gray-700 pb-2">
                                 <h4 class="text-sm font-bold text-gray-300 uppercase tracking-wider">Chi Tiết Từng Lệnh - <span id="current-system-label" class="text-blue-400">HT1</span></h4>
@@ -843,7 +797,6 @@
                     </div>
                 </div>
 
-                <!-- System Status -->
                 <div class="mt-6 grid grid-cols-1 md:grid-cols-4 gap-4">
                     <div class="text-center p-3 bg-gray-800 rounded-lg border border-gray-700/50">
                         <div class="text-xs text-gray-400 font-bold uppercase mb-1">Trạng thái HT1</div>
@@ -869,7 +822,6 @@
             </div>
         </div>
 
-        <!-- Footer -->
         <div class="mt-8 text-center text-gray-500 text-xs font-medium space-y-1">
             <p>Hệ thống Độc quyền "VẠN SỰ NHƯ Ý" - Lõi phân tích AI Pattern Database Tuỳ Chỉnh & Continuous Learning | Phiên bản 4.9 Pro</p>
             <p>Thuật toán tự động quét 100% dữ liệu từ biểu đồ tỷ lệ HT1 để đưa ra đề xuất chính xác nhất.</p>
@@ -1086,19 +1038,17 @@
             for (let idx = 0; idx < samples.length; idx += chunkSize) {
                 const chunk = samples.slice(idx, idx + chunkSize);
                 for (const line of chunk) {
-                    const binaryLine = line.replace(/D/g, '1').replace(/S/g, '0');
                     for (const size of ngramSizes) {
-                        for (let i = 0; i <= binaryLine.length - size - 1; i++) {
-                            const seqBin = binaryLine.substring(i, i + size);
-                            const nextBit = binaryLine[i + size];
-                            const seqDS = seqBin.replace(/1/g, 'D').replace(/0/g, 'S');
+                        for (let i = 0; i <= line.length - size - 1; i++) {
+                            const seqDS = line.substring(i, i + size);
+                            const nextBit = line[i + size];
                             
                             const key = `${size}|${seqDS}`;
                             if (!db[key]) {
                                 db[key] = { seq: seqDS, length: size, total: 0, nextD: 0, nextS: 0 };
                             }
                             db[key].total++;
-                            if (nextBit === '1') db[key].nextD++;
+                            if (nextBit === 'D') db[key].nextD++;
                             else db[key].nextS++;
                         }
                     }
@@ -1183,11 +1133,11 @@
         let gameAccuracyChart = null;
         let currentChartSystem = 'ht1';
 
-        function learnFromNewData(intervalHistory) {
+        async function learnFromNewData(intervalHistory) {
             if (!intervalHistory || intervalHistory.length === 0) return;
             
             if (intervalHistory.length < masterState.lastLearnedGameCount) {
-                initializeOriginalPatternDB();
+                await initializeOriginalPatternDB();
             }
 
             if (intervalHistory.length < 4) {
@@ -1259,7 +1209,7 @@
                 return;
             }
 
-            const currentRange = ht1Details.range || '';
+            const currentRange = String(ht1Details.range || '');
             if (!currentRange.includes('90') && !currentRange.includes('100')) {
                 updateFinalDecisionDisplay(null, `BỎ QUA DO KHOẢNG TỶ LỆ HT1 CHƯA ĐẠT 90-100% (Hiện tại đang là ${currentRange || 'Chưa rõ'}).`, "KHÔNG ĐẠT ĐIỀU KIỆN RANGE");
                 masterState.currentMatches = [];
@@ -1654,13 +1604,13 @@
             ['ht1', 'ht2', 'ht3', 'ht4'].forEach(sys => sendToIframe(`${sys}-iframe`, command, data));
         }
 
-        window.addEventListener('message', function(event) {
+        window.addEventListener('message', async function(event) {
             if (['ht1', 'ht2', 'ht3', 'ht4'].includes(event.data.source)) {
-                handleSystemMessage(event.data);
+                await handleSystemMessage(event.data);
             }
         });
 
-        function handleSystemMessage(data) {
+        async function handleSystemMessage(data) {
             const system = data.source;
             switch(data.type) {
                 case 'ready':
@@ -1685,7 +1635,7 @@
                     updateSystemDetails(system, data.details);
                     
                     if (system === 'ht1') {
-                        learnFromNewData(data.details.intervalHistory); 
+                        await learnFromNewData(data.details.intervalHistory); 
 
                         if (masterState.pendingResultToEvaluate !== null) {
                             addFinalDecisionToHistory(masterState.pendingResultToEvaluate);
@@ -2017,15 +1967,15 @@
             const ctx = document.getElementById('gameAccuracyChart').getContext('2d');
             const labels = []; const cData = []; const iData = [];
             
-            let currentVán = 0; let cCorrect = 0; let cTotal = 0;
+            let currentGame = 0; let cCorrect = 0; let cTotal = 0;
             allHistories.forEach(pred => {
-                if(pred.gameNumber !== currentVán) {
-                    if(currentVán !== 0) { labels.push(`Ván ${currentVán}`); cData.push(cCorrect); iData.push(cTotal-cCorrect); }
-                    currentVán = pred.gameNumber || 0; cCorrect = 0; cTotal = 0;
+                if(pred.gameNumber !== currentGame) {
+                    if(currentGame !== 0) { labels.push(`Ván ${currentGame}`); cData.push(cCorrect); iData.push(cTotal-cCorrect); }
+                    currentGame = pred.gameNumber || 0; cCorrect = 0; cTotal = 0;
                 }
                 cTotal++; if(pred.predicted === pred.actual) cCorrect++;
             });
-            if(currentVán !== 0) { labels.push(`Ván ${currentVán}`); cData.push(cCorrect); iData.push(cTotal-cCorrect); }
+            if(currentGame !== 0) { labels.push(`Ván ${currentGame}`); cData.push(cCorrect); iData.push(cTotal-cCorrect); }
             
             const chartArea = document.getElementById('chart-area-container');
             const requiredWidth = labels.length * 40;
@@ -2199,4 +2149,4 @@
 
     </script>
 </body>
-</html>
+                                                                                                   </html>
