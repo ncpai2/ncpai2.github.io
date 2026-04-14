@@ -1921,6 +1921,10 @@ document.addEventListener('DOMContentLoaded', initializeApp)
             case 'get_prediction':
                 sendPrediction();
                 break;
+
+            case 'get_system_details':
+                sendSystemDetails();
+                break;
                 
             case 'create_session':
                 createSession(data.data);
@@ -2012,6 +2016,46 @@ document.addEventListener('DOMContentLoaded', initializeApp)
         }, '*');
     }
 
+    function sendSystemDetails() {
+        const session = state.sessions[state.currentSessionId];
+        if (!session) return;
+
+        const currentConfidence = state.currentPrediction?.confidence;
+        let activeRange = null;
+        let rangeAcc = null;
+        let intervalHist = [];
+
+        if (currentConfidence !== undefined && currentConfidence !== null) {
+            activeRange = CONFIDENCE_RANGES.find(r => currentConfidence >= r.min && currentConfidence < r.max);
+            
+            if (activeRange) {
+                const predictionsInRange = (session.predictions || []).filter(p => p.confidence >= activeRange.min && p.confidence < activeRange.max);
+                const total = predictionsInRange.length;
+                const correct = predictionsInRange.filter(p => p.predicted === p.actual).length;
+                rangeAcc = total > 0 ? ((correct / total) * 100).toFixed(1) : 0;
+                
+                intervalHist = predictionsInRange.map((p, idx) => ({
+                    game: idx + 1,
+                    predicted: p.predicted,
+                    actual: p.actual,
+                    isCorrect: p.predicted === p.actual
+                }));
+            }
+        }
+
+        window.parent.postMessage({
+            source: 'ht1',
+            type: 'system_details_update',
+            details: {
+                verdict: state.originalSystemPrediction, 
+                chot: state.currentChotPredictionForLog?.prediction, 
+                range: activeRange ? activeRange.key : null,
+                rangeAccuracy: rangeAcc,
+                intervalHistory: intervalHist
+            }
+        }, '*');
+    }
+
     function createSession(sessionData) {
         if (!sessionData || !sessionData.name) return;
         
@@ -2099,63 +2143,6 @@ document.addEventListener('DOMContentLoaded', initializeApp)
         updateSessionSelector();
         updateAllUI();
         sendSessionInfo();
-    }
-
-    function addResult(result) {
-        if (!state.currentSessionId) return;
-        
-        // Use existing addResult function
-        const session = state.sessions[state.currentSessionId];
-        if (!session) return;
-        
-        // Call the existing addResult function
-        const chotRec = state.currentChotPredictionForLog;
-        const tier1Prediction = state.originalSystemPrediction;
-        
-        if (state.currentPrediction) {
-            session.predictions.push({ 
-                predicted: state.currentPrediction.prediction, 
-                actual: result, 
-                confidence: state.currentPrediction.confidence 
-            });
-        }
-        
-        if (state.currentFinalPrediction) {
-            session.verdictPredictions.push({
-                verdict: state.currentFinalPrediction.verdict,
-                predicted: state.currentFinalPrediction.prediction,
-                actual: result
-            });
-        }
-        
-        if (chotRec && chotRec.prediction) {
-            session.chotPredictions.push({ 
-                predicted: chotRec.prediction, 
-                actual: result, 
-                source: 'CHOT_VOTE' 
-            });
-        }
-        
-        updateChotLengthPerformance(session, tier1Prediction, result);
-        session.history.push(result);
-        session.optimalLength = updateLengthPerformanceAndFindOptimal(
-            [...session.history].slice(0, -1), 
-            Object.values(state.sessions), 
-            result
-        );
-        
-        state.currentPrediction = null;
-        state.originalSystemPrediction = null;
-        state.currentFinalPrediction = null;
-        state.currentChotPredictionForLog = null;
-        
-        saveSessions();
-        updateAllUI();
-        
-        // Send updates
-        sendAccuracyUpdate();
-        sendChotHistory();
-        sendPrediction();
     }
 
     function importSimulatedData(data) {
