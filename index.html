@@ -1576,62 +1576,63 @@
             updateFinalDecisionHistoryTable();
         }
 
-        function updateFinalDecisionChart() {
-            const history = masterState.finalDecisionHistory;
-            const chartEl = document.getElementById('final-decision-chart');
-            if (!chartEl) return;
-            
-            if (!history || history.length === 0) { 
-                chartEl.innerHTML = '<p class="text-gray-500 text-center text-sm w-full mt-3">Chưa có lịch sử khớp lệnh</p>'; 
-                return; 
-            }
-            
-            let chartHTML = '<div class="flex items-end justify-start h-full gap-1 min-w-max px-1">'; 
-            
-            history.forEach((item, index) => {
-                const isCorrect = item.correct;
-                const barClass = isCorrect ? 'h-full bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.6)]' : 'h-2/5 bg-red-500 shadow-[0_0_5px_rgba(239,68,68,0.5)]';
-                const gameNum = item.gameNumber || (index + 1);
-                chartHTML += `<div class="w-2.5 flex items-end"><div class="w-full rounded-[1px] ${barClass}" title="Ván ${gameNum}: Đánh ${item.decision} - Ra ${item.actual} -> ${isCorrect ? 'WIN' : 'LOSE'}"></div></div>`;
-            });
-            chartHTML += '</div>';
-            chartEl.innerHTML = chartHTML;
-            chartEl.scrollLeft = chartEl.scrollWidth; 
-        }
+function updateFinalDecisionChart() {
+    const history = masterState.finalDecisionHistory;
+    const chartEl = document.getElementById('final-decision-chart');
+    if (!chartEl) return;
+    
+    if (!history || history.length === 0) { 
+        chartEl.innerHTML = '<p class="text-gray-500 text-center text-sm w-full mt-3">Chưa có lịch sử khớp lệnh</p>'; 
+        return; 
+    }
+    
+    let chartHTML = ''; 
+    
+    history.forEach((item, index) => {
+        const isCorrect = item.correct;
+        const barClass = isCorrect ? 'h-full bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.6)]' : 'h-2/5 bg-red-500 shadow-[0_0_5px_rgba(239,68,68,0.5)]';
+        const gameNum = item.gameNumber || (index + 1);
+        // Đã fix lỗi CSS chiều cao cột tại đây
+        chartHTML += `<div class="w-2.5 h-full flex-shrink-0 flex items-end mx-[1px]"><div class="w-full rounded-[1px] ${barClass}" title="Ván ${gameNum}: Đánh ${item.decision} - Ra ${item.actual} -> ${isCorrect ? 'WIN' : 'LOSE'}"></div></div>`;
+    });
+    chartEl.innerHTML = chartHTML;
+    chartEl.scrollLeft = chartEl.scrollWidth; 
+}
 
-        function updateFinalDecisionHistoryTable() {
-            const history = masterState.finalDecisionHistory;
-            const tableBody = document.getElementById('final-decision-history-body');
-            if (!tableBody) return;
-            
-            if (!history || history.length === 0) { 
-                tableBody.innerHTML = '<tr><td colspan="5" class="p-6 text-center text-gray-500 italic">Hệ thống đang chờ đợi dữ liệu đầu vào...</td></tr>'; 
-                return; 
-            }
-            
-            const recentHistory = history.slice(-15).reverse();
-            let tableHTML = '';
-            
-            recentHistory.forEach((item) => {
-                const gameNum = item.gameNumber;
-                const decisionText = item.decision === 'P' ? 'PLAYER' : 'BANKER';
-                const actualText = item.actual === 'P' ? 'PLAYER' : 'BANKER';
-                const isWin = item.correct;
-                const statusBadge = isWin 
-                    ? '<span class="bg-green-900/40 text-green-400 px-2 py-0.5 rounded font-bold text-xs border border-green-500/30">WIN</span>'
-                    : '<span class="bg-red-900/40 text-red-400 px-2 py-0.5 rounded font-bold text-xs border border-red-500/30">LOSE</span>';
-                
-                tableHTML += `
-                    <tr class="hover:bg-gray-800/80 transition-colors">
-                        <td class="p-3 text-gray-300 font-mono">${gameNum}</td>
-                        <td class="p-3 font-bold ${item.decision === 'P' ? 'text-blue-400' : 'text-red-400'}">${decisionText}</td>
-                        <td class="p-3 font-bold ${item.actual === 'P' ? 'text-blue-400' : 'text-red-400'}">${actualText}</td>
-                        <td class="p-3">${statusBadge}</td>
-                        <td class="p-3 text-[11px] text-gray-400 leading-relaxed font-mono opacity-80 hover:opacity-100 truncate max-w-[200px]" title="${item.reason}">${item.reason.substring(0, 50)}...</td>
-                    </tr>`;
-            });
-            tableBody.innerHTML = tableHTML;
-        }
+function updateFinalDecisionHistoryTable() {
+    const history = masterState.finalDecisionHistory;
+    const tableBody = document.getElementById('final-decision-history-body');
+    if (!tableBody) return;
+    
+    if (!history || history.length === 0) { 
+        tableBody.innerHTML = '<tr><td colspan="5" class="p-6 text-center text-gray-500 italic">Hệ thống đang chờ đợi dữ liệu đầu vào...</td></tr>'; 
+        return; 
+    }
+    
+    // Đã gỡ bỏ .slice(-15) để hiển thị full danh sách
+    const recentHistory = [...history].reverse();
+    let tableHTML = '';
+    
+    recentHistory.forEach((item) => {
+        const gameNum = item.gameNumber;
+        const decisionText = item.decision === 'P' ? 'PLAYER' : 'BANKER';
+        const actualText = item.actual === 'P' ? 'PLAYER' : 'BANKER';
+        const isWin = item.correct;
+        const statusBadge = isWin 
+            ? '<span class="bg-green-900/40 text-green-400 px-2 py-0.5 rounded font-bold text-xs border border-green-500/30">WIN</span>'
+            : '<span class="bg-red-900/40 text-red-400 px-2 py-0.5 rounded font-bold text-xs border border-red-500/30">LOSE</span>';
+        
+        tableHTML += `
+            <tr class="hover:bg-gray-800/80 transition-colors">
+                <td class="p-3 text-gray-300 font-mono">${gameNum}</td>
+                <td class="p-3 font-bold ${item.decision === 'P' ? 'text-blue-400' : 'text-red-400'}">${decisionText}</td>
+                <td class="p-3 font-bold ${item.actual === 'P' ? 'text-blue-400' : 'text-red-400'}">${actualText}</td>
+                <td class="p-3">${statusBadge}</td>
+                <td class="p-3 text-[11px] text-gray-400 leading-relaxed font-mono opacity-80 hover:opacity-100 truncate max-w-[200px]" title="${item.reason}">${item.reason.substring(0, 50)}...</td>
+            </tr>`;
+    });
+    tableBody.innerHTML = tableHTML;
+}
 
         function saveFinalDecisionHistory() { safeStorageSet('vanSuNhuY_finalDecisionHistory_v5', masterState.finalDecisionHistory); }
         function loadFinalDecisionHistory() { try { const saved = localStorage.getItem('vanSuNhuY_finalDecisionHistory_v5'); if(saved) { masterState.finalDecisionHistory = JSON.parse(saved); updateFinalDecisionStats(); } } catch(e){} }
