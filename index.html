@@ -1151,7 +1151,7 @@
         /* =========================================================================
            2. GLOBAL STATE & CƠ CHẾ AI TỰ HỌC (CONTINUOUS LEARNING)
            ========================================================================= */
-        let patternConfig = { minOccurrences: 10, minConfidence: 100 };
+        let patternConfig = { minOccurrences: 2, minConfidence: 50 };
 
         const masterState = {
             currentSessionId: null,
@@ -1478,8 +1478,8 @@
         }
 
         function resetPatternConfigToDefault() {
-            document.getElementById('minOccurrencesSlider').value = 10;
-            document.getElementById('minConfidenceSlider').value = 100;
+            document.getElementById('minOccurrencesSlider').value = 2;
+            document.getElementById('minConfidenceSlider').value = 50;
             updatePatternConfig();
             showToast('Đã khôi phục N-gram: 10 lần lặp & Độ tin cậy 100%', 'info');
         }
