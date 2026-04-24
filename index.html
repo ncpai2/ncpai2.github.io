@@ -3,44 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VẠN SỰ NHƯ Ý - Pattern Matching 102 Mẫu (HT1)</title>
+    <title>VẠN SỰ NHƯ Ý - GOD EYE MATRIX (Phiên bản Độc Quyền)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        html {
-            scroll-behavior: smooth; /* Thêm cuộn mượt cho lối tắt */
-        }
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #111827;
-            color: #F9FAFB;
-        }
-        .btn {
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-        }
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-        }
-        .btn:active {
-            transform: translateY(1px);
-        }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Inter', sans-serif; background-color: #111827; color: #F9FAFB; }
+        .btn { transition: all 0.3s ease; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); }
+        .btn:active { transform: translateY(1px); }
         .card-glow-total { box-shadow: 0 0 25px rgba(168, 85, 247, 0.7); }
-        .modal-backdrop {
-            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-            background-color: rgba(0,0,0,0.7);
-            display: flex; align-items: center; justify-content: center;
-            z-index: 50; animation: fadeIn 0.3s ease;
-        }
-        .modal-content {
-            background-color: #1f2937;
-            padding: 1.5rem; border-radius: 1rem;
-            width: 90%; max-width: 500px;
-            animation: slideIn 0.3s ease-out;
-            border: 1px solid #374151;
-        }
         .toast-notification {
             position: fixed; top: 20px; right: 20px;
             background-color: #1f2937; color: white;
@@ -49,163 +22,43 @@
             z-index: 100; animation: slideDown 0.5s ease;
             border-left: 4px solid;
         }
-        .warning-alert {
-            position: fixed; top: 20px; left: 50%;
-            transform: translateX(-50%);
-            background-color: #f59e0b; color: white;
-            padding: 1rem 2rem; border-radius: 0.5rem;
-            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.3);
-            z-index: 100; animation: slideDown 0.5s ease;
-            border-left: 4px solid #d97706;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateY(-20px) scale(0.95); }
-            to { opacity: 1; transform: translateY(0) scale(1); }
-        }
-        @keyframes slideDown {
-            from { opacity: 0; transform: translateY(-100%); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes fadeOut {
-            from { opacity: 1; transform: translateY(0); }
-            to { opacity: 0; transform: translateY(-20px); }
-        }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-100%); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeOut { from { opacity: 1; transform: translateY(0); } to { opacity: 0; transform: translateY(-20px); } }
         .system-frame {
-            border: 2px solid #374151;
-            border-radius: 0.75rem;
-            background: #1f2937;
-            transition: all 0.3s ease;
+            border: 2px solid #374151; border-radius: 0.75rem;
+            background: #1f2937; transition: all 0.3s ease;
         }
-        .system-frame.active {
-            border-color: #8b5cf6;
-            box-shadow: 0 0 15px rgba(139, 92, 246, 0.5);
-        }
+        .system-frame.active { border-color: #8b5cf6; box-shadow: 0 0 15px rgba(139, 92, 246, 0.5); }
         .history-chart {
-            display: flex;
-            align-items: flex-end;
-            justify-content: flex-start;
-            gap: 2px;
-            height: 60px;
-            padding: 5px 0 8px 0;
-            overflow-x: auto;
-            overflow-y: hidden;
-            scroll-behavior: smooth;
+            display: flex; align-items: flex-end; justify-content: flex-start;
+            gap: 2px; height: 60px; padding: 5px 0 8px 0;
+            overflow-x: auto; overflow-y: hidden; scroll-behavior: smooth;
         }
-        .history-bar {
-            flex-shrink: 0;
-            width: 4px;
-            border-radius: 1px;
-        }
-        .history-bar-correct {
-            background-color: #3b82f6;
-            height: 100%;
-        }
-        .history-bar-incorrect {
-            background-color: #ef4444;
-            height: 40%;
-        }
-        .accuracy-badge {
-            padding: 0.25rem 0.5rem;
-            border-radius: 9999px;
-            font-size: 0.75rem;
-            font-weight: 600;
-        }
+        .accuracy-badge { padding: 0.25rem 0.5rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 600; }
         .accuracy-high { background-color: #10b981; color: white; }
         .accuracy-medium { background-color: #f59e0b; color: white; }
         .accuracy-low { background-color: #ef4444; color: white; }
-        .system-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1rem;
-        }
-        @media (min-width: 1024px) {
-            .system-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-        .game-bar-chart {
-            height: 300px;
-            margin-top: 1rem;
-        }
-        .confidence-interval-chart {
-            height: 200px;
-            margin-top: 1rem;
-        }
-        .game-result-chip {
-            display: inline-block;
-            padding: 2px 8px;
-            border-radius: 12px;
-            font-size: 0.75rem;
-            font-weight: bold;
-            margin: 1px;
-        }
-        .game-correct { background-color: #10b981; color: white; }
-        .game-incorrect { background-color: #ef4444; color: white; }
-        .game-neutral { background-color: #6b7280; color: white; }
-        .final-decision-bar {
-            flex-shrink: 0;
-            width: 8px;
-            border-radius: 2px;
-            margin: 0 1px;
-        }
-        .final-decision-correct {
-            background-color: #3b82f6;
-            height: 100%;
-        }
-        .final-decision-incorrect {
-            background-color: #ef4444;
-            height: 40%;
-        }
-        input[type=range] {
-            -webkit-appearance: none;
-            background: #374151;
-            height: 4px;
-            border-radius: 2px;
-        }
-        input[type=range]::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            width: 16px;
-            height: 16px;
-            border-radius: 50%;
-            background: #8b5cf6;
-            cursor: pointer;
-        }
+        .system-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+        @media (min-width: 1024px) { .system-grid { grid-template-columns: repeat(2, 1fr); } }
+        .game-bar-chart { height: 300px; margin-top: 1rem; }
         .custom-scrollbar::-webkit-scrollbar, .history-chart::-webkit-scrollbar { height: 6px; width: 6px; }
         .custom-scrollbar::-webkit-scrollbar-track, .history-chart::-webkit-scrollbar-track { background: #1f2937; border-radius: 4px; }
         .custom-scrollbar::-webkit-scrollbar-thumb, .history-chart::-webkit-scrollbar-thumb { background: #4b5563; border-radius: 4px; }
         .custom-scrollbar::-webkit-scrollbar-thumb:hover, .history-chart::-webkit-scrollbar-thumb:hover { background: #6b7280; }
-
-        /* TÍNH NĂNG MỚI: CSS Thu Gọn Content */
         .section-content {
             transition: max-height 0.4s ease-in-out, opacity 0.4s ease-in-out, margin 0.4s ease-in-out, padding 0.4s ease-in-out;
-            max-height: 2000px;
-            opacity: 1;
-            overflow: hidden;
+            max-height: 2000px; opacity: 1; overflow: hidden;
         }
         .section-content.collapsed {
-            max-height: 0;
-            opacity: 0;
-            margin-top: 0 !important;
-            margin-bottom: 0 !important;
-            padding-top: 0 !important;
-            padding-bottom: 0 !important;
+            max-height: 0; opacity: 0; margin-top: 0 !important; margin-bottom: 0 !important;
+            padding-top: 0 !important; padding-bottom: 0 !important;
         }
     </style>
 </head>
 <body class="p-4 md:p-8 relative">
-    <div id="modal-container"></div>
     <div id="toast-container"></div>
-    <div id="warning-container"></div>
 
-    <!-- TÍNH NĂNG MỚI: Floating Action Menu -->
     <div class="fixed bottom-6 right-6 z-[200] flex flex-col items-center gap-3">
         <div id="fab-menu" class="flex flex-col gap-3 transition-all duration-300 translate-y-4 opacity-0 pointer-events-none origin-bottom">
             <button onclick="addResultToAll('P')" class="w-12 h-12 bg-blue-600 rounded-full text-white font-bold shadow-[0_0_15px_rgba(37,99,235,0.5)] hover:bg-blue-500 hover:scale-110 transition-all flex justify-center items-center select-none" title="Nhập PLAYER (P)">P</button>
@@ -218,35 +71,10 @@
         </button>
     </div>
 
-    <!-- Pattern DB Modal -->
-    <div id="pattern-db-modal" class="fixed inset-0 bg-black/80 z-[100] hidden flex items-center justify-center backdrop-blur-sm">
-        <div class="bg-gray-800 border border-yellow-500/30 rounded-2xl w-11/12 max-w-4xl p-6 shadow-[0_0_30px_rgba(202,138,4,0.15)] flex flex-col max-h-[90vh]">
-            <div class="flex justify-between items-center mb-4 flex-shrink-0">
-                <h2 class="text-2xl font-bold text-yellow-400 flex items-center gap-2">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4"></path></svg>
-                    Quản Lý Kho Mẫu AI
-                </h2>
-                <button onclick="closePatternDBModal()" class="text-gray-400 hover:text-white transition-colors">
-                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-                </button>
-            </div>
-            <p class="text-gray-400 text-sm mb-4 flex-shrink-0">Bạn có thể dán danh sách mẫu (hoặc bất kỳ số lượng mẫu nào) vào đây. Mỗi mẫu trên 1 dòng. Dữ liệu sẽ được lưu vĩnh viễn trên máy của bạn.</p>
-            <textarea id="pattern-db-textarea" class="w-full flex-grow bg-gray-900 text-green-400 font-mono text-sm p-4 rounded-lg border border-gray-700 focus:border-yellow-500 focus:outline-none custom-scrollbar" spellcheck="false"></textarea>
-            <div class="flex justify-between items-center mt-6 flex-shrink-0">
-                <div class="text-sm text-gray-500 italic">Lưu ý: Sau khi lưu, AI sẽ xoá não bộ cũ và học lại toàn bộ từ kho mẫu mới. Việc này có thể mất vài giây nếu dữ liệu lớn.</div>
-                <div class="flex gap-4">
-                    <button onclick="resetPatternDBToDefault()" class="px-6 py-2 bg-gray-700 hover:bg-gray-600 text-white font-bold rounded-lg transition-all border border-gray-600">Khôi Phục Gốc (102 Mẫu)</button>
-                    <button onclick="savePatternDB()" class="px-6 py-2 bg-yellow-600 hover:bg-yellow-500 text-black font-bold rounded-lg transition-all shadow-[0_0_15px_rgba(202,138,4,0.4)]">Lưu & Dạy Lại AI</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <div class="max-w-7xl mx-auto">
-        <!-- Header -->
         <div class="bg-gradient-to-r from-purple-900 via-violet-900 to-purple-900 p-8 rounded-2xl shadow-2xl text-center mb-8 relative">
             <h1 class="text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 via-pink-400 to-purple-400 mb-3">
-                VẠN SỰ NHƯ Ý
+                VẠN SỰ NHƯ Ý - GOD EYE
             </h1>
             <p class="text-gray-300 text-lg">Hệ Thống Tổng Hợp Phân Tích Cầu Cao Cấp - 4 Hệ Thống</p>
             <div class="flex flex-wrap justify-center gap-4 mt-4">
@@ -254,10 +82,9 @@
                 <span class="px-3 py-1 bg-green-600 rounded-full text-sm font-semibold">HT2: Fixed & Optimized</span>
                 <span class="px-3 py-1 bg-orange-600 rounded-full text-sm font-semibold">HT3: Standard System</span>
                 <span class="px-3 py-1 bg-pink-600 rounded-full text-sm font-semibold">HT4: Advanced System</span>
-                <span class="px-3 py-1 bg-purple-600 rounded-full text-sm font-semibold shadow-lg border border-purple-400">🧠 QUYẾT ĐỊNH = AI PATTERN TỰ HỌC</span>
+                <span class="px-3 py-1 bg-purple-600 rounded-full text-sm font-semibold shadow-lg border border-purple-400">👁️ QUYẾT ĐỊNH = GOD EYE MATRIX</span>
             </div>
             
-            <!-- LỐI TẮT -->
             <div class="flex flex-wrap justify-center gap-4 mt-6 border-t border-gray-700/50 pt-6">
                 <a href="#input-section" class="px-6 py-2.5 bg-blue-600 hover:bg-blue-500 rounded-full text-white font-bold shadow-[0_0_15px_rgba(37,99,235,0.4)] transition-all flex items-center gap-2 transform hover:-translate-y-1 active:scale-95">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
@@ -271,10 +98,8 @@
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
-            <!-- Left Column: Control Panel & Pattern AI Config -->
             <div class="lg:col-span-1 space-y-6">
                 
-                <!-- System Control -->
                 <div class="bg-gray-800 p-6 rounded-2xl shadow-lg">
                     <h2 class="text-xl font-semibold mb-4 text-blue-300">⚙️ Điều Khiển Hệ Thống</h2>
                     <div class="space-y-4">
@@ -289,45 +114,6 @@
                     </div>
                 </div>
 
-                <!-- AI Pattern Matching Config -->
-                <div class="bg-gray-800 p-6 rounded-2xl shadow-lg border border-purple-500/30 relative overflow-hidden">
-                    <div class="absolute top-0 right-0 bg-purple-600 text-xs font-bold px-2 py-1 rounded-bl-lg z-10">CORE AI</div>
-                    
-                    <div class="flex justify-between items-center mb-4">
-                        <h2 class="text-xl font-semibold text-yellow-300">🧠 Cấu Hình AI Pattern</h2>
-                        <button onclick="resetPatternConfigToDefault()" class="text-[10px] font-bold bg-gray-700 hover:bg-gray-500 px-2 py-1 rounded text-white border border-gray-600 transition-colors shadow-sm" title="Khôi phục về mặc định 10 lần, 100%">MẶC ĐỊNH</button>
-                    </div>
-
-                    <div class="space-y-5">
-                        <div class="text-xs text-green-400 italic bg-gray-900 p-2 rounded border border-gray-700">
-                            * CHẾ ĐỘ QUÉT TỰ ĐỘNG (Auto): Hệ thống sẽ tự tìm kiếm toàn bộ các cụm bit từ 3 đến 20 để chọn ra cụm có tỷ lệ thắng và lặp cao nhất.
-                        </div>
-                        <div>
-                            <div class="flex justify-between text-sm text-gray-300 mb-1">
-                                <span>Số lần lặp tối thiểu:</span>
-                                <span id="minOccurrencesValue" class="font-bold text-yellow-300 text-base">10</span>
-                            </div>
-                            <input type="range" id="minOccurrencesSlider" min="2" max="50" value="10" class="w-full">
-                        </div>
-                        <div>
-                            <div class="flex justify-between text-sm text-gray-300 mb-1">
-                                <span>Độ tin cậy tối thiểu:</span>
-                                <span id="minConfidenceValue" class="font-bold text-green-400 text-base">100%</span>
-                            </div>
-                            <input type="range" id="minConfidenceSlider" min="50" max="100" value="100" class="w-full">
-                        </div>
-                        <div class="text-xs text-gray-400 italic bg-gray-900 p-2 rounded border border-gray-700">
-                            * AI CHỈ ĐƯỢC KÍCH HOẠT khi Khoảng tỷ lệ HT1 đạt chính xác 90-100%. Lệnh gốc ưu tiên theo 🧠 Phán Quyết.
-                        </div>
-                        <!-- Nút mở modal chỉnh sửa mẫu -->
-                        <button onclick="openPatternDBModal()" class="w-full mt-2 py-2 bg-yellow-600/20 text-yellow-400 border border-yellow-500/50 hover:bg-yellow-600 hover:text-black rounded-lg text-sm font-bold transition-all flex justify-center items-center gap-2">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4"></path></svg>
-                            Quản Lý Kho Dữ Liệu (Hiện: <span id="db-pattern-count">102</span> Mẫu)
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Session Management -->
                 <div class="bg-gray-800 p-6 rounded-2xl shadow-lg">
                     <h2 class="text-xl font-semibold mb-4 text-blue-300">📁 Quản Lý Phiên Chung</h2>
                     
@@ -346,7 +132,6 @@
                     </div>
                 </div>
 
-                <!-- Input Section -->
                 <div id="input-section" class="bg-gray-800 p-6 rounded-2xl shadow-lg scroll-mt-8">
                     <h2 class="text-xl font-semibold mb-4 text-blue-300">🎲 Nhập Kết Quả Ván Hiện Tại</h2>
                     <p class="text-gray-400 text-sm mb-4">Kết quả sẽ được đồng bộ đến tất cả hệ thống</p>
@@ -364,7 +149,6 @@
                     </div>
                 </div>
 
-                <!-- Current Session Stats -->
                 <div class="bg-gray-800 p-6 rounded-2xl shadow-lg">
                     <h2 class="text-xl font-semibold mb-4 text-green-300">📊 Thống Kê Phiên Hiện Tại</h2>
                     <div class="space-y-4">
@@ -380,10 +164,8 @@
                 </div>
             </div>
 
-            <!-- Right Column: Systems Display (4 systems) -->
             <div class="lg:col-span-3">
                 <div class="system-grid">
-                    <!-- HT1 Frame (TÔ ĐẬM VÌ LÀ TRUNG TÂM PHÂN TÍCH) -->
                     <div class="system-frame" id="ht1-frame" style="border-color: #8b5cf6; box-shadow: 0 0 10px rgba(139, 92, 246, 0.3);">
                         <div class="flex justify-between items-center bg-gradient-to-r from-gray-900 to-indigo-900 p-4 rounded-t-lg">
                             <h2 class="text-xl font-bold text-blue-300">🔷 HT1 - Pattern Matching (Lõi Tín Hiệu AI)</h2>
@@ -402,7 +184,6 @@
                         </div>
                     </div>
 
-                    <!-- HT2 Frame -->
                     <div class="system-frame" id="ht2-frame">
                         <div class="flex justify-between items-center bg-gray-900 p-4 rounded-t-lg">
                             <h2 class="text-xl font-semibold text-green-300">🔶 HT2 - Fixed & Optimized</h2>
@@ -421,7 +202,6 @@
                         </div>
                     </div>
 
-                    <!-- HT3 Frame -->
                     <div class="system-frame" id="ht3-frame">
                         <div class="flex justify-between items-center bg-gray-900 p-4 rounded-t-lg">
                             <h2 class="text-xl font-semibold text-orange-300">🔸 HT3 - Standard System</h2>
@@ -440,7 +220,6 @@
                         </div>
                     </div>
 
-                    <!-- HT4 Frame -->
                     <div class="system-frame" id="ht4-frame">
                         <div class="flex justify-between items-center bg-gray-900 p-4 rounded-t-lg">
                             <h2 class="text-xl font-semibold text-pink-300">🔹 HT4 - Advanced System</h2>
@@ -462,12 +241,10 @@
             </div>
         </div>
 
-        <!-- Độ Chính Xác Hệ Thống Đề Xuất Hiện Tại -->
         <div class="mt-8 bg-gradient-to-r from-purple-900 to-blue-900 p-6 rounded-2xl shadow-lg">
             <h2 class="text-2xl font-semibold mb-6 text-center text-yellow-300">📊 ĐỘ CHÍNH XÁC HỆ THỐNG ĐỀ XUẤT HIỆN TẠI (4 HỆ THỐNG)</h2>
             
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <!-- HT1 System Details -->
                 <div class="bg-gray-800 bg-opacity-70 p-4 rounded-xl border border-blue-500/20 shadow-[0_0_15px_rgba(59,130,246,0.1)]">
                     <h3 class="text-lg font-bold mb-3 text-center text-blue-300">🔷 HT1 - Pattern Matching</h3>
                     <div class="space-y-3">
@@ -488,15 +265,13 @@
                             <span id="ht1-range-accuracy" class="font-bold text-green-400">-</span>
                         </div>
                         
-                        <!-- Biểu đồ khoảng tỷ lệ (NGUỒN DỮ LIỆU CỦA AI) -->
                         <div class="bg-gray-900 p-3 rounded-lg mt-4 border border-yellow-500/30 relative">
                             <div class="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-yellow-600 text-black text-[10px] font-bold px-2 py-0.5 rounded-full shadow-lg">NGUỒN DỮ AI</div>
-                            <h4 class="text-center text-sm text-yellow-300 mb-2 font-bold">Biểu đồ khoảng tỷ lệ (90-100%)</h4>
+                            <h4 class="text-center text-sm text-yellow-300 mb-2 font-bold">Biểu đồ khoảng tỷ lệ</h4>
                             <div id="ht1-interval-chart" class="history-chart"></div>
                             <div id="ht1-range-games" class="mt-2 text-xs text-gray-400 text-center"></div>
                         </div>
                         
-                        <!-- BIỂU ĐỒ KẾT HỢP -->
                         <div class="bg-gray-900 p-3 rounded-lg mt-4">
                             <h4 class="text-center text-sm text-gray-400 mb-2">Biểu đồ kết hợp (Chốt)</h4>
                             <div id="ht1-combined-chart" class="history-chart">
@@ -506,7 +281,6 @@
                     </div>
                 </div>
 
-                <!-- HT2 System Details -->
                 <div class="bg-gray-800 bg-opacity-70 p-4 rounded-xl">
                     <h3 class="text-lg font-semibold mb-3 text-center text-green-300">🔶 HT2 - Fixed & Optimized</h3>
                     <div class="space-y-3">
@@ -527,14 +301,12 @@
                             <span id="ht2-range-accuracy" class="font-bold text-green-400">-</span>
                         </div>
                         
-                        <!-- Biểu đồ khoảng tỷ lệ -->
                         <div class="bg-gray-900 p-3 rounded-lg mt-4">
                             <h4 class="text-center text-sm text-gray-400 mb-2">Biểu đồ khoảng tỷ lệ</h4>
                             <div id="ht2-interval-chart" class="history-chart"></div>
                             <div id="ht2-range-games" class="mt-2 text-xs text-gray-400 text-center"></div>
                         </div>
                         
-                        <!-- BIỂU ĐỒ KẾT HỢP -->
                         <div class="bg-gray-900 p-3 rounded-lg mt-4">
                             <h4 class="text-center text-sm text-gray-400 mb-2">Biểu đồ kết hợp (Chốt)</h4>
                             <div id="ht2-combined-chart" class="history-chart">
@@ -544,7 +316,6 @@
                     </div>
                 </div>
 
-                <!-- HT3 System Details -->
                 <div class="bg-gray-800 bg-opacity-70 p-4 rounded-xl">
                     <h3 class="text-lg font-semibold mb-3 text-center text-orange-300">🔸 HT3 - Standard System</h3>
                     <div class="space-y-3">
@@ -565,14 +336,12 @@
                             <span id="ht3-range-accuracy" class="font-bold text-green-400">-</span>
                         </div>
                         
-                        <!-- Biểu đồ khoảng tỷ lệ -->
                         <div class="bg-gray-900 p-3 rounded-lg mt-4">
                             <h4 class="text-center text-sm text-gray-400 mb-2">Biểu đồ khoảng tỷ lệ</h4>
                             <div id="ht3-interval-chart" class="history-chart"></div>
                             <div id="ht3-range-games" class="mt-2 text-xs text-gray-400 text-center"></div>
                         </div>
                         
-                        <!-- BIỂU ĐỒ KẾT HỢP -->
                         <div class="bg-gray-900 p-3 rounded-lg mt-4">
                             <h4 class="text-center text-sm text-gray-400 mb-2">Biểu đồ kết hợp (Chốt)</h4>
                             <div id="ht3-combined-chart" class="history-chart">
@@ -582,7 +351,6 @@
                     </div>
                 </div>
 
-                <!-- HT4 System Details -->
                 <div class="bg-gray-800 bg-opacity-70 p-4 rounded-xl">
                     <h3 class="text-lg font-semibold mb-3 text-center text-pink-300">🔹 HT4 - Advanced System</h3>
                     <div class="space-y-3">
@@ -603,14 +371,12 @@
                             <span id="ht4-range-accuracy" class="font-bold text-green-400">-</span>
                         </div>
                         
-                        <!-- Biểu đồ khoảng tỷ lệ -->
                         <div class="bg-gray-900 p-3 rounded-lg mt-4">
                             <h4 class="text-center text-sm text-gray-400 mb-2">Biểu đồ khoảng tỷ lệ</h4>
                             <div id="ht4-interval-chart" class="history-chart"></div>
                             <div id="ht4-range-games" class="mt-2 text-xs text-gray-400 text-center"></div>
                         </div>
                         
-                        <!-- BIỂU ĐỒ KẾT HỢP -->
                         <div class="bg-gray-900 p-3 rounded-lg mt-4">
                             <h4 class="text-center text-sm text-gray-400 mb-2">Biểu đồ kết hợp (Chốt)</h4>
                             <div id="ht4-combined-chart" class="history-chart">
@@ -622,127 +388,38 @@
             </div>
         </div>
 
-        <!-- KHU VỰC ĐỀ XUẤT CHỐT LỆNH VÀ THỐNG KÊ (ĐIỂM NEO) -->
         <div id="final-decision-section" class="mt-8 scroll-mt-8">
             <div class="bg-gradient-to-r from-purple-900 to-indigo-900 p-6 rounded-2xl shadow-lg card-glow-total border border-purple-500">
                 <h2 class="text-2xl font-black mb-6 text-center text-yellow-300 uppercase tracking-wide flex items-center justify-center gap-3">
                     <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-                    QUYẾT ĐỊNH CUỐI CÙNG - AI PATTERN TỪ HT1
+                    QUYẾT ĐỊNH CUỐI CÙNG - GOD EYE MATRIX
                 </h2>
                 
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-                    <!-- AI Database Info -->
-                    <div class="bg-gray-900 bg-opacity-60 p-5 rounded-xl border border-gray-700">
-                        <h3 class="text-lg font-bold mb-4 text-center text-indigo-300 border-b border-gray-700 pb-2">Thông Số Não Bộ AI</h3>
-                        <div class="space-y-4 text-sm">
-                            <div class="flex justify-between items-center"><span class="text-gray-400">Nguồn cấp dữ liệu:</span><span class="font-bold text-blue-400">HT1 (Khi đạt 90-100%)</span></div>
-                            <div class="flex justify-between items-center"><span class="text-gray-400">Kho dữ liệu mẫu:</span><span class="font-bold text-green-400"><span id="db-pattern-display-count">102</span> Gốc <span id="learned-count-display" class="text-yellow-400 text-xs ml-1">(+0 Tự học)</span></span></div>
-                            <div class="flex justify-between items-center"><span class="text-gray-400">Số lượng Bit soi:</span><span id="display-ngram" class="font-bold text-yellow-300">Tự Động (3-20)</span></div>
-                            <div class="flex justify-between items-center"><span class="text-gray-400">Yêu cầu lặp tối thiểu:</span><span id="display-occur" class="font-bold text-pink-400">10 lần</span></div>
-                            <div class="flex justify-between items-center"><span class="text-gray-400">Độ tin cậy tối thiểu:</span><span id="display-conf" class="font-bold text-purple-400">100%</span></div>
-                            <div class="flex justify-between items-center"><span class="text-gray-400">Trạng Thái Quét:</span><span id="priority-system" class="font-bold text-cyan-400 text-xs">CHỜ TÍN HIỆU</span></div>
-                            <div class="mt-4 pt-3 border-t border-gray-700 text-xs text-gray-500 italic">
-                                *Hệ thống dịch lệnh D/S qua 🧠 Phán Quyết. NGƯỢC = Kỳ vọng S(Đỏ). THEO = Kỳ vọng D(Xanh).
+                <div class="bg-gray-900 bg-opacity-60 p-5 rounded-xl border border-gray-700 flex flex-col justify-center relative overflow-hidden">
+                    <div class="absolute top-0 right-0 bg-yellow-600 text-black text-[10px] font-black px-3 py-1 rounded-bl-lg shadow-lg z-10">GOD EYE MATRIX</div>
+                    <div class="text-center relative z-0">
+                        <div id="finalDecisionContainer" class="py-8 rounded-xl border-2 border-dashed border-gray-600 mb-5 bg-gray-800/50 transition-all duration-500 shadow-inner">
+                            <p class="text-sm text-gray-400 mb-3 font-semibold uppercase tracking-widest">Lệnh Chốt Hệ Thống God Eye</p>
+                            <p id="finalDecisionText" class="text-4xl md:text-5xl font-black text-gray-500 tracking-tight drop-shadow-md">⏳ ĐANG CHỜ DỮ LIỆU</p>
+                            
+                            <div id="decisionReason" class="mt-5 px-6 flex items-center justify-center">
+                                <div class="text-gray-400 font-mono text-sm">Hệ thống đang tích lũy RLE và D/S...</div>
                             </div>
                         </div>
-                    </div>
-
-                    <!-- Final Decision Output -->
-                    <div class="bg-gray-900 bg-opacity-60 p-5 rounded-xl md:col-span-2 border border-gray-700 flex flex-col justify-center relative overflow-hidden">
-                        <div class="absolute top-0 right-0 bg-yellow-600 text-black text-[10px] font-black px-3 py-1 rounded-bl-lg shadow-lg z-10">CORE AI DECISION</div>
-                        <div class="text-center relative z-0">
-                            <div id="finalDecisionContainer" class="py-8 rounded-xl border-2 border-dashed border-gray-600 mb-5 bg-gray-800/50 transition-all duration-500 shadow-inner">
-                                <p class="text-sm text-gray-400 mb-3 font-semibold uppercase tracking-widest">Đề Xuất Lệnh Chốt</p>
-                                <p id="finalDecisionText" class="text-4xl md:text-5xl font-black text-gray-500 tracking-tight drop-shadow-md">⏳ ĐANG CHỜ DỮ LIỆU</p>
-                                
-                                <!-- Khung hiển thị lý do được tối giản hóa -->
-                                <div id="decisionReason" class="mt-5 px-6 flex items-center justify-center">
-                                    <div class="text-gray-400 font-mono text-sm">Hệ thống sẽ quét biểu đồ HT1 khi bạn nhập kết quả...</div>
-                                </div>
-                            </div>
-                            <div class="flex justify-center gap-4">
-                                <button onclick="forcePlayerDecision()" class="btn bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 px-8 rounded-xl text-lg shadow-[0_0_15px_rgba(37,99,235,0.4)] transition-all active:scale-95">👤 ÉP CHỐT PLAYER</button>
-                                <button onclick="forceBankerDecision()" class="btn bg-red-600 hover:bg-red-500 text-white font-bold py-3 px-8 rounded-xl text-lg shadow-[0_0_15px_rgba(220,38,38,0.4)] transition-all active:scale-95">🏦 ÉP CHỐT BANKER</button>
-                            </div>
+                        <div class="flex justify-center gap-4">
+                            <button onclick="forcePlayerDecision()" class="btn bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 px-8 rounded-xl text-lg shadow-[0_0_15px_rgba(37,99,235,0.4)] transition-all active:scale-95">👤 ÉP CHỐT PLAYER</button>
+                            <button onclick="forceBankerDecision()" class="btn bg-red-600 hover:bg-red-500 text-white font-bold py-3 px-8 rounded-xl text-lg shadow-[0_0_15px_rgba(220,38,38,0.4)] transition-all active:scale-95">🏦 ÉP CHỐT BANKER</button>
                         </div>
                     </div>
                 </div>
 
-                <!-- TÍNH NĂNG MỚI: PHÂN TÍCH ĐA CHIỀU (THU GỌN ĐƯỢC) -->
-                <div class="mb-6 bg-gray-900 bg-opacity-80 p-5 rounded-xl border border-gray-700 shadow-inner">
-                    <div class="flex flex-col md:flex-row justify-between items-center mb-4 gap-4 cursor-pointer select-none" onclick="toggleSection('section-analysis-content', 'icon-analysis')">
-                        <h3 class="text-lg font-bold text-cyan-300 uppercase tracking-wide flex items-center gap-2 hover:text-cyan-200 transition-colors">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012-2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
-                            Phân Tích Đa Chiều Các Mẫu (N-Gram)
-                        </h3>
-                        <div class="flex items-center gap-4">
-                            <div class="flex items-center gap-2" onclick="event.stopPropagation();">
-                                <span class="text-gray-400 text-sm hidden md:inline">Sắp xếp theo:</span>
-                                <select id="matchesSortMode" onchange="renderMatchesAnalysis()" class="bg-gray-800 text-white border border-gray-600 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:border-cyan-500 transition-colors cursor-pointer">
-                                    <option value="score_desc">Độ ưu tiên AI (Giảm dần)</option>
-                                    <option value="size_asc">Số Bit (Nhỏ -> Lớn)</option>
-                                    <option value="size_desc">Số Bit (Lớn -> Nhỏ)</option>
-                                    <option value="conf_desc">Tỉ lệ % (Cao -> Thấp)</option>
-                                    <option value="conf_asc">Tỉ lệ % (Thấp -> Cao)</option>
-                                </select>
-                            </div>
-                            <svg id="icon-analysis" class="w-6 h-6 text-gray-400 transform transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"></path></svg>
-                        </div>
-                    </div>
-
-                    <div id="section-analysis-content" class="section-content">
-                        <!-- Bảng Thống Kê Tổng Quan Xanh/Đỏ -->
-                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
-                            <div class="bg-gray-800 p-3 rounded-lg border border-gray-700 text-center">
-                                <div class="text-gray-400 text-[10px] font-bold uppercase">Tổng Trường Hợp</div>
-                                <div class="text-2xl font-black text-white" id="analysis-total-matches">0</div>
-                            </div>
-                            <div class="bg-blue-900/20 p-3 rounded-lg border border-blue-500/30 text-center">
-                                <div class="text-blue-300 text-[10px] font-bold uppercase">Thiên Hướng XANH (D)</div>
-                                <div class="text-2xl font-black text-blue-400" id="analysis-d-count">0</div>
-                                <div class="text-xs font-bold text-blue-300 mt-1" id="analysis-d-perc">0%</div>
-                            </div>
-                            <div class="bg-red-900/20 p-3 rounded-lg border border-red-500/30 text-center">
-                                <div class="text-red-300 text-[10px] font-bold uppercase">Thiên Hướng ĐỎ (S)</div>
-                                <div class="text-2xl font-black text-red-400" id="analysis-s-count">0</div>
-                                <div class="text-xs font-bold text-red-300 mt-1" id="analysis-s-perc">0%</div>
-                            </div>
-                            <div class="bg-gray-800 p-3 rounded-lg border border-gray-700 text-center flex flex-col justify-center">
-                                <div class="text-gray-400 text-[10px] font-bold uppercase mb-1">Kết Luận Đám Đông</div>
-                                <div class="text-lg font-black drop-shadow-md text-gray-500" id="analysis-verdict">-</div>
-                            </div>
-                        </div>
-
-                        <!-- Bảng Chi Tiết Tất Cả Trường Hợp -->
-                        <div class="overflow-x-auto border border-gray-700 rounded-lg custom-scrollbar max-h-64">
-                            <table class="w-full text-sm text-left whitespace-nowrap">
-                                <thead class="bg-gray-800 sticky top-0 z-10 shadow-sm">
-                                    <tr>
-                                        <th class="p-3 text-gray-400 font-bold uppercase text-xs">Bit</th>
-                                        <th class="p-3 text-gray-400 font-bold uppercase text-xs">Cụm Pattern</th>
-                                        <th class="p-3 text-gray-400 font-bold uppercase text-xs text-center">Đề Xuất</th>
-                                        <th class="p-3 text-gray-400 font-bold uppercase text-xs text-center">Tỉ Lệ %</th>
-                                        <th class="p-3 text-gray-400 font-bold uppercase text-xs text-center">Lần Lặp</th>
-                                        <th class="p-3 text-gray-400 font-bold uppercase text-xs text-right">Điểm AI</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="matches-analysis-body" class="divide-y divide-gray-700 bg-gray-900/50">
-                                    <tr><td colspan="6" class="p-4 text-center text-gray-500 italic">Đang chờ tín hiệu quét từ HT1...</td></tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- TÍNH NĂNG MỚI: PHẦN THỐNG KÊ VÀ BIỂU ĐỒ LỊCH SỬ CHỐT (THU GỌN ĐƯỢC) -->
                 <div class="mt-6 bg-gray-900 bg-opacity-60 p-5 rounded-xl border border-gray-700">
                     <div class="flex justify-between items-center mb-5 cursor-pointer select-none" onclick="toggleSection('section-history-content', 'icon-history')">
-                        <h3 class="text-lg font-bold text-cyan-300 uppercase tracking-wide hover:text-cyan-200 transition-colors">📊 Thống Kê Lịch Sử Chốt Của AI</h3>
+                        <h3 class="text-lg font-bold text-cyan-300 uppercase tracking-wide hover:text-cyan-200 transition-colors">📊 Thống Kê Lịch Sử Chốt God Eye</h3>
                         <svg id="icon-history" class="w-6 h-6 text-gray-400 transform transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"></path></svg>
                     </div>
                     
                     <div id="section-history-content" class="section-content">
-                        <!-- Stats Summary -->
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-6">
                             <div class="bg-gray-800 p-4 rounded-xl text-center shadow-inner border border-gray-700/50">
                                 <div class="text-gray-400 text-xs font-bold uppercase mb-1">Tổng Số Lệnh Khớp</div>
@@ -758,7 +435,6 @@
                             </div>
                         </div>
                         
-                        <!-- Final Decision History Chart -->
                         <div class="mb-5">
                             <h4 class="text-sm font-bold mb-3 text-gray-300 uppercase">Biểu Đồ Lịch Sử Thắng/Thua (AI)</h4>
                             <div class="bg-gray-800 p-4 rounded-xl border border-gray-700/50 relative">
@@ -772,7 +448,6 @@
                             </div>
                         </div>
                         
-                        <!-- Recent Final Decisions Table -->
                         <div class="mt-4 bg-gray-800 rounded-xl overflow-hidden border border-gray-700/50">
                             <div class="p-3 bg-gray-900 border-b border-gray-700">
                                 <h4 class="text-sm font-bold text-gray-300 uppercase text-center">Bảng Chi Tiết Thuật Toán Lõi</h4>
@@ -799,16 +474,13 @@
                     </div>
                 </div>
 
-                <!-- TÍNH NĂNG MỚI: Biểu đồ cột thống kê đúng sai từng ván (THU GỌN ĐƯỢC) -->
                 <div class="mt-6 bg-gray-900 bg-opacity-60 p-5 rounded-xl border border-gray-700 overflow-hidden">
                     <div class="flex justify-between items-center mb-4 cursor-pointer select-none" onclick="toggleSection('section-chart-content', 'icon-chart')">
                         <h3 class="text-lg font-bold text-cyan-300 uppercase tracking-wide hover:text-cyan-200 transition-colors">📈 Biểu Đồ So Sánh Hiệu Suất 4 HT</h3>
                         <svg id="icon-chart" class="w-6 h-6 text-gray-400 transform transition-transform duration-300 rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"></path></svg>
                     </div>
                     
-                    <!-- Bảng này mặc định collapsed (thu gọn) cho đỡ rối mắt vì khá to -->
                     <div id="section-chart-content" class="section-content collapsed">
-                        <!-- Tabs for each system -->
                         <div class="flex flex-wrap gap-2 mb-5 justify-center">
                             <button onclick="showGameChart('ht1')" class="px-5 py-2 bg-blue-600/20 text-blue-400 hover:bg-blue-600 hover:text-white border border-blue-500/50 rounded-lg font-bold text-sm transition-all system-chart-btn active" data-system="ht1">HT1 (Lõi AI)</button>
                             <button onclick="showGameChart('ht2')" class="px-5 py-2 bg-green-600/20 text-green-400 hover:bg-green-600 hover:text-white border border-green-500/50 rounded-lg font-bold text-sm transition-all system-chart-btn" data-system="ht2">HT2</button>
@@ -817,7 +489,6 @@
                             <button onclick="showAllGameCharts()" class="px-5 py-2 bg-purple-600/20 text-purple-400 hover:bg-purple-600 hover:text-white border border-purple-500/50 rounded-lg font-bold text-sm transition-all system-chart-btn" data-system="all">Tổng Hợp Cả 4</button>
                         </div>
                         
-                        <!-- Chart Container WITH SCROLLBAR -->
                         <div class="bg-gray-800 p-4 rounded-xl border border-gray-700/50 shadow-inner">
                             <div class="chart-wrapper overflow-x-auto overflow-y-hidden custom-scrollbar">
                                 <div id="chart-area-container" class="game-bar-chart relative" style="height: 300px; min-width: 100%;">
@@ -826,7 +497,6 @@
                             </div>
                         </div>
                         
-                        <!-- Game Results Table -->
                         <div class="mt-4 bg-gray-800 p-4 rounded-xl border border-gray-700/50">
                             <div class="flex justify-between items-center mb-3 border-b border-gray-700 pb-2">
                                 <h4 class="text-sm font-bold text-gray-300 uppercase tracking-wider">Chi Tiết Từng Lệnh - <span id="current-system-label" class="text-blue-400">HT1</span></h4>
@@ -842,7 +512,6 @@
                     </div>
                 </div>
 
-                <!-- System Status -->
                 <div class="mt-6 grid grid-cols-1 md:grid-cols-4 gap-4">
                     <div class="text-center p-3 bg-gray-800 rounded-lg border border-gray-700/50">
                         <div class="text-xs text-gray-400 font-bold uppercase mb-1">Trạng thái HT1</div>
@@ -868,16 +537,15 @@
             </div>
         </div>
 
-        <!-- Footer -->
         <div class="mt-8 text-center text-gray-500 text-xs font-medium space-y-1">
-            <p>Hệ thống Độc quyền "VẠN SỰ NHƯ Ý" - Lõi phân tích AI Pattern Database Tuỳ Chỉnh & Continuous Learning | Phiên bản 4.9 Pro</p>
-            <p>Thuật toán tự động quét 100% dữ liệu từ biểu đồ tỷ lệ HT1 để đưa ra đề xuất chính xác nhất.</p>
+            <p>Hệ thống Độc quyền "VẠN SỰ NHƯ Ý" - GOD EYE MATRIX (Phiên bản 4.9 Pro)</p>
+            <p>Thuật toán tự động phân tích Big Road RLE và AI Performance D/S Realtime.</p>
         </div>
     </div>
 
     <script>
         /* =========================================================================
-           0. TIỆN ÍCH AN TOÀN BỘ NHỚ & TÍNH NĂNG MỚI (COLLAPSE/FAB)
+           0. TIỆN ÍCH AN TOÀN BỘ NHỚ & TÍNH NĂNG UI
            ========================================================================= */
         function safeStorageSet(key, dataObj) {
             try {
@@ -893,7 +561,6 @@
         function toggleSection(contentId, iconId) {
             const content = document.getElementById(contentId);
             const icon = document.getElementById(iconId);
-            
             if (content.classList.contains('collapsed')) {
                 content.classList.remove('collapsed');
                 icon.classList.remove('rotate-180');
@@ -907,252 +574,18 @@
             const menu = document.getElementById('fab-menu');
             const icon = document.getElementById('fab-icon');
             const isClosed = menu.classList.contains('opacity-0');
-            
             if (isClosed) {
                 menu.classList.remove('translate-y-4', 'opacity-0', 'pointer-events-none');
-                icon.classList.add('rotate-45'); // Chữ + thành chữ X
+                icon.classList.add('rotate-45'); 
             } else {
                 menu.classList.add('translate-y-4', 'opacity-0', 'pointer-events-none');
                 icon.classList.remove('rotate-45');
             }
         }
 
-        /* Helper Tặng Kèm: Chống lỗi nếu logic cũ cần hàm findBestMatch */
-        function findBestMatch(inputSeq, minOccur, minConf) {
-            const matches = findAllMatches(inputSeq, minOccur, minConf);
-            if (matches.length === 0) return null;
-            return matches.reduce((prev, current) => (prev.score > current.score) ? prev : current);
-        }
-
         /* =========================================================================
-           1. CƠ SỞ DỮ LIỆU PATTERN MẪU GỐC & CƠ CHẾ KHỞI TẠO (QUẢN LÝ KHO MẪU)
+           1. GLOBAL STATE
            ========================================================================= */
-        const defaultRawSamples = `1. DSSSSDSDSSDSSDSSSSSSSSDDDDD
-2. SSDSSDDSSSDDSSDSDSDSSDS
-3. DSSSSSSDDDSSDDDSDDDDSDDDDSDSDSD
-4. DDSSSSDSDSDDDDDSSSSDSDSDDSSSDSDSSD
-5. DSSDDDSDDDSDDSSDSDDSDSSDDSSDSDSDSSDDD
-6. SDSDSSDDDDDSSDSSDDSSDDDSDSDSSSDDSSSD
-7. SDSDSSSDDDDDSSDSSDDSSDDDSDSD
-8. SDSSSSSDDSSSDSDSDSSSDDDS
-9. SDSSDDSSSSDDSDSSDDSSDSSDSDSDD
-10. DDSDSSDSDSDSDSDDSDDDDDDDSDDSDSDSD
-11. SSSSDDSSDDDDSDSSDSDSDSSDDSSDSDSDDSDSDS
-12. SSSSSSDSSDDSDDDSDDSSD
-13. SDSSSDDSSSSDDDSDSSSDSDDD
-14. DDSSSSDSSSSSDSDDDDSDDSDDSDDSSSDDSDSS
-15. SSSDSSDDSSDDSSSSSSSSSDDSSDSDSSSDS
-16. DSSDSSDSDSDDSDSSSSDDSSSSDSSSSDSSDSS
-17. DDSDSSSDDSDSDDSDSDSSD
-18. DDDSSDDSDSSSDDSSDDSDSSSDDSDD
-19. DDDSDSDSDDSSDSDDDDDDSDDSSSD
-20. DDSSSSSDSSDSDSDDDDDDDSDSDS
-21. DSDDDSSDSDSDDSDSSDSSDSD
-22. DSDDDSDDSDDDDDSDSDSDSDDSS
-23. DSSSDSSSDSSDSSSDSSDDDSDSDSDSSDDSSDDDS
-24. DDDDSDSSSDSDSSSDSDSDDDSDDDDSS
-25. DDSSSDSSDSSDSSDSSDSDDSSSSDSDDSDSS
-26. DDSSDDDSSDSDDDSSDSDSSSDSSDSS
-27. DSDDSSSDDDDDDDDDSSDSSDSSSDSDS
-28. DDSDSDSDDDDSSDDSDDSDDSDSSS
-29. SDDSSSDDSSSDDSDDSSSDSDSDSDSD
-30. DDDDSDSSSDDDDSSDSSSSDSSS
-31. SDSDDSDSDDDDSSSDDDDSDSD
-32. SDDDDSDSSDDSDSDSDDSDSDSS
-33. SSDSDDSSDSDDSSDSDSSSSSSDSD
-34. DSSDSSSSDSDDDSDDDDDSDDSDSSDDSSS
-35. DDDDDSDSSDSSDSSDDDDSSDSSDDDSDDDDDSDSDDSSS
-36. SDDDSSDDDDSSSSSDDDSSDSDDSSSDDSDS
-37. SDDDSSDDDDSDSDSDDSDDSSDDDDD
-38. SSDDDDDSDSSSSSSDDDDDDDD
-39. DDSDSSSDDSDSDSSSSDDDSD
-40. SSSDSDDSDDSSDSDDDSDDSSSDDSSD
-41. SSSDSDSDSSDSSDDDD
-42. SSSSSDSSSDSDSSSDSSSSSDS
-43. SDDSSDSDDSSSDDSDSSSDSDSDDDDDS
-44. DDSDSSDSSDSSSDDSSSSDSSSSDSSDSDSDSDDDD
-45. DDSDDSSSDDDSSSDSDSDS
-46. DDSDDDDSSDDDDDSSDSDSDSDSDSDDSDSDS
-47. SDSDSSDSDDSDDSSDSDDSDSS
-48. DDSSSSDDSDSSSSSDDDDDSDSDDSDDSSDSSSDSSSD
-49. SSDDSDDDDDDDDSDDDSDDDDSDSDSDDSSDDSS
-50. SSDDSSDSDSSSDDSSSDDSDSDDDDDDSSDSDSSSDS
-51. DSSDDDDDSSSDDDSDSSDSDSDSDDDD
-52. SSSSSDDDSSSSDDDDDDSDSDSDSD
-53. DSDSDDSSSDDDDSSSDDDS
-54. SSSDSSSSDDSDSSDSSDDDS
-55. SDSSSSSDDDDDDSSDDDDSDDDSSDDDSDD
-56. SDSSSSDSDDSDDSDDDDSSSSDDDDSDDDDDSDD
-57. DSDDDDDDDSSDDDSDSSSDSDSDDDDSSSSDSDSD
-58. SSSSDDSDDSDSDDDDSSSSSDSSSDDD
-59. SSDSSDSDSDSSSDSSDSSDSDSDSDDSSSD
-60. SDDDSDSSDSDDDDDDSDDSSSDSDSSDDDDDDDDS
-61. DDSDDSDSDDSSDSDDSDDSDDSDSSSDSDDSSDSSDSDDD
-62. DDDSDDDSDDSDDSSDDSDDD
-63. DSDDSDDSSSDSSSDSDDDSSSDSDSDSDSDSSSS
-64. SDSSDDSSDDDSSDDSDDDDSDDSSDSSS
-65. SDSSDSDSDSSSDSDDSSDDSSSDDSDD
-66. DSSSDDDDDDDDSSDSDDDDD
-67. DSSSSSDSSSDDDSSDDDDSDDSDDSDDDDDDSS
-68. DSSSSDSSDSSDDDSSDDDSDSSSDDSDDDD
-69. DSDDSSDSSSSSSDDDSSSSDDSDDDDSSS
-70. SDDSDDDDDDSSDDDDDDSDSDDDSDSDDDSSSDSSDSDD
-71. SDDDSDSDSDSDSSSDSSSDDSSSDSDDDSDSSDDD
-72. DDDDSSDSDDSSDSDSDDDSDDSSDSSDSSSDSDS
-73. DSSDSDDDDDSSDDDDDSSSSSSDDDSDSDS
-74. SDSSSDSDDDSDSDSDSSDDSDDSSDDDSDS
-75. DDSDDDDDDDSSDSSDDDSDSSSDDDDDDS
-76. SSSSSDSSDDDDSDSSDSDDDDDDDDD
-77. DDSDSDSDSSDSSDDSSSDSSDSSSDSD
-78. DSSSSSDDDSDSDSSDSSDSSSSSDDS
-79. DSSSSSDDDSDSDSSDSSDSSSSSDDSSSDDS
-80. SSDSDDSSSDDSDSSSSDDSDDDSSDSSDSDSDDDDSDSDSDSD
-81. DSDDSDSSSSSSSSSSSDDDDDDSSSDSSSS
-82. SDDSSSDDDSSDSSDDSDDDDDSSSSDS
-83. SDDSDDDSDDDSSDSDSSDSDSDDSDSSDS
-84. DDDSSDDDSSSSDDDDDSDDDDSDDSDSSSSDSSDDS
-85. DDDDSSSDSSDSSSSDDDDSDSSSSSDS
-86. DDSDDDDDSSSDDSDSSSDSDSDSSDDDDSSSSSSSSSDD
-87. DDDDDDSSDSDDSDDSDSDSDSSSSSD
-88. DSDDSSSSDSSDSSDDSDSDDDDDS
-89. DDDSSDDSSDDSDSDSDSDSDSSD
-90. DSDDSDDDDSDSSSSSDSDDDDDSDDSDDSSSDSDDDD
-91. SSDSDDSSSDDSDSSSSDDSDDDSSDSSDSDSDDDDSDSDSDSDSD
-92. DSDDSDSSSSSSSSSSSDDDDDSSSDSSSS
-93. DDSSDDDSSDSSDDSDDDSDSDSDDSS
-94. DSSDDSSDSDSSDDSSDDSSDDSSD
-95. SSDDSSDSDSDSDDSSDDSSSDDD
-96. DDDDDSDDDSSDSSSSDDSDSDDDSDDSS
-97. SDDSSDDDSDSSDSSDDDDSDSSDDSD
-98. SSDDDDDDSDDSDSDSSSSSSSSSDDSSSSSDDDSSDD
-99. DSDSSSDDDSSSDDDSSDDSDSDSDDSDSSDSDS
-100. DSSSSDSDSSDDDDSSDSDDDS
-101. SSSSDSDDDSSSSDSDDDSSDSSSSDSSDDSSDDDSS
-102. DSSDSDSDDSDSDSSDSDSDDSSDDDDSDDDDDDSSSDSDSS`;
-
-        let currentRawSamples = localStorage.getItem('vanSuNhuY_customPatterns') || defaultRawSamples;
-
-        function updatePatternCountUI() {
-            const lines = currentRawSamples.split('\n').filter(l => l.replace(/[^DS]/ig, '').trim().length > 0);
-            document.getElementById('db-pattern-count').textContent = lines.length;
-            document.getElementById('db-pattern-display-count').textContent = lines.length;
-        }
-
-        function openPatternDBModal() {
-            document.getElementById('pattern-db-textarea').value = currentRawSamples;
-            document.getElementById('pattern-db-modal').classList.remove('hidden');
-        }
-
-        function closePatternDBModal() {
-            document.getElementById('pattern-db-modal').classList.add('hidden');
-        }
-
-        async function savePatternDB() {
-            const newSamples = document.getElementById('pattern-db-textarea').value.trim();
-            if(!newSamples) { showToast('Không được để trống kho mẫu', 'error'); return; }
-            currentRawSamples = newSamples;
-            
-            try { localStorage.setItem('vanSuNhuY_customPatterns', currentRawSamples); } catch(e){}
-            
-            closePatternDBModal();
-            showToast('Đang xử lý Kho Mẫu AI...', 'info');
-            await initializeOriginalPatternDB();
-            showToast('Đã lưu và dạy lại AI thành công!', 'success');
-            calculateFinalDecision();
-        }
-
-        function resetPatternDBToDefault() {
-            if(confirm("Bạn có chắc muốn khôi phục về 102 mẫu gốc của hệ thống?")) {
-                currentRawSamples = defaultRawSamples;
-                document.getElementById('pattern-db-textarea').value = currentRawSamples;
-            }
-        }
-
-        function parseSampleStrings() {
-            return currentRawSamples.split('\n').map(line => {
-                let clean = line.replace(/^\d+\.\s*/, '').trim().toUpperCase();
-                return clean.replace(/[^DS]/g, '');
-            }).filter(s => s.length > 0);
-        }
-
-        let patternDatabase = {};
-
-        async function buildPatternDatabaseAsync(samples) {
-            const db = {};
-            const ngramSizes = Array.from({length: 18}, (_, i) => i + 3); 
-            const chunkSize = 50; 
-            
-            for (let idx = 0; idx < samples.length; idx += chunkSize) {
-                const chunk = samples.slice(idx, idx + chunkSize);
-                for (const line of chunk) {
-                    const binaryLine = line.replace(/D/g, '1').replace(/S/g, '0');
-                    for (const size of ngramSizes) {
-                        for (let i = 0; i <= binaryLine.length - size - 1; i++) {
-                            const seqBin = binaryLine.substring(i, i + size);
-                            const nextBit = binaryLine[i + size];
-                            const seqDS = seqBin.replace(/1/g, 'D').replace(/0/g, 'S');
-                            
-                            const key = `${size}|${seqDS}`;
-                            if (!db[key]) {
-                                db[key] = { seq: seqDS, length: size, total: 0, nextD: 0, nextS: 0 };
-                            }
-                            db[key].total++;
-                            if (nextBit === '1') db[key].nextD++;
-                            else db[key].nextS++;
-                        }
-                    }
-                }
-                await new Promise(resolve => setTimeout(resolve, 0));
-            }
-            return db;
-        }
-
-        async function initializeOriginalPatternDB() {
-            const displayEl = document.getElementById('db-pattern-display-count');
-            if(displayEl) displayEl.textContent = 'Đang học...';
-
-            const sampleStrings = parseSampleStrings();
-            patternDatabase = await buildPatternDatabaseAsync(sampleStrings);
-
-            masterState.totalLearnedPatterns = 0;
-            masterState.lastLearnedGameCount = 0;
-            updatePatternCountUI();
-            updateLearnedCountDisplay();
-        }
-
-        // MỚI: TÌM TẤT CẢ CÁC TRƯỜNG HỢP KHỚP THAY VÌ CHỈ TÌM 1 CÁI
-        function findAllMatches(inputSeq, minOccur, minConf) {
-            let matches = [];
-            const maxSearchLen = Math.min(inputSeq.length, 20);
-            
-            for (let size = 3; size <= maxSearchLen; size++) {
-                const subSeq = inputSeq.slice(-size);
-                const key = `${size}|${subSeq}`;
-                const rule = patternDatabase[key];
-                
-                if (rule && rule.total >= minOccur) {
-                    const pD = (rule.nextD / rule.total) * 100;
-                    const pS = (rule.nextS / rule.total) * 100;
-                    const confidence = Math.max(pD, pS);
-                    
-                    if (confidence >= minConf) {
-                        const target = pD > pS ? 'D' : 'S';
-                        const logTotal = Math.log10(rule.total > 0 ? rule.total : 1);
-                        const score = (confidence * 1000) + (logTotal * 100);
-                        
-                        matches.push({ target, confidence, total: rule.total, seq: subSeq, size, score, pD, pS });
-                    }
-                }
-            }
-            return matches;
-        }
-
-
-        /* =========================================================================
-           2. GLOBAL STATE & CƠ CHẾ AI TỰ HỌC (CONTINUOUS LEARNING)
-           ========================================================================= */
-        let patternConfig = { minOccurrences: 2, minConfidence: 50 };
-
         const masterState = {
             currentSessionId: null,
             currentSessionName: 'Chưa chọn',
@@ -1170,272 +603,176 @@
                 ht4: { verdict: null, chot: null, range: null, rangeAccuracy: null, intervalHistory: [] }
             },
             finalDecisionHistory: [],
-            pendingResultToEvaluate: null, 
-            
-            // LƯU CÁC MATCHES ĐỂ RENDER BẢNG PHÂN TÍCH
-            currentMatches: [],
-            
-            lastLearnedGameCount: 0,
-            totalLearnedPatterns: 0
+            pendingResultToEvaluate: null
         };
 
         let gameAccuracyChart = null;
         let currentChartSystem = 'ht1';
 
-        function learnFromNewData(intervalHistory) {
-            if (!intervalHistory || intervalHistory.length === 0) return;
+        /* =========================================================================
+           2. LÕI THUẬT TOÁN GOD EYE (RLE + D/S PERFORMANCE)
+           ========================================================================= */
+
+        // BƯỚC 1: Lớp lọc Big Road (Momentum RLE)
+        function analyzeGodEyeBigRoad(actuals) {
+            if (actuals.length < 4) return { signal: null, reason: "Chưa đủ dữ liệu tạo Base/Peak" };
             
-            if (intervalHistory.length < masterState.lastLearnedGameCount) {
-                initializeOriginalPatternDB();
-            }
-
-            if (intervalHistory.length < 4) {
-                masterState.lastLearnedGameCount = intervalHistory.length;
-                return;
-            }
-
-            let learnedSomething = false;
-
-            for (let i = Math.max(4, masterState.lastLearnedGameCount + 1); i <= intervalHistory.length; i++) {
-                const currentSubHistory = intervalHistory.slice(0, i);
-                
-                let dsSequence = currentSubHistory.map(item => {
-                    const isCorrect = item.correct === true || item.isCorrect === true || item.predicted === item.actual;
-                    return isCorrect ? "D" : "S";
-                }).join('');
-
-                const newBit = dsSequence.slice(-1);
-                const contextSeq = dsSequence.slice(0, -1);
-
-                const ngramSizes = [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]; 
-                
-                for (const size of ngramSizes) {
-                    if (contextSeq.length >= size) {
-                        const pattern = contextSeq.slice(-size);
-                        const key = `${size}|${pattern}`;
-
-                        if (!patternDatabase[key]) {
-                            patternDatabase[key] = { seq: pattern, length: size, total: 0, nextD: 0, nextS: 0 };
-                            masterState.totalLearnedPatterns++;
-                        }
-
-                        patternDatabase[key].total++;
-                        if (newBit === 'D') patternDatabase[key].nextD++;
-                        else patternDatabase[key].nextS++;
-                        
-                        learnedSomething = true;
-                    }
+            let rle = [];
+            let currentSide = actuals[0];
+            let currentLen = 1;
+            
+            for (let i = 1; i < actuals.length; i++) {
+                if (actuals[i] === currentSide) {
+                    currentLen++;
+                } else {
+                    rle.push({ side: currentSide, len: currentLen });
+                    currentSide = actuals[i];
+                    currentLen = 1;
                 }
             }
+            rle.push({ side: currentSide, len: currentLen });
+            
+            if (rle.length < 4) return { signal: null, reason: "Đang chờ hình thành đủ 4 nhịp sóng" };
+            
+            const recent = rle.slice(-4);
+            const lastRle = recent[3];
+            const prevRle = recent[2];
+            const expectedNextSide = lastRle.side; 
 
-            masterState.lastLearnedGameCount = intervalHistory.length;
-
-            if (learnedSomething) {
-                updateLearnedCountDisplay();
+            // Luật 1: Theo Cầu Bệt (Uptrend & Peak >= 3)
+            if (lastRle.len >= 3 && lastRle.len > prevRle.len) {
+                return { signal: expectedNextSide, reason: `Thuận bệt ${expectedNextSide} (Uptrend Peak ${lastRle.len})` };
             }
+            
+            // Luật 2: Bẻ kháng cự (Gãy từ Peak cao xuống Base 1)
+            if (rle.length >= 5) {
+                const peakDrop = rle[rle.length-5];
+                if (peakDrop.len >= 5 && recent[1].len === 1 && lastRle.len === 2) {
+                    const beSignal = lastRle.side === 'P' ? 'B' : 'P';
+                    return { signal: beSignal, reason: `Bẻ cản ${lastRle.side} sau nhịp rớt Peak` };
+                }
+            }
+            
+            // Luật 3: Cầu 1-1 (Ping Pong)
+            if (recent[1].len === 1 && recent[2].len === 1 && recent[3].len === 1) {
+                const pingPongSignal = lastRle.side === 'P' ? 'B' : 'P';
+                return { signal: pingPongSignal, reason: "Đu theo nhịp Ping Pong 1-1" };
+            }
+
+            return { signal: null, reason: "Sóng hỗn loạn, không rõ trend" };
         }
 
-        function updateLearnedCountDisplay() {
-            const displayEl = document.getElementById('learned-count-display');
-            if (displayEl) {
-                displayEl.textContent = `(+${masterState.totalLearnedPatterns} Tự học)`;
-                displayEl.classList.add('text-white', 'scale-110');
-                setTimeout(() => displayEl.classList.remove('text-white', 'scale-110'), 500);
+        // BƯỚC 2: Lớp lọc Hiệu suất AI (Binary Pattern)
+        function analyzeGodEyeAIPerformance(dsSequence) {
+            if (dsSequence.length < 6) return { expectedBit: null, type: 'None' };
+            
+            const recentStr = dsSequence.slice(-20);
+            
+            for (let size = 8; size >= 3; size--) {
+                if (recentStr.length <= size) continue;
+                
+                const currentPattern = recentStr.slice(-size);
+                const historyStr = recentStr.slice(0, -1);
+                
+                // Exact Block
+                let exactIdx = historyStr.lastIndexOf(currentPattern);
+                if (exactIdx !== -1 && exactIdx + size < historyStr.length) {
+                    return { expectedBit: historyStr[exactIdx + size], type: 'Exact Block' };
+                }
+                
+                // Fuzzy Block
+                const fuzzyPattern = currentPattern.slice(0, -1) + (currentPattern.slice(-1) === 'D' ? 'S' : 'D');
+                let fuzzyIdx = historyStr.lastIndexOf(fuzzyPattern);
+                if (fuzzyIdx !== -1 && fuzzyIdx + size < historyStr.length) {
+                    const pastNextBit = historyStr[fuzzyIdx + size];
+                    return { expectedBit: pastNextBit === 'D' ? 'S' : 'D', type: 'Fuzzy Block' };
+                }
             }
+            return { expectedBit: null, type: 'None' };
         }
 
-
-        /* =========================================================================
-           3. THUẬT TOÁN QUYẾT ĐỊNH CUỐI CÙNG TỪ LÕI PATTERN MATCHING
-           ========================================================================= */
+        // BƯỚC 3: MA TRẬN CHỐT LỆNH
         function calculateFinalDecision() {
             const ht1Details = masterState.systemDetails.ht1;
             
-            if (!ht1Details || !ht1Details.intervalHistory || ht1Details.intervalHistory.length === 0) {
-                updateFinalDecisionDisplay(null, "Hệ thống đang chờ bạn nhập kết quả ván đầu tiên để quét HT1...", "CHỜ DỮ LIỆU HT1");
-                masterState.currentMatches = [];
-                renderMatchesAnalysis();
+            if (!ht1Details || !ht1Details.intervalHistory || ht1Details.intervalHistory.length < 5) {
+                updateFinalDecisionDisplay(null, "GOD EYE đang tích lũy RLE và phân tích chuỗi D/S (Cần tối thiểu 5 ván)...", "ĐANG TÍCH LŨY DỮ LIỆU");
                 return;
             }
 
-            const currentRange = ht1Details.range || '';
-            if (!currentRange.includes('90') && !currentRange.includes('100')) {
-                updateFinalDecisionDisplay(null, `BỎ QUA DO KHOẢNG TỶ LỆ HT1 CHƯA ĐẠT 90-100% (Hiện tại đang là ${currentRange || 'Chưa rõ'}).`, "KHÔNG ĐẠT ĐIỀU KIỆN RANGE");
-                masterState.currentMatches = [];
-                renderMatchesAnalysis();
-                return;
-            }
-
+            const actuals = ht1Details.intervalHistory.map(item => item.actual).filter(Boolean);
             let dsSequence = "";
             ht1Details.intervalHistory.forEach(item => {
                 const isCorrect = item.correct === true || item.isCorrect === true || item.predicted === item.actual;
                 dsSequence += isCorrect ? "D" : "S";
             });
 
-            if (dsSequence.length < 3) {
-                updateFinalDecisionDisplay(null, `Cần tối thiểu 3 tín hiệu từ HT1 (hiện có ${dsSequence.length}). Hệ thống đang tích luỹ...`, "TÍCH LUỸ TÍN HIỆU");
-                masterState.currentMatches = [];
-                renderMatchesAnalysis();
-                return;
-            }
-
-            // MỚI: LẤY TẤT CẢ MATCHES ĐỂ RENDER PHÂN TÍCH ĐA CHIỀU
-            const allMatches = findAllMatches(dsSequence, patternConfig.minOccurrences, patternConfig.minConfidence);
-            masterState.currentMatches = allMatches;
-
-            if (allMatches.length === 0) {
-                updateFinalDecisionDisplay(null, `CHƯA CÓ CỤM BIT TIN CẬY NÀO ĐẠT YÊU CẦU NÊN BỎ QUA.`, "BỎ QUA TÍN HIỆU");
-                renderMatchesAnalysis();
-                return;
-            }
-
-            // TÌM MATCH CÓ ĐIỂM CAO NHẤT CHO QUYẾT ĐỊNH CHÍNH
-            const bestMatch = allMatches.reduce((prev, current) => (prev.score > current.score) ? prev : current);
-
+            const step1 = analyzeGodEyeBigRoad(actuals);
+            const step2 = analyzeGodEyeAIPerformance(dsSequence);
+            
+            const currentRange = ht1Details.range || '';
+            const isRangeSafe = currentRange.includes('90') || currentRange.includes('100');
+            
             const ht1VerdictRaw = ht1Details.verdict ? ht1Details.verdict.toUpperCase().trim() : '';
-            let baseSignal = null;
-            let impliedResult = 'D'; 
+            let aiSignal = ht1VerdictRaw.includes('P') ? 'P' : (ht1VerdictRaw.includes('B') ? 'B' : null);
 
-            if (ht1VerdictRaw.includes('P')) baseSignal = 'P';
-            else if (ht1VerdictRaw.includes('B')) baseSignal = 'B';
+            let finalDecision = 'BỎ QUA';
+            let actionReason = '';
+            let matrixType = '';
+            let decisionColor = 'text-gray-500';
 
-            if (ht1VerdictRaw.includes('NGƯỢC')) { impliedResult = 'S'; }
-
-            if (!baseSignal) {
-                updateFinalDecisionDisplay(null, `ĐÃ PHÁT HIỆN MẪU (${bestMatch.confidence.toFixed(0)}%). Nhưng chưa có lệnh tại 🧠 Phán Quyết.`, "CHỜ LỆNH TỪ PHÁN QUYẾT");
-                renderMatchesAnalysis();
-                return;
+            if (!isRangeSafe && step2.type === 'None') {
+                actionReason = `NÚT THẮT CỔ CHAI: Range HT1 rớt thấp (${currentRange}) và không tìm thấy mẫu D/S đồng dạng.`;
+                matrixType = "SKIP 🛑";
+            } 
+            else if (step1.signal && step2.expectedBit === 'D' && isRangeSafe) {
+                finalDecision = step1.signal;
+                actionReason = `ĐIỂM HỘI TỤ KIM CƯƠNG: Big Road báo ${step1.signal} [${step1.reason}]. Lõi Pattern quét thấy mẫu ${step2.type} báo D (Win). Range an toàn.`;
+                matrixType = "DÃ MẠNH 💎";
+                decisionColor = 'text-green-400';
+            } 
+            else if (aiSignal && step2.expectedBit === 'S' && step2.type === 'Fuzzy Block') {
+                finalDecision = aiSignal === 'P' ? 'B' : 'P';
+                actionReason = `BẺ LÁI THUẬT TOÁN: Máy báo ${aiSignal}. Nhưng Pattern quét thấy mẫu ${step2.type} dự báo S (Thua). Đánh ngược AI.`;
+                matrixType = "PHẢN KÈO 🔄";
+                decisionColor = 'text-purple-400';
+            } 
+            else {
+                actionReason = `BỎ QUA: Dữ liệu đa chiều phân kỳ. RLE: ${step1.signal || 'None'}, D/S: ${step2.expectedBit || 'None'}. Bảo toàn vốn.`;
+                matrixType = "SKIP 🛑";
             }
-
-            let finalDecision = '';
-            if (bestMatch.target === impliedResult) {
-                finalDecision = baseSignal; 
-            } else {
-                finalDecision = (baseSignal === 'P') ? 'B' : 'P'; 
-            }
-
-            let impliedText = impliedResult === 'S' ? 'CỘT ĐỎ (NGƯỢC)' : 'CỘT XANH (THEO)';
-            let actionText = bestMatch.target === impliedResult ? 'GIỮ NGUYÊN' : 'BẺ NGƯỢC';
 
             const reasonHtml = `
-                <div class="bg-gray-900 border border-gray-600 rounded-lg p-5 text-left w-full max-w-md mx-auto shadow-lg relative">
-                    <div class="absolute -top-3 right-4 bg-purple-600 text-[10px] font-black px-2 py-0.5 rounded shadow-sm text-white">MẪU TỐT NHẤT ${bestMatch.size} BIT</div>
-                    <div class="mb-3 text-gray-300">
-                        HỆ THỐNG ƯU TIÊN CỤM BIT VỚI TỈ LỆ <br/>
-                        <span class="text-green-400 font-black text-2xl">${bestMatch.confidence.toFixed(0)}%</span>
-                        VỚI
-                        <span class="text-pink-400 font-black text-2xl">${bestMatch.total}</span>
-                        LẦN CHỐT
-                        <span class="text-yellow-400 font-black text-2xl">${bestMatch.target}</span>
+                <div class="bg-gray-900 border border-gray-600 rounded-lg p-5 text-left w-full max-w-lg mx-auto shadow-lg relative">
+                    <div class="absolute -top-3 right-4 bg-yellow-600 text-[10px] font-black px-2 py-0.5 rounded shadow-sm text-black">TRẠNG THÁI: ${matrixType}</div>
+                    
+                    <div class="mb-3 border-b border-gray-700 pb-2">
+                        <span class="text-xs text-gray-400 font-bold uppercase">Bước 1: RLE Big Road</span><br/>
+                        <span class="text-white font-mono">${step1.reason}</span>
                     </div>
-                    <div class="mb-3 text-gray-400 border-t border-gray-700 pt-3">
-                        ➜ Xem 🧠 Phán Quyết:<br/>
-                        <span class="text-white font-bold text-lg">${ht1VerdictRaw}</span>
-                        <span class="text-gray-500">(Kỳ vọng ${impliedText}).</span>
+                    
+                    <div class="mb-3 border-b border-gray-700 pb-2">
+                        <span class="text-xs text-gray-400 font-bold uppercase">Bước 2: AI D/S Pattern</span><br/>
+                        <span class="text-white font-mono">Mẫu: ${step2.type === 'None' ? 'Không có' : step2.type} | Dự báo: <span class="${step2.expectedBit === 'D' ? 'text-blue-400' : 'text-red-400'} font-bold">${step2.expectedBit || 'N/A'}</span></span>
                     </div>
-                    <div class="text-gray-300 border-t border-gray-700 pt-3 flex items-center justify-between">
-                        <div>
-                            ➜ AI KẾT LUẬN: Cần ra <br/>
-                            <span class="font-bold text-lg ${bestMatch.target === 'S' ? 'text-red-400' : 'text-blue-400'}">CỘT ${bestMatch.target === 'S' ? 'ĐỎ' : 'XANH'} (${bestMatch.target})</span><br/>
-                            ➜ Phải <span class="text-purple-400 font-bold">${actionText}</span> Lệnh
-                        </div>
-                        <div class="text-right">
-                            <span class="text-gray-500 text-xs">CHỐT</span><br/>
-                            <span class="text-white font-black text-3xl drop-shadow-md">${finalDecision}</span>
+                    
+                    <div class="mt-4 pt-2 flex items-center justify-between bg-gray-800/50 p-3 rounded">
+                        <div class="text-sm text-gray-300 w-2/3 leading-relaxed">${actionReason}</div>
+                        <div class="text-right w-1/3">
+                            <span class="text-gray-500 text-[10px] font-bold">LỆNH CHỐT</span><br/>
+                            <span class="${decisionColor} font-black text-3xl drop-shadow-md">${finalDecision}</span>
                         </div>
                     </div>
                 </div>
             `;
             
-            updateFinalDecisionDisplay(finalDecision, reasonHtml, `AI KÍCH HOẠT: Mẫu ưu tiên ${bestMatch.size} Bit`);
-            renderMatchesAnalysis(); // GỌI RENDER BẢNG PHÂN TÍCH ĐA CHIỀU
-        }
-
-        // HÀM RENDER BẢNG PHÂN TÍCH ĐA CHIỀU TẤT CẢ MATCHES
-        function renderMatchesAnalysis() {
-            const matches = [...masterState.currentMatches];
-            const tbody = document.getElementById('matches-analysis-body');
-            const totalEl = document.getElementById('analysis-total-matches');
-            const dCountEl = document.getElementById('analysis-d-count');
-            const dPercEl = document.getElementById('analysis-d-perc');
-            const sCountEl = document.getElementById('analysis-s-count');
-            const sPercEl = document.getElementById('analysis-s-perc');
-            const verdictEl = document.getElementById('analysis-verdict');
-            
-            if (matches.length === 0) {
-                totalEl.textContent = '0'; dCountEl.textContent = '0'; dPercEl.textContent = '0%';
-                sCountEl.textContent = '0'; sPercEl.textContent = '0%'; verdictEl.textContent = '-';
-                verdictEl.className = 'text-lg font-black text-gray-500';
-                tbody.innerHTML = '<tr><td colspan="6" class="p-4 text-center text-gray-500 italic">Không có cụm Pattern nào thoả mãn điều kiện N-Gram.</td></tr>';
-                return;
-            }
-
-            // Xử lý Sort
-            const sortMode = document.getElementById('matchesSortMode').value;
-            matches.sort((a, b) => {
-                if (sortMode === 'score_desc') return b.score - a.score;
-                if (sortMode === 'size_asc') return a.size - b.size;
-                if (sortMode === 'size_desc') return b.size - a.size;
-                if (sortMode === 'conf_desc') return b.confidence - a.confidence;
-                if (sortMode === 'conf_asc') return a.confidence - b.confidence;
-                return 0;
-            });
-
-            // Tính Thống kê tổng quan
-            const total = matches.length;
-            const countD = matches.filter(m => m.target === 'D').length;
-            const countS = matches.filter(m => m.target === 'S').length;
-            const percD = ((countD / total) * 100).toFixed(1);
-            const percS = ((countS / total) * 100).toFixed(1);
-
-            totalEl.textContent = total;
-            dCountEl.textContent = countD; dPercEl.textContent = percD + '%';
-            sCountEl.textContent = countS; sPercEl.textContent = percS + '%';
-
-            // Kết luận đám đông
-            if (countD > countS) {
-                verdictEl.textContent = 'THIÊN VỀ XANH (D)';
-                verdictEl.className = 'text-lg font-black text-blue-400 drop-shadow-md';
-            } else if (countS > countD) {
-                verdictEl.textContent = 'THIÊN VỀ ĐỎ (S)';
-                verdictEl.className = 'text-lg font-black text-red-400 drop-shadow-md';
-            } else {
-                verdictEl.textContent = 'CÂN BẰNG NHAU (50/50)';
-                verdictEl.className = 'text-lg font-black text-yellow-400 drop-shadow-md';
-            }
-
-            // Render Table
-            let html = '';
-            matches.forEach((m, index) => {
-                const targetBadge = m.target === 'D' 
-                    ? '<span class="bg-blue-900/40 text-blue-400 px-2 py-0.5 rounded font-bold border border-blue-500/30 inline-block w-16 text-center">XANH (D)</span>'
-                    : '<span class="bg-red-900/40 text-red-400 px-2 py-0.5 rounded font-bold border border-red-500/30 inline-block w-16 text-center">ĐỎ (S)</span>';
-                
-                // Highlight dòng top 1 nếu đang sort theo ưu tiên AI
-                const isTop1 = (sortMode === 'score_desc' && index === 0);
-                const trClass = isTop1 ? 'bg-purple-900/20 border-l-4 border-purple-500' : 'hover:bg-gray-800/80 transition-colors';
-                
-                html += `
-                    <tr class="${trClass}">
-                        <td class="p-3 text-yellow-300 font-bold">${m.size}</td>
-                        <td class="p-3 text-gray-400 font-mono tracking-widest">${m.seq}</td>
-                        <td class="p-3 text-center">${targetBadge}</td>
-                        <td class="p-3 text-center font-bold text-green-400">${m.confidence.toFixed(1)}%</td>
-                        <td class="p-3 text-center font-bold text-pink-400">${m.total}</td>
-                        <td class="p-3 text-right text-gray-500 font-mono text-[10px]">${m.score.toFixed(0)} pt</td>
-                    </tr>
-                `;
-            });
-            tbody.innerHTML = html;
+            updateFinalDecisionDisplay(finalDecision === 'BỎ QUA' ? null : finalDecision, reasonHtml, `MA TRẬN: ${matrixType}`);
         }
 
         function updateFinalDecisionDisplay(decision, reasonHtml, prioritySystem) {
             const container = document.getElementById('finalDecisionContainer');
             const text = document.getElementById('finalDecisionText');
             const reasonEl = document.getElementById('decisionReason');
-            const priorityEl = document.getElementById('priority-system');
-            
-            priorityEl.textContent = prioritySystem || 'CHỜ XỬ LÝ';
             
             if (decision === 'P') {
                 text.innerHTML = '👤 CHỐT PLAYER';
@@ -1461,80 +798,52 @@
             masterState.lastDecisionReason = reasonHtml.replace(/<[^>]*>?/gm, ' '); 
         }
 
-        function updatePatternConfig() {
-            const occ = parseInt(document.getElementById('minOccurrencesSlider').value);
-            const conf = parseInt(document.getElementById('minConfidenceSlider').value);
-            
-            patternConfig.minOccurrences = occ;
-            patternConfig.minConfidence = conf;
-            
-            document.getElementById('minOccurrencesValue').innerText = occ;
-            document.getElementById('display-occur').innerText = `${occ} lần`;
-            
-            document.getElementById('minConfidenceValue').innerText = `${conf}%`;
-            document.getElementById('display-conf').innerText = `${conf}%`;
-            
-            calculateFinalDecision();
-        }
-
-        function resetPatternConfigToDefault() {
-            document.getElementById('minOccurrencesSlider').value = 2;
-            document.getElementById('minConfidenceSlider').value = 50;
-            updatePatternConfig();
-            showToast('Đã khôi phục N-gram: 10 lần lặp & Độ tin cậy 100%', 'info');
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            document.getElementById('minOccurrencesSlider').addEventListener('input', updatePatternConfig);
-            document.getElementById('minConfidenceSlider').addEventListener('input', updatePatternConfig);
-            
-            document.getElementById('minOccurrencesSlider').value = patternConfig.minOccurrences;
-            document.getElementById('minConfidenceSlider').value = patternConfig.minConfidence;
-            updatePatternConfig(); 
-
-            initializeOriginalPatternDB();
-        });
-
-
         /* =========================================================================
-           4. ĐỒNG BỘ TỰ ĐỘNG & LƯU TRỮ LỊCH SỬ LÕI AI
+           3. ĐỒNG BỘ TỰ ĐỘNG & LƯU TRỮ LỊCH SỬ GOD EYE
            ========================================================================= */
         function syncFinalDecisionHistoryFromHT1(intervalHistory) {
-            if (!intervalHistory || intervalHistory.length < 4) return;
+            if (!intervalHistory || intervalHistory.length < 5) return;
             
             let newHistory = [];
             let dsSequence = "";
+            let actuals = [];
             
             for (let i = 0; i < intervalHistory.length; i++) {
                 const item = intervalHistory[i];
                 const isCorrect = item.correct === true || item.isCorrect === true || item.predicted === item.actual;
                 const currentBit = isCorrect ? "D" : "S";
                 
-                if (i >= 3) {
-                    const bestMatch = findBestMatch(dsSequence, patternConfig.minOccurrences, patternConfig.minConfidence);
+                if (i >= 4) {
+                    const step1 = analyzeGodEyeBigRoad(actuals);
+                    const step2 = analyzeGodEyeAIPerformance(dsSequence);
                     
-                    if (bestMatch && item.predicted && item.actual) {
-                        const ht1Verdict = item.predicted.toUpperCase().trim();
-                        let baseSignal = null;
-                        if (ht1Verdict.includes('P')) baseSignal = 'P';
-                        else if (ht1Verdict.includes('B')) baseSignal = 'B';
-                        
-                        if (baseSignal) {
-                            let finalDecision = '';
-                            if (bestMatch.target === 'D') finalDecision = baseSignal;
-                            else finalDecision = (baseSignal === 'P') ? 'B' : 'P';
-                            
-                            newHistory.push({
-                                gameNumber: i + 1,
-                                decision: finalDecision,
-                                actual: item.actual,
-                                correct: finalDecision === item.actual,
-                                reason: `[Auto-Sync] Mẫu ${bestMatch.size} Bit (${bestMatch.confidence.toFixed(0)}%)`,
-                                timestamp: Date.now() - (intervalHistory.length - i) * 1000
-                            });
-                        }
+                    const ht1VerdictRaw = item.predicted ? item.predicted.toUpperCase().trim() : '';
+                    let aiSignal = ht1VerdictRaw.includes('P') ? 'P' : (ht1VerdictRaw.includes('B') ? 'B' : null);
+                    
+                    let finalDecision = null;
+                    let reason = '';
+                    
+                    // Ở chế độ Sync lịch sử cũ, ta chỉ cần mô phỏng lại logic chính
+                    if (step1.signal && step2.expectedBit === 'D') {
+                        finalDecision = step1.signal;
+                        reason = `[Auto-Sync] ĐIỂM HỘI TỤ KIM CƯƠNG`;
+                    } else if (aiSignal && step2.expectedBit === 'S' && step2.type === 'Fuzzy Block') {
+                        finalDecision = aiSignal === 'P' ? 'B' : 'P';
+                        reason = `[Auto-Sync] BẺ LÁI THUẬT TOÁN`;
+                    }
+                    
+                    if (finalDecision && item.actual) {
+                        newHistory.push({
+                            gameNumber: i + 1,
+                            decision: finalDecision,
+                            actual: item.actual,
+                            correct: finalDecision === item.actual,
+                            reason: reason,
+                            timestamp: Date.now() - (intervalHistory.length - i) * 1000
+                        });
                     }
                 }
+                actuals.push(item.actual);
                 dsSequence += currentBit; 
             }
             
@@ -1576,70 +885,70 @@
             updateFinalDecisionHistoryTable();
         }
 
-function updateFinalDecisionChart() {
-    const history = masterState.finalDecisionHistory;
-    const chartEl = document.getElementById('final-decision-chart');
-    if (!chartEl) return;
-    
-    if (!history || history.length === 0) { 
-        chartEl.innerHTML = '<p class="text-gray-500 text-center text-sm w-full mt-3">Chưa có lịch sử khớp lệnh</p>'; 
-        return; 
-    }
-    
-    let chartHTML = ''; 
-    
-    history.forEach((item, index) => {
-        const isCorrect = item.correct;
-        const barClass = isCorrect ? 'h-full bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.6)]' : 'h-2/5 bg-red-500 shadow-[0_0_5px_rgba(239,68,68,0.5)]';
-        const gameNum = item.gameNumber || (index + 1);
-        // Đã fix lỗi CSS chiều cao cột tại đây
-        chartHTML += `<div class="w-2.5 h-full flex-shrink-0 flex items-end mx-[1px]"><div class="w-full rounded-[1px] ${barClass}" title="Ván ${gameNum}: Đánh ${item.decision} - Ra ${item.actual} -> ${isCorrect ? 'WIN' : 'LOSE'}"></div></div>`;
-    });
-    chartEl.innerHTML = chartHTML;
-    chartEl.scrollLeft = chartEl.scrollWidth; 
-}
+        function updateFinalDecisionChart() {
+            const history = masterState.finalDecisionHistory;
+            const chartEl = document.getElementById('final-decision-chart');
+            if (!chartEl) return;
+            
+            if (!history || history.length === 0) { 
+                chartEl.innerHTML = '<p class="text-gray-500 text-center text-sm w-full mt-3">Chưa có lịch sử khớp lệnh</p>'; 
+                return; 
+            }
+            
+            let chartHTML = ''; 
+            history.forEach((item, index) => {
+                const isCorrect = item.correct;
+                const barClass = isCorrect ? 'h-full bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.6)]' : 'h-2/5 bg-red-500 shadow-[0_0_5px_rgba(239,68,68,0.5)]';
+                const gameNum = item.gameNumber || (index + 1);
+                chartHTML += `<div class="w-2.5 h-full flex-shrink-0 flex items-end mx-[1px]"><div class="w-full rounded-[1px] ${barClass}" title="Ván ${gameNum}: Đánh ${item.decision} - Ra ${item.actual} -> ${isCorrect ? 'WIN' : 'LOSE'}"></div></div>`;
+            });
+            chartEl.innerHTML = chartHTML;
+            chartEl.scrollLeft = chartEl.scrollWidth; 
+        }
 
-function updateFinalDecisionHistoryTable() {
-    const history = masterState.finalDecisionHistory;
-    const tableBody = document.getElementById('final-decision-history-body');
-    if (!tableBody) return;
-    
-    if (!history || history.length === 0) { 
-        tableBody.innerHTML = '<tr><td colspan="5" class="p-6 text-center text-gray-500 italic">Hệ thống đang chờ đợi dữ liệu đầu vào...</td></tr>'; 
-        return; 
-    }
-    
-    // Đã gỡ bỏ .slice(-15) để hiển thị full danh sách
-    const recentHistory = [...history].reverse();
-    let tableHTML = '';
-    
-    recentHistory.forEach((item) => {
-        const gameNum = item.gameNumber;
-        const decisionText = item.decision === 'P' ? 'PLAYER' : 'BANKER';
-        const actualText = item.actual === 'P' ? 'PLAYER' : 'BANKER';
-        const isWin = item.correct;
-        const statusBadge = isWin 
-            ? '<span class="bg-green-900/40 text-green-400 px-2 py-0.5 rounded font-bold text-xs border border-green-500/30">WIN</span>'
-            : '<span class="bg-red-900/40 text-red-400 px-2 py-0.5 rounded font-bold text-xs border border-red-500/30">LOSE</span>';
-        
-        tableHTML += `
-            <tr class="hover:bg-gray-800/80 transition-colors">
-                <td class="p-3 text-gray-300 font-mono">${gameNum}</td>
-                <td class="p-3 font-bold ${item.decision === 'P' ? 'text-blue-400' : 'text-red-400'}">${decisionText}</td>
-                <td class="p-3 font-bold ${item.actual === 'P' ? 'text-blue-400' : 'text-red-400'}">${actualText}</td>
-                <td class="p-3">${statusBadge}</td>
-                <td class="p-3 text-[11px] text-gray-400 leading-relaxed font-mono opacity-80 hover:opacity-100 truncate max-w-[200px]" title="${item.reason}">${item.reason.substring(0, 50)}...</td>
-            </tr>`;
-    });
-    tableBody.innerHTML = tableHTML;
-}
+        function updateFinalDecisionHistoryTable() {
+            const history = masterState.finalDecisionHistory;
+            const tableBody = document.getElementById('final-decision-history-body');
+            if (!tableBody) return;
+            
+            if (!history || history.length === 0) { 
+                tableBody.innerHTML = '<tr><td colspan="5" class="p-6 text-center text-gray-500 italic">Hệ thống đang chờ đợi dữ liệu đầu vào...</td></tr>'; 
+                return; 
+            }
+            
+            const recentHistory = [...history].reverse();
+            let tableHTML = '';
+            
+            recentHistory.forEach((item) => {
+                const gameNum = item.gameNumber;
+                const decisionText = item.decision === 'P' ? 'PLAYER' : (item.decision === 'B' ? 'BANKER' : item.decision);
+                const actualText = item.actual === 'P' ? 'PLAYER' : 'BANKER';
+                const isWin = item.correct;
+                
+                const statusBadge = isWin 
+                    ? '<span class="bg-green-900/40 text-green-400 px-2 py-0.5 rounded font-bold text-xs border border-green-500/30">WIN</span>'
+                    : '<span class="bg-red-900/40 text-red-400 px-2 py-0.5 rounded font-bold text-xs border border-red-500/30">LOSE</span>';
+                
+                const decisionColorClass = item.decision === 'P' ? 'text-blue-400' : (item.decision === 'B' ? 'text-red-400' : 'text-gray-400');
+                
+                tableHTML += `
+                    <tr class="hover:bg-gray-800/80 transition-colors">
+                        <td class="p-3 text-gray-300 font-mono">${gameNum}</td>
+                        <td class="p-3 font-bold ${decisionColorClass}">${decisionText}</td>
+                        <td class="p-3 font-bold ${item.actual === 'P' ? 'text-blue-400' : 'text-red-400'}">${actualText}</td>
+                        <td class="p-3">${statusBadge}</td>
+                        <td class="p-3 text-[11px] text-gray-400 leading-relaxed font-mono opacity-80 hover:opacity-100 truncate max-w-[200px]" title="${item.reason}">${item.reason.substring(0, 50)}...</td>
+                    </tr>`;
+            });
+            tableBody.innerHTML = tableHTML;
+        }
 
-        function saveFinalDecisionHistory() { safeStorageSet('vanSuNhuY_finalDecisionHistory_v5', masterState.finalDecisionHistory); }
-        function loadFinalDecisionHistory() { try { const saved = localStorage.getItem('vanSuNhuY_finalDecisionHistory_v5'); if(saved) { masterState.finalDecisionHistory = JSON.parse(saved); updateFinalDecisionStats(); } } catch(e){} }
+        function saveFinalDecisionHistory() { safeStorageSet('vanSuNhuY_finalDecisionHistory_v6', masterState.finalDecisionHistory); }
+        function loadFinalDecisionHistory() { try { const saved = localStorage.getItem('vanSuNhuY_finalDecisionHistory_v6'); if(saved) { masterState.finalDecisionHistory = JSON.parse(saved); updateFinalDecisionStats(); } } catch(e){} }
 
 
         /* =========================================================================
-           5. LIÊN KẾT IFRAME VÀ UI CÁC HỆ THỐNG CON
+           4. LIÊN KẾT IFRAME VÀ UI CÁC HỆ THỐNG CON
            ========================================================================= */
         function sendToIframe(iframeId, command, data = null) {
             const iframe = document.getElementById(iframeId);
@@ -1666,7 +975,6 @@ function updateFinalDecisionHistoryTable() {
                 case 'ready':
                     masterState.systemsReady[system] = true;
                     updateSystemStatus();
-                    if (allSystemsReady()) initializeSystems();
                     break;
                 case 'accuracy_update':
                     updateSystemAccuracy(system, data.accuracy);
@@ -1676,7 +984,7 @@ function updateFinalDecisionHistoryTable() {
                     updateCombinedChart(system, data.history);
                     break;
                 case 'session_update':
-                    updateSessionInfo(system, data.session);
+                    // updateSessionInfo(system, data.session);
                     break;
                 case 'prediction_update':
                     if (data.prediction) masterState.predictions[system] = data.prediction;
@@ -1685,8 +993,6 @@ function updateFinalDecisionHistoryTable() {
                     updateSystemDetails(system, data.details);
                     
                     if (system === 'ht1') {
-                        learnFromNewData(data.details.intervalHistory); 
-
                         if (masterState.pendingResultToEvaluate !== null) {
                             addFinalDecisionToHistory(masterState.pendingResultToEvaluate);
                             masterState.pendingResultToEvaluate = null;
@@ -1694,7 +1000,6 @@ function updateFinalDecisionHistoryTable() {
                         else if (masterState.finalDecisionHistory.length === 0 && data.details.intervalHistory && data.details.intervalHistory.length >= 4) {
                             syncFinalDecisionHistoryFromHT1(data.details.intervalHistory);
                         }
-
                         calculateFinalDecision();       
                     }
                     break;
@@ -1707,12 +1012,10 @@ function updateFinalDecisionHistoryTable() {
         function updateSystemAccuracy(system, accuracy) {
             masterState[`${system}Accuracy`] = accuracy;
             const el = document.getElementById(`${system}-accuracy`);
-            const dis = document.getElementById(`accuracy-${system}-display`);
             if (el) {
                 el.textContent = `${accuracy.toFixed(1)}%`;
                 el.className = `accuracy-badge ${accuracy >= 70 ? 'accuracy-high' : accuracy >= 50 ? 'accuracy-medium' : 'accuracy-low'}`;
             }
-            if (dis) dis.textContent = `${accuracy.toFixed(1)}%`;
         }
 
         function updateSystemDetails(system, details) {
@@ -1798,7 +1101,7 @@ function updateFinalDecisionHistoryTable() {
         }
 
         /* =========================================================================
-           6. XỬ LÝ NHẬP LỆNH, HOÀN TÁC, SESSION
+           5. XỬ LÝ NHẬP LỆNH, HOÀN TÁC, SESSION
            ========================================================================= */
         function addResultToAll(result) {
             if (!masterState.currentSessionId) { showToast('Vui lòng chọn hoặc tạo phiên trước!', 'warning'); return; }
@@ -1857,7 +1160,6 @@ function updateFinalDecisionHistoryTable() {
                 
                 masterState.finalDecisionHistory = [];
                 masterState.pendingResultToEvaluate = null;
-                initializeOriginalPatternDB();
                 
                 updateFinalDecisionStats();
                 saveFinalDecisionHistory();
@@ -1888,7 +1190,6 @@ function updateFinalDecisionHistoryTable() {
                 masterState.currentSessionId = id; masterState.currentSessionName = sessionName;
                 saveMasterSessions(); updateMasterSessionSelector(); updateCurrentSessionInfo();
                 broadcastToAll('create_session', { name: sessionName, id: id });
-                initializeOriginalPatternDB();
                 showToast('Đã tạo phiên mới', 'success');
             }
         }
@@ -1912,7 +1213,6 @@ function updateFinalDecisionHistoryTable() {
             if (!masterState.currentSessionId) { showToast('Vui lòng chọn phiên trước!', 'warning'); return; }
             const session = masterState.sessions[masterState.currentSessionId];
             
-            initializeOriginalPatternDB();
             masterState.pendingResultToEvaluate = null;
             masterState.finalDecisionHistory = []; 
             
@@ -1931,20 +1231,18 @@ function updateFinalDecisionHistoryTable() {
                 masterState.sessions = {}; masterState.currentSessionId = null; masterState.currentSessionName = 'Chưa chọn';
                 masterState.finalDecisionHistory = []; 
                 masterState.pendingResultToEvaluate = null;
-                initializeOriginalPatternDB();
                 
-                localStorage.removeItem('vanSuNhuY_sessions_v2'); localStorage.removeItem('vanSuNhuY_finalDecisionHistory_v5');
+                localStorage.removeItem('vanSuNhuY_sessions_v2'); localStorage.removeItem('vanSuNhuY_finalDecisionHistory_v6');
                 updateMasterSessionSelector(); updateCurrentSessionInfo(); updateFinalDecisionStats();
                 broadcastToAll('reset_system');
-                resetCharts();
+                renderEmptyChart();
                 calculateFinalDecision();
                 showToast('Hệ thống đã reset hoàn toàn', 'info');
             }
         }
 
-
         /* =========================================================================
-           7. XỬ LÝ BIỂU ĐỒ 4 HỆ THỐNG GIAO DIỆN CHÍNH
+           6. XỬ LÝ BIỂU ĐỒ 4 HỆ THỐNG GIAO DIỆN CHÍNH
            ========================================================================= */
         function updateChotHistory(system, history) {
             masterState[`${system}ChotHistory`] = history;
@@ -2073,12 +1371,11 @@ function updateFinalDecisionHistoryTable() {
             document.getElementById('game-accuracy-summary').textContent = `WinRate: ${((correctCount/history.length)*100).toFixed(1)}%`;
         }
 
-
         /* =========================================================================
-           8. XUẤT NHẬP DỮ LIỆU & TIỆN ÍCH KHÁC
+           7. XUẤT NHẬP DỮ LIỆU & TIỆN ÍCH KHÁC
            ========================================================================= */
         function exportMasterData() {
-            const exportData = { type: 'vanSuNhuY_export', version: '4.1', timestamp: new Date().toISOString(), sessions: masterState.sessions, finalDecisionHistory: masterState.finalDecisionHistory, system_sessions: {} };
+            const exportData = { type: 'vanSuNhuY_export', version: '4.9', timestamp: new Date().toISOString(), sessions: masterState.sessions, finalDecisionHistory: masterState.finalDecisionHistory, system_sessions: {} };
             let systemsCollected = 0;
             const handler = (e) => {
                 if (e.data.source && e.data.type === 'export_data') {
@@ -2109,7 +1406,6 @@ function updateFinalDecisionHistoryTable() {
                     });
                     
                     masterState.finalDecisionHistory = []; 
-                    initializeOriginalPatternDB(); 
                     
                     showToast('Phục hồi dữ liệu thành công', 'success');
                     setTimeout(() => { syncAllSystems(); }, 1000);
