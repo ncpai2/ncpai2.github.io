@@ -1387,9 +1387,9 @@
                             addFinalDecisionToHistory(masterState.pendingResultToEvaluate);
                             masterState.pendingResultToEvaluate = null;
                         }
+                        // LUÔN GỌI GE SAU KHI CÓ DATA MỚI
+                        calculateGodEyeDecision();
                     }
-                    // LUÔN GỌI GE SAU KHI CÓ DATA MỚI
-                    calculateGodEyeDecision(); 
                     break;
                 case 'export_data':
                     if (data.sessions) masterState[`${system}Sessions`] = data.sessions;
