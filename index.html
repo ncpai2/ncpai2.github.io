@@ -9,7 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         html {
-            scroll-behavior: smooth; /* Thêm cuộn mượt cho lối tắt */
+            scroll-behavior: smooth; 
         }
         body {
             font-family: 'Inter', sans-serif;
@@ -121,16 +121,7 @@
         .accuracy-high { background-color: #10b981; color: white; }
         .accuracy-medium { background-color: #f59e0b; color: white; }
         .accuracy-low { background-color: #ef4444; color: white; }
-        .system-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1rem;
-        }
-        @media (min-width: 1024px) {
-            .system-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
+        
         .game-bar-chart {
             height: 300px;
             margin-top: 1rem;
@@ -243,12 +234,9 @@
             <h1 class="text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 via-pink-400 to-purple-400 mb-3">
                 VẠN SỰ NHƯ Ý
             </h1>
-            <p class="text-gray-300 text-lg">Hệ Thống Tổng Hợp Phân Tích Cầu Cao Cấp - 4 Hệ Thống</p>
+            <p class="text-gray-300 text-lg">Hệ Thống Phân Tích Cầu AI - Tập Trung Lõi HT1 & God Eye</p>
             <div class="flex flex-wrap justify-center gap-4 mt-4">
                 <span class="px-3 py-1 bg-blue-600 rounded-full text-sm font-semibold">HT1: Pattern Matching</span>
-                <span class="px-3 py-1 bg-green-600 rounded-full text-sm font-semibold">HT2: Fixed & Optimized</span>
-                <span class="px-3 py-1 bg-orange-600 rounded-full text-sm font-semibold">HT3: Standard System</span>
-                <span class="px-3 py-1 bg-pink-600 rounded-full text-sm font-semibold">HT4: Advanced System</span>
                 <span class="px-3 py-1 bg-purple-600 rounded-full text-sm font-semibold shadow-lg border border-purple-400">🧠 QUYẾT ĐỊNH = AI PATTERN TỰ HỌC</span>
             </div>
             
@@ -267,11 +255,11 @@
                     <h2 class="text-xl font-semibold mb-4 text-blue-300">⚙️ Điều Khiển Hệ Thống</h2>
                     <div class="space-y-4">
                         <div class="grid grid-cols-2 gap-4">
-                            <button onclick="showAllFrames()" class="btn bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 rounded-lg">👁️ Hiện Tất Cả</button>
-                            <button onclick="hideAllFrames()" class="btn bg-gray-600 hover:bg-gray-500 text-white font-bold py-3 rounded-lg">👻 Ẩn Tất Cả</button>
+                            <button onclick="showAllFrames()" class="btn bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 rounded-lg">👁️ Hiện HT1</button>
+                            <button onclick="hideAllFrames()" class="btn bg-gray-600 hover:bg-gray-500 text-white font-bold py-3 rounded-lg">👻 Ẩn HT1</button>
                         </div>
                         <div class="grid grid-cols-2 gap-4">
-                            <button onclick="syncAllSystems()" class="btn bg-green-600 hover:bg-green-500 text-white font-bold py-3 rounded-lg">🔄 Đồng Bộ Hóa</button>
+                            <button onclick="syncAllSystems()" class="btn bg-green-600 hover:bg-green-500 text-white font-bold py-3 rounded-lg">🔄 Đồng Bộ</button>
                             <button onclick="resetAllSystems()" class="btn bg-red-600 hover:bg-red-500 text-white font-bold py-3 rounded-lg">🔄 Reset Tất Cả</button>
                         </div>
                     </div>
@@ -297,7 +285,7 @@
 
                 <div id="input-section" class="bg-gray-800 p-6 rounded-2xl shadow-lg scroll-mt-8">
                     <h2 class="text-xl font-semibold mb-4 text-blue-300">🎲 Nhập Kết Quả Ván Hiện Tại</h2>
-                    <p class="text-gray-400 text-sm mb-4">Kết quả sẽ được đồng bộ đến tất cả hệ thống</p>
+                    <p class="text-gray-400 text-sm mb-4">Kết quả sẽ được đồng bộ</p>
                     <div class="grid grid-cols-2 gap-4 mb-4">
                         <button onclick="addResultToAll('P')" class="btn bg-blue-600 hover:bg-blue-500 text-white font-bold py-6 rounded-lg text-2xl">
                             <span>👤</span> PLAYER
@@ -328,7 +316,7 @@
             </div>
 
             <div class="lg:col-span-3">
-                <div class="system-grid">
+                <div class="grid grid-cols-1 gap-6">
                     <div class="system-frame" id="ht1-frame" style="border-color: #8b5cf6; box-shadow: 0 0 10px rgba(139, 92, 246, 0.3);">
                         <div class="flex justify-between items-center bg-gradient-to-r from-gray-900 to-indigo-900 p-4 rounded-t-lg">
                             <h2 class="text-xl font-bold text-blue-300">🔷 HT1 - Pattern Matching (Lõi Tín Hiệu AI)</h2>
@@ -346,204 +334,42 @@
                             <iframe src="ht1.html" id="ht1-iframe" class="w-full h-full rounded-b-lg" frameborder="0"></iframe>
                         </div>
                     </div>
-
-                    <div class="system-frame" id="ht2-frame">
-                        <div class="flex justify-between items-center bg-gray-900 p-4 rounded-t-lg">
-                            <h2 class="text-xl font-semibold text-green-300">🔶 HT2 - Fixed & Optimized</h2>
-                            <div class="flex items-center gap-2">
-                                <span class="text-sm text-gray-400">Độ chính xác:</span>
-                                <span id="ht2-accuracy" class="accuracy-badge accuracy-low">0.0%</span>
-                                <button onclick="toggleFrame('ht2')" class="text-gray-400 hover:text-white">
-                                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                                        <path id="ht2-toggle-icon" fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path>
-                                    </svg>
-                                </button>
-                            </div>
-                        </div>
-                        <div id="ht2-content" class="h-[400px]">
-                            <iframe src="ht2.html" id="ht2-iframe" class="w-full h-full rounded-b-lg" frameborder="0"></iframe>
-                        </div>
-                    </div>
-
-                    <div class="system-frame" id="ht3-frame">
-                        <div class="flex justify-between items-center bg-gray-900 p-4 rounded-t-lg">
-                            <h2 class="text-xl font-semibold text-orange-300">🔸 HT3 - Standard System</h2>
-                            <div class="flex items-center gap-2">
-                                <span class="text-sm text-gray-400">Độ chính xác:</span>
-                                <span id="ht3-accuracy" class="accuracy-badge accuracy-low">0.0%</span>
-                                <button onclick="toggleFrame('ht3')" class="text-gray-400 hover:text-white">
-                                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                                        <path id="ht3-toggle-icon" fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path>
-                                    </svg>
-                                </button>
-                            </div>
-                        </div>
-                        <div id="ht3-content" class="h-[400px]">
-                            <iframe src="ht3.html" id="ht3-iframe" class="w-full h-full rounded-b-lg" frameborder="0"></iframe>
-                        </div>
-                    </div>
-
-                    <div class="system-frame" id="ht4-frame">
-                        <div class="flex justify-between items-center bg-gray-900 p-4 rounded-t-lg">
-                            <h2 class="text-xl font-semibold text-pink-300">🔹 HT4 - Advanced System</h2>
-                            <div class="flex items-center gap-2">
-                                <span class="text-sm text-gray-400">Độ chính xác:</span>
-                                <span id="ht4-accuracy" class="accuracy-badge accuracy-low">0.0%</span>
-                                <button onclick="toggleFrame('ht4')" class="text-gray-400 hover:text-white">
-                                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                                        <path id="ht4-toggle-icon" fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path>
-                                    </svg>
-                                </button>
-                            </div>
-                        </div>
-                        <div id="ht4-content" class="h-[400px]">
-                            <iframe src="ht4.html" id="ht4-iframe" class="w-full h-full rounded-b-lg" frameborder="0"></iframe>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
 
         <div class="mt-8 bg-gradient-to-r from-purple-900 to-blue-900 p-6 rounded-2xl shadow-lg">
-            <h2 class="text-2xl font-semibold mb-6 text-center text-yellow-300">📊 ĐỘ CHÍNH XÁC HỆ THỐNG ĐỀ XUẤT HIỆN TẠI (4 HỆ THỐNG)</h2>
+            <h2 class="text-2xl font-semibold mb-6 text-center text-yellow-300">📊 ĐỘ CHÍNH XÁC HỆ THỐNG ĐỀ XUẤT HIỆN TẠI (HT1)</h2>
             
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div class="grid grid-cols-1 gap-6">
                 <div class="bg-gray-800 bg-opacity-70 p-4 rounded-xl border border-blue-500/20 shadow-[0_0_15px_rgba(59,130,246,0.1)]">
                     <h3 class="text-lg font-bold mb-3 text-center text-blue-300">🔷 HT1 - Pattern Matching</h3>
-                    <div class="space-y-3">
-                        <div class="flex justify-between items-center bg-gray-700 p-3 rounded-lg">
-                            <span class="text-gray-300">🧠 Phán Quyết:</span>
-                            <span id="ht1-verdict-prediction" class="font-bold text-xl text-blue-400">-</span>
-                        </div>
-                        <div class="flex justify-between items-center bg-gray-700 p-3 rounded-lg">
-                            <span class="text-gray-300">🔐 Chốt Phán Quyết:</span>
-                            <span id="ht1-chot-prediction" class="font-bold text-xl text-purple-400">-</span>
-                        </div>
-                        <div class="flex justify-between items-center bg-gray-700 p-3 rounded-lg">
-                            <span class="text-gray-300">Khoảng tỷ lệ:</span>
-                            <span id="ht1-confidence-range" class="font-bold text-cyan-400">-</span>
-                        </div>
-                        <div class="flex justify-between items-center bg-gray-700 p-3 rounded-lg">
-                            <span class="text-gray-300">Tỉ lệ khoảng:</span>
-                            <span id="ht1-range-accuracy" class="font-bold text-green-400">-</span>
-                        </div>
-                        
-                        <div class="bg-gray-900 p-3 rounded-lg mt-4 border border-yellow-500/30 relative">
-                            <div class="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-yellow-600 text-black text-[10px] font-bold px-2 py-0.5 rounded-full shadow-lg">NGUỒN DỮ AI</div>
-                            <h4 class="text-center text-sm text-yellow-300 mb-2 font-bold">Biểu đồ khoảng tỷ lệ (90-100%)</h4>
-                            <div id="ht1-interval-chart" class="history-chart"></div>
-                            <div id="ht1-range-games" class="mt-2 text-xs text-gray-400 text-center"></div>
-                        </div>
-                        
-                        <div class="bg-gray-900 p-3 rounded-lg mt-4">
-                            <h4 class="text-center text-sm text-gray-400 mb-2">Biểu đồ kết hợp (Chốt)</h4>
-                            <div id="ht1-combined-chart" class="history-chart">
-                                <p class="text-gray-600 text-xs text-center w-full">Đang tải...</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="space-y-3">
+                            <div class="flex justify-between items-center bg-gray-700 p-3 rounded-lg">
+                                <span class="text-gray-300">🧠 Phán Quyết:</span>
+                                <span id="ht1-verdict-prediction" class="font-bold text-xl text-blue-400">-</span>
+                            </div>
+                            <div class="flex justify-between items-center bg-gray-700 p-3 rounded-lg">
+                                <span class="text-gray-300">🔐 Chốt Phán Quyết:</span>
+                                <span id="ht1-chot-prediction" class="font-bold text-xl text-purple-400">-</span>
+                            </div>
+                            <div class="flex justify-between items-center bg-gray-700 p-3 rounded-lg">
+                                <span class="text-gray-300">Khoảng tỷ lệ:</span>
+                                <span id="ht1-confidence-range" class="font-bold text-cyan-400">-</span>
+                            </div>
+                            <div class="flex justify-between items-center bg-gray-700 p-3 rounded-lg">
+                                <span class="text-gray-300">Tỉ lệ khoảng:</span>
+                                <span id="ht1-range-accuracy" class="font-bold text-green-400">-</span>
                             </div>
                         </div>
-                    </div>
-                </div>
-
-                <div class="bg-gray-800 bg-opacity-70 p-4 rounded-xl">
-                    <h3 class="text-lg font-semibold mb-3 text-center text-green-300">🔶 HT2 - Fixed & Optimized</h3>
-                    <div class="space-y-3">
-                        <div class="flex justify-between items-center bg-gray-700 p-3 rounded-lg">
-                            <span class="text-gray-300">🧠 Phán Quyết:</span>
-                            <span id="ht2-verdict-prediction" class="font-bold text-xl text-blue-400">-</span>
-                        </div>
-                        <div class="flex justify-between items-center bg-gray-700 p-3 rounded-lg">
-                            <span class="text-gray-300">🔐 Chốt Phán Quyết:</span>
-                            <span id="ht2-chot-prediction" class="font-bold text-xl text-purple-400">-</span>
-                        </div>
-                        <div class="flex justify-between items-center bg-gray-700 p-3 rounded-lg">
-                            <span class="text-gray-300">Khoảng tỷ lệ:</span>
-                            <span id="ht2-confidence-range" class="font-bold text-cyan-400">-</span>
-                        </div>
-                        <div class="flex justify-between items-center bg-gray-700 p-3 rounded-lg">
-                            <span class="text-gray-300">Tỉ lệ khoảng:</span>
-                            <span id="ht2-range-accuracy" class="font-bold text-green-400">-</span>
-                        </div>
                         
-                        <div class="bg-gray-900 p-3 rounded-lg mt-4">
-                            <h4 class="text-center text-sm text-gray-400 mb-2">Biểu đồ khoảng tỷ lệ</h4>
-                            <div id="ht2-interval-chart" class="history-chart"></div>
-                            <div id="ht2-range-games" class="mt-2 text-xs text-gray-400 text-center"></div>
-                        </div>
-                        
-                        <div class="bg-gray-900 p-3 rounded-lg mt-4">
-                            <h4 class="text-center text-sm text-gray-400 mb-2">Biểu đồ kết hợp (Chốt)</h4>
-                            <div id="ht2-combined-chart" class="history-chart">
-                                <p class="text-gray-600 text-xs text-center w-full">Đang tải...</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="bg-gray-800 bg-opacity-70 p-4 rounded-xl">
-                    <h3 class="text-lg font-semibold mb-3 text-center text-orange-300">🔸 HT3 - Standard System</h3>
-                    <div class="space-y-3">
-                        <div class="flex justify-between items-center bg-gray-700 p-3 rounded-lg">
-                            <span class="text-gray-300">🧠 Phán Quyết:</span>
-                            <span id="ht3-verdict-prediction" class="font-bold text-xl text-blue-400">-</span>
-                        </div>
-                        <div class="flex justify-between items-center bg-gray-700 p-3 rounded-lg">
-                            <span class="text-gray-300">🔐 Chốt Phán Quyết:</span>
-                            <span id="ht3-chot-prediction" class="font-bold text-xl text-purple-400">-</span>
-                        </div>
-                        <div class="flex justify-between items-center bg-gray-700 p-3 rounded-lg">
-                            <span class="text-gray-300">Khoảng tỷ lệ:</span>
-                            <span id="ht3-confidence-range" class="font-bold text-cyan-400">-</span>
-                        </div>
-                        <div class="flex justify-between items-center bg-gray-700 p-3 rounded-lg">
-                            <span class="text-gray-300">Tỉ lệ khoảng:</span>
-                            <span id="ht3-range-accuracy" class="font-bold text-green-400">-</span>
-                        </div>
-                        
-                        <div class="bg-gray-900 p-3 rounded-lg mt-4">
-                            <h4 class="text-center text-sm text-gray-400 mb-2">Biểu đồ khoảng tỷ lệ</h4>
-                            <div id="ht3-interval-chart" class="history-chart"></div>
-                            <div id="ht3-range-games" class="mt-2 text-xs text-gray-400 text-center"></div>
-                        </div>
-                        
-                        <div class="bg-gray-900 p-3 rounded-lg mt-4">
-                            <h4 class="text-center text-sm text-gray-400 mb-2">Biểu đồ kết hợp (Chốt)</h4>
-                            <div id="ht3-combined-chart" class="history-chart">
-                                <p class="text-gray-600 text-xs text-center w-full">Đang tải...</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="bg-gray-800 bg-opacity-70 p-4 rounded-xl">
-                    <h3 class="text-lg font-semibold mb-3 text-center text-pink-300">🔹 HT4 - Advanced System</h3>
-                    <div class="space-y-3">
-                        <div class="flex justify-between items-center bg-gray-700 p-3 rounded-lg">
-                            <span class="text-gray-300">🧠 Phán Quyết:</span>
-                            <span id="ht4-verdict-prediction" class="font-bold text-xl text-blue-400">-</span>
-                        </div>
-                        <div class="flex justify-between items-center bg-gray-700 p-3 rounded-lg">
-                            <span class="text-gray-300">🔐 Chốt Phán Quyết:</span>
-                            <span id="ht4-chot-prediction" class="font-bold text-xl text-purple-400">-</span>
-                        </div>
-                        <div class="flex justify-between items-center bg-gray-700 p-3 rounded-lg">
-                            <span class="text-gray-300">Khoảng tỷ lệ:</span>
-                            <span id="ht4-confidence-range" class="font-bold text-cyan-400">-</span>
-                        </div>
-                        <div class="flex justify-between items-center bg-gray-700 p-3 rounded-lg">
-                            <span class="text-gray-300">Tỉ lệ khoảng:</span>
-                            <span id="ht4-range-accuracy" class="font-bold text-green-400">-</span>
-                        </div>
-                        
-                        <div class="bg-gray-900 p-3 rounded-lg mt-4">
-                            <h4 class="text-center text-sm text-gray-400 mb-2">Biểu đồ khoảng tỷ lệ</h4>
-                            <div id="ht4-interval-chart" class="history-chart"></div>
-                            <div id="ht4-range-games" class="mt-2 text-xs text-gray-400 text-center"></div>
-                        </div>
-                        
-                        <div class="bg-gray-900 p-3 rounded-lg mt-4">
-                            <h4 class="text-center text-sm text-gray-400 mb-2">Biểu đồ kết hợp (Chốt)</h4>
-                            <div id="ht4-combined-chart" class="history-chart">
-                                <p class="text-gray-600 text-xs text-center w-full">Đang tải...</p>
+                        <div>
+                            <div class="bg-gray-900 p-3 rounded-lg h-full border border-yellow-500/30 relative flex flex-col justify-center">
+                                <div class="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-yellow-600 text-black text-[10px] font-bold px-2 py-0.5 rounded-full shadow-lg">NGUỒN DỮ AI</div>
+                                <h4 class="text-center text-sm text-yellow-300 mb-2 font-bold">Biểu đồ khoảng tỷ lệ (90-100%)</h4>
+                                <div id="ht1-interval-chart" class="history-chart"></div>
+                                <div id="ht1-range-games" class="mt-2 text-xs text-gray-400 text-center"></div>
                             </div>
                         </div>
                     </div>
@@ -611,31 +437,19 @@
             </div>
         </div>
 
-        <div class="mt-6 grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
             <div class="text-center p-3 bg-gray-800 rounded-lg border border-gray-700/50">
                 <div class="text-xs text-gray-400 font-bold uppercase mb-1">Trạng thái HT1</div>
                 <div id="ht1-status" class="text-green-400 font-black text-sm">🟢 Đang hoạt động</div>
             </div>
-            <div class="text-center p-3 bg-gray-800 rounded-lg border border-gray-700/50">
-                <div class="text-xs text-gray-400 font-bold uppercase mb-1">Trạng thái HT2</div>
-                <div id="ht2-status" class="text-green-400 font-black text-sm">🟢 Đang hoạt động</div>
-            </div>
-            <div class="text-center p-3 bg-gray-800 rounded-lg border border-gray-700/50">
-                <div class="text-xs text-gray-400 font-bold uppercase mb-1">Trạng thái HT3</div>
-                <div id="ht3-status" class="text-green-400 font-black text-sm">🟢 Đang hoạt động</div>
-            </div>
-            <div class="text-center p-3 bg-gray-800 rounded-lg border border-gray-700/50">
-                <div class="text-xs text-gray-400 font-bold uppercase mb-1">Trạng thái HT4</div>
-                <div id="ht4-status" class="text-green-400 font-black text-sm">🟢 Đang hoạt động</div>
-            </div>
-            <div class="text-center p-3 bg-gray-800 rounded-lg md:col-span-4 border border-gray-700/50 bg-gradient-to-r from-gray-800 via-gray-700 to-gray-800">
+            <div class="text-center p-3 bg-gray-800 rounded-lg border border-gray-700/50 bg-gradient-to-r from-gray-800 via-gray-700 to-gray-800">
                 <div class="text-xs text-gray-300 font-bold uppercase mb-1">Trạng thái đồng bộ</div>
                 <div id="sync-status" class="text-yellow-400 font-black text-sm drop-shadow">Đang đồng bộ...</div>
             </div>
         </div>
 
         <div class="mt-8 text-center text-gray-500 text-xs font-medium space-y-1">
-            <p>Hệ thống Độc quyền "VẠN SỰ NHƯ Ý" - Lõi phân tích AI Pattern Database Tuỳ Chỉnh & Continuous Learning | Phiên bản 5.0 (God Eye)</p>
+            <p>Hệ thống Độc quyền "VẠN SỰ NHƯ Ý" - Lõi phân tích AI Pattern Database Tuỳ Chỉnh & Continuous Learning | Phiên bản 5.0 (God Eye - HT1 Only)</p>
             <p>Thuật toán tự động quét 100% dữ liệu từ biểu đồ tỷ lệ HT1 để đưa ra đề xuất chính xác nhất.</p>
         </div>
     </div>
@@ -930,17 +744,14 @@
             currentSessionId: null,
             currentSessionName: 'Chưa chọn',
             sessions: {},
-            ht1Accuracy: 0, ht2Accuracy: 0, ht3Accuracy: 0, ht4Accuracy: 0,
-            ht1ChotHistory: [], ht2ChotHistory: [], ht3ChotHistory: [], ht4ChotHistory: [],
+            ht1Accuracy: 0,
+            ht1ChotHistory: [],
             lastDecision: null,
             lastDecisionReason: '',
-            systemsReady: { ht1: false, ht2: false, ht3: false, ht4: false },
-            predictions: { ht1: null, ht2: null, ht3: null, ht4: null },
+            systemsReady: { ht1: false },
+            predictions: { ht1: null },
             systemDetails: {
-                ht1: { verdict: null, chot: null, range: null, rangeAccuracy: null, intervalHistory: [] },
-                ht2: { verdict: null, chot: null, range: null, rangeAccuracy: null, intervalHistory: [] },
-                ht3: { verdict: null, chot: null, range: null, rangeAccuracy: null, intervalHistory: [] },
-                ht4: { verdict: null, chot: null, range: null, rangeAccuracy: null, intervalHistory: [] }
+                ht1: { verdict: null, chot: null, range: null, rangeAccuracy: null, intervalHistory: [] }
             },
             finalDecisionHistory: [],
             pendingResultToEvaluate: null, 
@@ -954,7 +765,6 @@
             currentGePrediction: null
         };
 
-        let gameAccuracyChart = null;
         let currentChartSystem = 'ht1';
 
         function learnFromNewData(intervalHistory) {
@@ -1263,20 +1073,12 @@
             if (!session.geHistory) session.geHistory = [];
             const geHistory = session.geHistory;
 
-            // --- DỰ ĐOÁN DỰA TRÊN LUẬT GOD EYE ---
+            // --- DỰ ĐOÁN DỰA TRÊN LUẬT GOD EYE (Đã bỏ luật cố định) ---
             let prediction = null;
             let reason = "";
             let winRateText = "";
 
-            if (currentState === "B Tăng - B Tăng") {
-                prediction = 'B'; 
-                reason = "Trường hợp cứng: B Tăng - B Tăng thường sẽ về B."; 
-                winRateText = "Luật Cố Định";
-            } else if (currentState === "P Tăng - P Tăng") {
-                prediction = 'P'; 
-                reason = "Trường hợp cứng: P Tăng - P Tăng thường sẽ về P."; 
-                winRateText = "Luật Cố Định";
-            } else if (cot1 !== "Chưa rõ" && cot2 !== "Chưa rõ") {
+            if (cot1 !== "Chưa rõ" && cot2 !== "Chưa rõ") {
                 const matches = geHistory.filter(h => h.state === currentState);
                 if (matches.length > 0) {
                     const pCount = matches.filter(m => m.actual === 'P').length;
@@ -1404,19 +1206,7 @@
 
 
         /* =========================================================================
-           5. ĐỒNG BỘ TỰ ĐỘNG & LƯU TRỮ LỊCH SỬ LÕI AI
-           ========================================================================= */
-        function syncFinalDecisionHistoryFromHT1(intervalHistory) {
-            // Placeholder nếu cần đồng bộ lịch sử chốt HT1 cũ.
-        }
-
-        function addFinalDecisionToHistory(actualResult) {
-            // Placeholder nếu cần. God Eye đã được xử lý riêng.
-        }
-
-
-        /* =========================================================================
-           6. LIÊN KẾT IFRAME VÀ UI CÁC HỆ THỐNG CON
+           5. LIÊN KẾT IFRAME VÀ UI HỆ THỐNG CON (CHỈ HT1)
            ========================================================================= */
         function sendToIframe(iframeId, command, data = null) {
             const iframe = document.getElementById(iframeId);
@@ -1428,11 +1218,11 @@
         }
 
         function broadcastToAll(command, data = null) {
-            ['ht1', 'ht2', 'ht3', 'ht4'].forEach(sys => sendToIframe(`${sys}-iframe`, command, data));
+            ['ht1'].forEach(sys => sendToIframe(`${sys}-iframe`, command, data));
         }
 
         window.addEventListener('message', function(event) {
-            if (['ht1', 'ht2', 'ht3', 'ht4'].includes(event.data.source)) {
+            if (['ht1'].includes(event.data.source)) {
                 handleSystemMessage(event.data);
             }
         });
@@ -1446,11 +1236,6 @@
                     break;
                 case 'accuracy_update':
                     updateSystemAccuracy(system, data.accuracy);
-                    break;
-                case 'chot_history_update':
-                    // Giữ lại hàm cũ nhưng không vẽ biểu đồ nữa.
-                    break;
-                case 'session_update':
                     break;
                 case 'prediction_update':
                     if (data.prediction) masterState.predictions[system] = data.prediction;
@@ -1547,7 +1332,7 @@
 
 
         /* =========================================================================
-           7. XỬ LÝ NHẬP LỆNH, HOÀN TÁC, SESSION
+           6. XỬ LÝ NHẬP LỆNH, HOÀN TÁC, SESSION
            ========================================================================= */
         function addResultToAll(result) {
             if (!masterState.currentSessionId) { showToast('Vui lòng chọn hoặc tạo phiên trước!', 'warning'); return; }
@@ -1575,7 +1360,6 @@
             
             setTimeout(() => {
                 broadcastToAll('get_accuracy');
-                broadcastToAll('get_chot_history');
                 broadcastToAll('get_system_details');
             }, 150);
             
@@ -1589,7 +1373,6 @@
             
             session.history.pop();
             
-            // Xoá cả lịch sử GE của ván vừa rồi
             if (session.geHistory && session.geHistory.length > 0) {
                 session.geHistory.pop();
             }
@@ -1602,7 +1385,6 @@
             
             setTimeout(() => {
                 broadcastToAll('get_accuracy'); 
-                broadcastToAll('get_chot_history'); 
                 broadcastToAll('get_system_details'); 
             }, 150);
             
@@ -1614,7 +1396,7 @@
             if (confirm('Xóa sạch lịch sử của phiên hiện tại?')) {
                 const session = masterState.sessions[masterState.currentSessionId];
                 session.history = [];
-                session.geHistory = []; // Reset GE
+                session.geHistory = []; 
                 
                 saveMasterSessions(); updateCurrentSessionInfo();
                 broadcastToAll('clear_history');
@@ -1630,8 +1412,8 @@
             }
         }
         
-        function loadMasterSessions() { try { const saved = localStorage.getItem('vanSuNhuY_sessions_v3'); if (saved) { masterState.sessions = JSON.parse(saved); updateMasterSessionSelector(); } } catch (e) {} }
-        function saveMasterSessions() { safeStorageSet('vanSuNhuY_sessions_v3', masterState.sessions); }
+        function loadMasterSessions() { try { const saved = localStorage.getItem('vanSuNhuY_sessions_v4'); if (saved) { masterState.sessions = JSON.parse(saved); updateMasterSessionSelector(); } } catch (e) {} }
+        function saveMasterSessions() { safeStorageSet('vanSuNhuY_sessions_v4', masterState.sessions); }
 
         function updateMasterSessionSelector() {
             const selector = document.getElementById('masterSessionSelector');
@@ -1682,7 +1464,6 @@
             setTimeout(() => {
                 document.getElementById('sync-status').textContent = '🟢 Đã đồng bộ';
                 broadcastToAll('get_accuracy'); 
-                broadcastToAll('get_chot_history'); 
                 broadcastToAll('get_system_details');
             }, 150);
         }
@@ -1692,7 +1473,7 @@
                 masterState.pendingResultToEvaluate = null;
                 initializeOriginalPatternDB();
                 
-                localStorage.removeItem('vanSuNhuY_sessions_v3'); 
+                localStorage.removeItem('vanSuNhuY_sessions_v4'); 
                 updateMasterSessionSelector(); updateCurrentSessionInfo();
                 broadcastToAll('reset_system');
                 calculateFinalDecision();
@@ -1703,18 +1484,18 @@
 
 
         /* =========================================================================
-           8. XUẤT NHẬP DỮ LIỆU & TIỆN ÍCH KHÁC
+           7. XUẤT NHẬP DỮ LIỆU & TIỆN ÍCH KHÁC
            ========================================================================= */
         function exportMasterData() {
-            const exportData = { type: 'vanSuNhuY_export', version: '5.0', timestamp: new Date().toISOString(), sessions: masterState.sessions, system_sessions: {} };
+            const exportData = { type: 'vanSuNhuY_export', version: '5.1', timestamp: new Date().toISOString(), sessions: masterState.sessions, system_sessions: {} };
             let systemsCollected = 0;
             const handler = (e) => {
                 if (e.data.source && e.data.type === 'export_data') {
                     exportData.system_sessions[e.data.source] = e.data.sessions; systemsCollected++;
-                    if (systemsCollected === 4) {
+                    if (systemsCollected === 1) { // Đổi thành 1 do chỉ còn HT1
                         window.removeEventListener('message', handler);
                         const blob = new Blob([JSON.stringify(exportData)], {type: 'application/json'});
-                        const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `VanSuNhuY_Backup_${new Date().toISOString().slice(0,10)}.json`; a.click();
+                        const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `VanSuNhuY_Backup_HT1_${new Date().toISOString().slice(0,10)}.json`; a.click();
                         showToast('Xuất file thành công', 'success');
                     }
                 }
@@ -1731,7 +1512,7 @@
                 try {
                     const data = JSON.parse(e.target.result);
                     if (data.sessions) { masterState.sessions = data.sessions; saveMasterSessions(); updateMasterSessionSelector(); }
-                    ['ht1', 'ht2', 'ht3', 'ht4'].forEach(sys => {
+                    ['ht1'].forEach(sys => {
                         sendToIframe(`${sys}-iframe`, 'import_data', { sessions: data.system_sessions?.[sys] || data.sessions, simulate: true, isMasterData: !data.system_sessions?.[sys] });
                     });
                     
@@ -1746,13 +1527,13 @@
         }
 
         function toggleFrame(sys) { const el = document.getElementById(`${sys}-content`); if(el) el.style.display = (el.style.display === 'none') ? 'block' : 'none'; }
-        function showAllFrames() { ['ht1','ht2','ht3','ht4'].forEach(s => { const el = document.getElementById(`${s}-content`); if(el) el.style.display = 'block'; }); }
-        function hideAllFrames() { ['ht1','ht2','ht3','ht4'].forEach(s => { const el = document.getElementById(`${s}-content`); if(el) el.style.display = 'none'; }); }
+        function showAllFrames() { ['ht1'].forEach(s => { const el = document.getElementById(`${s}-content`); if(el) el.style.display = 'block'; }); }
+        function hideAllFrames() { ['ht1'].forEach(s => { const el = document.getElementById(`${s}-content`); if(el) el.style.display = 'none'; }); }
         
-        function allSystemsReady() { return masterState.systemsReady.ht1 && masterState.systemsReady.ht2 && masterState.systemsReady.ht3 && masterState.systemsReady.ht4; }
+        function allSystemsReady() { return masterState.systemsReady.ht1; }
         
         function updateSystemStatus() {
-            ['ht1','ht2','ht3','ht4'].forEach(s => {
+            ['ht1'].forEach(s => {
                 const el = document.getElementById(`${s}-status`);
                 if(el) el.textContent = masterState.systemsReady[s] ? '🟢 Hoạt động' : '🟡 Chờ kết nối';
             });
@@ -1788,7 +1569,6 @@
             let checkInit = setInterval(() => {
                 if (allSystemsReady()) { 
                     broadcastToAll('get_accuracy'); 
-                    broadcastToAll('get_chot_history'); 
                     broadcastToAll('get_system_details');
                     clearInterval(checkInit);
                 }
