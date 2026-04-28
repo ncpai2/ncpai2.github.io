@@ -226,11 +226,17 @@
                     <h3 class="text-lg font-bold mb-3 text-center text-yellow-400">🔷 HT1 (Nguồn cấp GE)</h3>
                     <div class="space-y-2 text-sm">
                         <div class="flex justify-between bg-gray-800 p-2 rounded"><span class="text-gray-400">Phán Quyết:</span><span id="ht1-verdict-prediction" class="font-bold text-blue-400">-</span></div>
+                        <div class="flex justify-between bg-gray-800 p-2 rounded"><span class="text-gray-400">Chốt Phán Quyết:</span><span id="ht1-chot-prediction" class="font-bold text-purple-400">-</span></div>
                         <div class="flex justify-between bg-gray-800 p-2 rounded"><span class="text-gray-400">Khoảng tỷ lệ:</span><span id="ht1-confidence-range" class="font-bold text-cyan-400">-</span></div>
+                        <div class="flex justify-between bg-gray-800 p-2 rounded"><span class="text-gray-400">Tỉ lệ khoảng:</span><span id="ht1-range-accuracy" class="font-bold text-green-400">-</span></div>
                         <div class="bg-gray-950 p-2 rounded mt-2 border border-gray-700">
-                            <h4 class="text-center text-xs text-gray-400 mb-1">Biểu đồ 90-100% (Cột 1 GE)</h4>
+                            <h4 class="text-center text-xs text-gray-400 mb-1">Biểu đồ khoảng tỷ lệ (90-100%)</h4>
                             <div id="ht1-interval-chart" class="history-chart"></div>
                             <div id="ht1-range-games" class="mt-1 text-[10px] text-gray-500 text-center"></div>
+                        </div>
+                        <div class="bg-gray-950 p-2 rounded mt-2 border border-gray-700">
+                            <h4 class="text-center text-xs text-gray-400 mb-1">Biểu đồ kết hợp (Chốt)</h4>
+                            <div id="ht1-combined-chart" class="history-chart"></div>
                         </div>
                     </div>
                 </div>
@@ -239,10 +245,17 @@
                     <h3 class="text-lg font-semibold mb-3 text-center text-green-300">🔶 HT2</h3>
                     <div class="space-y-2 text-sm">
                         <div class="flex justify-between bg-gray-800 p-2 rounded"><span class="text-gray-400">Phán Quyết:</span><span id="ht2-verdict-prediction" class="font-bold text-blue-400">-</span></div>
+                        <div class="flex justify-between bg-gray-800 p-2 rounded"><span class="text-gray-400">Chốt Phán Quyết:</span><span id="ht2-chot-prediction" class="font-bold text-purple-400">-</span></div>
                         <div class="flex justify-between bg-gray-800 p-2 rounded"><span class="text-gray-400">Khoảng tỷ lệ:</span><span id="ht2-confidence-range" class="font-bold text-cyan-400">-</span></div>
+                        <div class="flex justify-between bg-gray-800 p-2 rounded"><span class="text-gray-400">Tỉ lệ khoảng:</span><span id="ht2-range-accuracy" class="font-bold text-green-400">-</span></div>
                         <div class="bg-gray-950 p-2 rounded mt-2 border border-gray-700">
-                            <h4 class="text-center text-xs text-gray-400 mb-1">Biểu đồ tỷ lệ</h4>
+                            <h4 class="text-center text-xs text-gray-400 mb-1">Biểu đồ khoảng tỷ lệ</h4>
                             <div id="ht2-interval-chart" class="history-chart"></div>
+                            <div id="ht2-range-games" class="mt-1 text-[10px] text-gray-500 text-center"></div>
+                        </div>
+                        <div class="bg-gray-950 p-2 rounded mt-2 border border-gray-700">
+                            <h4 class="text-center text-xs text-gray-400 mb-1">Biểu đồ kết hợp (Chốt)</h4>
+                            <div id="ht2-combined-chart" class="history-chart"></div>
                         </div>
                     </div>
                 </div>
@@ -251,10 +264,17 @@
                     <h3 class="text-lg font-semibold mb-3 text-center text-orange-300">🔸 HT3</h3>
                     <div class="space-y-2 text-sm">
                         <div class="flex justify-between bg-gray-800 p-2 rounded"><span class="text-gray-400">Phán Quyết:</span><span id="ht3-verdict-prediction" class="font-bold text-blue-400">-</span></div>
+                        <div class="flex justify-between bg-gray-800 p-2 rounded"><span class="text-gray-400">Chốt Phán Quyết:</span><span id="ht3-chot-prediction" class="font-bold text-purple-400">-</span></div>
                         <div class="flex justify-between bg-gray-800 p-2 rounded"><span class="text-gray-400">Khoảng tỷ lệ:</span><span id="ht3-confidence-range" class="font-bold text-cyan-400">-</span></div>
+                        <div class="flex justify-between bg-gray-800 p-2 rounded"><span class="text-gray-400">Tỉ lệ khoảng:</span><span id="ht3-range-accuracy" class="font-bold text-green-400">-</span></div>
                         <div class="bg-gray-950 p-2 rounded mt-2 border border-gray-700">
-                            <h4 class="text-center text-xs text-gray-400 mb-1">Biểu đồ tỷ lệ</h4>
+                            <h4 class="text-center text-xs text-gray-400 mb-1">Biểu đồ khoảng tỷ lệ</h4>
                             <div id="ht3-interval-chart" class="history-chart"></div>
+                            <div id="ht3-range-games" class="mt-1 text-[10px] text-gray-500 text-center"></div>
+                        </div>
+                        <div class="bg-gray-950 p-2 rounded mt-2 border border-gray-700">
+                            <h4 class="text-center text-xs text-gray-400 mb-1">Biểu đồ kết hợp (Chốt)</h4>
+                            <div id="ht3-combined-chart" class="history-chart"></div>
                         </div>
                     </div>
                 </div>
@@ -263,10 +283,17 @@
                     <h3 class="text-lg font-semibold mb-3 text-center text-pink-300">🔹 HT4</h3>
                     <div class="space-y-2 text-sm">
                         <div class="flex justify-between bg-gray-800 p-2 rounded"><span class="text-gray-400">Phán Quyết:</span><span id="ht4-verdict-prediction" class="font-bold text-blue-400">-</span></div>
+                        <div class="flex justify-between bg-gray-800 p-2 rounded"><span class="text-gray-400">Chốt Phán Quyết:</span><span id="ht4-chot-prediction" class="font-bold text-purple-400">-</span></div>
                         <div class="flex justify-between bg-gray-800 p-2 rounded"><span class="text-gray-400">Khoảng tỷ lệ:</span><span id="ht4-confidence-range" class="font-bold text-cyan-400">-</span></div>
+                        <div class="flex justify-between bg-gray-800 p-2 rounded"><span class="text-gray-400">Tỉ lệ khoảng:</span><span id="ht4-range-accuracy" class="font-bold text-green-400">-</span></div>
                         <div class="bg-gray-950 p-2 rounded mt-2 border border-gray-700">
-                            <h4 class="text-center text-xs text-gray-400 mb-1">Biểu đồ tỷ lệ</h4>
+                            <h4 class="text-center text-xs text-gray-400 mb-1">Biểu đồ khoảng tỷ lệ</h4>
                             <div id="ht4-interval-chart" class="history-chart"></div>
+                            <div id="ht4-range-games" class="mt-1 text-[10px] text-gray-500 text-center"></div>
+                        </div>
+                        <div class="bg-gray-950 p-2 rounded mt-2 border border-gray-700">
+                            <h4 class="text-center text-xs text-gray-400 mb-1">Biểu đồ kết hợp (Chốt)</h4>
+                            <div id="ht4-combined-chart" class="history-chart"></div>
                         </div>
                     </div>
                 </div>
@@ -424,6 +451,7 @@
                 ht3: { verdict: null, chot: null, range: null, rangeAccuracy: null, intervalHistory: [] },
                 ht4: { verdict: null, chot: null, range: null, rangeAccuracy: null, intervalHistory: [] }
             },
+            ht1ChotHistory: [], ht2ChotHistory: [], ht3ChotHistory: [], ht4ChotHistory: [],
             currentGEState: null // Stores GE calculation right before new result is pushed
         };
 
@@ -470,9 +498,6 @@
                     const isNguoc = vUp.includes('NGƯỢC');
                     let impliedCol1 = '';
 
-                    // Logic bám sát ví dụ của người dùng:
-                    // Phán Quyết "P Ngược", Graph Đỏ (S) -> P
-                    // Phán Quyết "P", Graph Đỏ (S) -> B
                     if (curGraphBit === 'S') { // Đang ở Cột Đỏ
                         impliedCol1 = isNguoc ? pqLetter : (pqLetter === 'P' ? 'B' : 'P');
                     } else { // Đang ở Cột Xanh (D)
@@ -638,7 +663,6 @@
             const winRate = historyList.length > 0 ? Math.round((Math.max(pC, bC) / historyList.length) * 100) : 0;
             const winRateClass = winRate >= 60 ? 'text-green-400' : (winRate === 50 ? 'text-yellow-400' : 'text-gray-400');
 
-            // Phần giải nghĩa thuật toán (theo VD của người dùng)
             const dbg = geState.debugData;
             const explanationHTML = `
                 <div class="text-[11px] font-mono text-gray-400 mb-4 bg-gray-950 p-2.5 rounded border border-gray-700 text-left">
@@ -693,14 +717,13 @@
             if (!session.history) session.history = [];
             if (!session.geHistory) session.geHistory = [];
 
-            // Lưu lịch sử trạng thái GE NẾU ĐÃ CÓ (Trạng thái được tính TRƯỚC khi ván này có kết quả thực)
             if (masterState.currentGEState) {
                 session.geHistory.push({
                     state: masterState.currentGEState.combined,
                     actual: result,
                     game: session.history.length + 1
                 });
-                masterState.currentGEState = null; // Tiêu thụ xong thì xoá
+                masterState.currentGEState = null; 
             }
 
             session.history.push(result);
@@ -724,7 +747,6 @@
             if (!session.history || session.history.length === 0) return;
             
             session.history.pop();
-            // Lùi luôn lịch sử GE nếu có
             if (session.geHistory && session.geHistory.length > 0) {
                 session.geHistory.pop();
             }
@@ -842,10 +864,6 @@
 
             const history = session.geHistory;
             const totalGames = history.length;
-            // Với GE, chúng ta ko track "Lệnh đánh" cụ thể (trừ phi build lại luồng giả định),
-            // nhưng ta coi nó "Win" nếu actual trùng với xu hướng. 
-            // Tuy nhiên, bảng biểu GE chủ yếu để quan sát. Tạm tính winRate ảo để giao diện khỏi lỗi:
-            let dummyCorrect = 0; // Để mô phỏng chức năng biểu đồ cũ
             
             document.getElementById('final-total-games').textContent = totalGames;
             document.getElementById('final-correct-games').textContent = '-';
@@ -881,7 +899,7 @@
         }
 
         /* =========================================================================
-           6. LIÊN KẾT IFRAME (GIỮ NGUYÊN HOÀN TOÀN TỪ SOURCE CŨ)
+           6. LIÊN KẾT IFRAME VÀ UI CÁC HỆ THỐNG CON ĐÃ KHÔI PHỤC FULL
            ========================================================================= */
         function sendToIframe(iframeId, command, data = null) {
             const iframe = document.getElementById(iframeId);
@@ -901,7 +919,10 @@
                     if (allSystemsReady()) initializeSystems();
                     break;
                 case 'accuracy_update': updateSystemAccuracy(system, data.accuracy); break;
-                case 'chot_history_update': updateChotHistory(system, data.history); break;
+                case 'chot_history_update': 
+                    updateChotHistory(system, data.history); 
+                    updateCombinedChart(system, data.history); // Đã khôi phục hàm này
+                    break;
                 case 'system_details_update':
                     updateSystemDetails(system, data.details);
                     if (system === 'ht1') { calculateFinalDecision(); }
@@ -933,11 +954,23 @@
                 vEl.textContent = details.verdict || '-';
                 vEl.className = `font-bold ${details.verdict.includes('P') ? 'text-blue-400' : details.verdict.includes('B') ? 'text-red-400' : 'text-gray-400'}`;
             }
+
+            const cEl = document.getElementById(`${system}-chot-prediction`);
+            if (cEl) {
+                cEl.textContent = details.chot || '-';
+                cEl.className = `font-bold ${details.chot === 'P' ? 'text-blue-400' : details.chot === 'B' ? 'text-red-400' : 'text-gray-400'}`;
+            }
+
             const rEl = document.getElementById(`${system}-confidence-range`);
             if (rEl) rEl.textContent = details.range || '-';
+
+            const raEl = document.getElementById(`${system}-range-accuracy`);
+            if (raEl) raEl.textContent = details.rangeAccuracy ? `${details.rangeAccuracy}%` : '-';
+
             updateIntervalChart(system, details.intervalHistory);
         }
 
+        // Đã khôi phục hàm này đầy đủ như gốc
         function updateIntervalChart(system, history) {
             const chartEl = document.getElementById(`${system}-interval-chart`);
             const rangeGamesEl = document.getElementById(`${system}-range-games`);
@@ -952,15 +985,42 @@
                 const isCorrect = pred.isCorrect || (pred.predicted === pred.actual) || (pred.correct === true);
                 if (isCorrect) correctCount++;
                 const barClass = isCorrect ? 'bg-blue-500 shadow-[0_0_5px_rgba(59,130,246,0.6)] h-full' : 'bg-red-500 shadow-[0_0_5px_rgba(239,68,68,0.6)] h-2/5';
-                chartHTML += `<div class="w-1.5 rounded-[1px] ${barClass}"></div>`;
+                chartHTML += `<div class="w-1.5 rounded-[1px] ${barClass}" title="Ván ${pred.game || 'N/A'}: Dự đoán ${pred.predicted} - Thực tế ${pred.actual}"></div>`;
             });
             chartHTML += '</div>';
             chartEl.innerHTML = chartHTML; chartEl.scrollLeft = chartEl.scrollWidth; 
-            if (rangeGamesEl) rangeGamesEl.innerHTML = `(<span class="text-white">${history.length} ván</span>)`;
+            
+            if (rangeGamesEl) {
+                const acc = history.length > 0 ? ((correctCount / history.length) * 100).toFixed(1) : 0;
+                rangeGamesEl.innerHTML = `<span class="text-white">${history.length} ván</span> (<span class="text-green-400">${correctCount} win</span> - <span class="text-yellow-400">${acc}%</span>)`;
+            }
+        }
+
+        // Đã khôi phục hàm updateCombinedChart hiển thị cho phần "Chốt"
+        function updateCombinedChart(system, chotHistory) {
+            const chartEl = document.getElementById(`${system}-combined-chart`);
+            if (!chartEl) return;
+            
+            if (!chotHistory || chotHistory.length === 0) {
+                chartEl.innerHTML = '<p class="text-gray-600 text-xs text-center w-full mt-3">Chưa có dữ liệu chốt</p>';
+                return;
+            }
+            
+            let chartHTML = '<div class="flex items-end justify-start h-full gap-1 min-w-max px-1">';
+            chotHistory.forEach(pred => {
+                if(pred && pred.predicted && pred.actual) {
+                    const isCorrect = pred.predicted === pred.actual;
+                    const barClass = isCorrect ? 'bg-purple-500 shadow-[0_0_5px_rgba(168,85,247,0.6)] h-full' : 'bg-gray-500 h-2/5';
+                    chartHTML += `<div class="w-1.5 rounded-[1px] ${barClass}" title="Chốt: ${pred.predicted} - Ra: ${pred.actual}"></div>`;
+                }
+            });
+            chartHTML += '</div>';
+            chartEl.innerHTML = chartHTML;
+            chartEl.scrollLeft = chartEl.scrollWidth; 
         }
 
         /* =========================================================================
-           7. XỬ LÝ BIỂU ĐỒ 4 HỆ THỐNG GIAO DIỆN CHÍNH (GIỮ NGUYÊN)
+           7. XỬ LÝ BIỂU ĐỒ SO SÁNH 4 HỆ THỐNG GIAO DIỆN CHÍNH (GIỮ NGUYÊN)
            ========================================================================= */
         function updateChotHistory(system, history) {
             masterState[`${system}ChotHistory`] = history;
@@ -1044,7 +1104,7 @@
         }
 
         /* =========================================================================
-           8. KHỞI TẠO
+           8. XUẤT NHẬP DỮ LIỆU & KHỞI TẠO (ĐÃ KHÔI PHỤC)
            ========================================================================= */
         function toggleFrame(sys) { const el = document.getElementById(`${sys}-content`); el.style.display = (el.style.display === 'none') ? 'block' : 'none'; }
         function showAllFrames() { ['ht1','ht2','ht3','ht4'].forEach(s => document.getElementById(`${s}-content`).style.display = 'block'); }
@@ -1057,6 +1117,47 @@
                 if(el) el.textContent = masterState.systemsReady[s] ? '🟢 OK' : '🟡 Chờ';
             });
             if(allSystemsReady()) { const st = document.getElementById('sync-status'); st.textContent = '🟢 Xong'; st.className = 'text-green-400 font-bold text-sm mt-1'; }
+        }
+
+        // Đã khôi phục hoàn toàn tính năng Export Master Data
+        function exportMasterData() {
+            const exportData = { type: 'vanSuNhuY_export', version: '5.0', timestamp: new Date().toISOString(), sessions: masterState.sessions, finalDecisionHistory: [], system_sessions: {} };
+            let systemsCollected = 0;
+            const handler = (e) => {
+                if (e.data.source && e.data.type === 'export_data') {
+                    exportData.system_sessions[e.data.source] = e.data.sessions; systemsCollected++;
+                    if (systemsCollected === 4) {
+                        window.removeEventListener('message', handler);
+                        const blob = new Blob([JSON.stringify(exportData)], {type: 'application/json'});
+                        const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `VanSuNhuY_GE_Backup_${new Date().toISOString().slice(0,10)}.json`; a.click();
+                        showToast('Xuất file thành công', 'success');
+                    }
+                }
+            };
+            window.addEventListener('message', handler);
+            broadcastToAll('export_data');
+            setTimeout(() => window.removeEventListener('message', handler), 3000);
+        }
+
+        // Đã khôi phục hoàn toàn tính năng Import Master Data
+        function importMasterData(event) {
+            const file = event.target.files[0]; if (!file) return;
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    if (data.sessions) { masterState.sessions = data.sessions; saveMasterSessions(); updateMasterSessionSelector(); }
+                    
+                    ['ht1', 'ht2', 'ht3', 'ht4'].forEach(sys => {
+                        sendToIframe(`${sys}-iframe`, 'import_data', { sessions: data.system_sessions?.[sys] || data.sessions, simulate: true, isMasterData: !data.system_sessions?.[sys] });
+                    });
+                    
+                    showToast('Phục hồi dữ liệu thành công', 'success');
+                    setTimeout(() => { syncAllSystems(); }, 1000);
+                } catch (err) { showToast('File lỗi', 'error'); }
+                event.target.value = '';
+            };
+            reader.readAsText(file);
         }
 
         document.addEventListener('DOMContentLoaded', function() {
@@ -1079,9 +1180,6 @@
                 }
             }, 500);
         });
-
-        function exportMasterData() { showToast('Đang tạo file backup...','info'); /* Logic export cũ, thu gọn để tránh lỗi */ }
-        function importMasterData(event) { showToast('Tính năng import hiện đã ẩn.','info'); }
     </script>
 </body>
 </html>
